@@ -1,0 +1,4721 @@
+{
+  "openapi" : "3.0.0",
+  "servers" : [ {
+    "description" : "SwaggerHub API Auto Mocking",
+    "url" : "https://virtserver.swaggerhub.com/institutotcnicorical-1ec/Pergola/1.0.0"
+  } ],
+  "info" : {
+    "description" : "EL API de Pérgola se encarga de manejar la base de datos de la empresa de Joyería Pérgola.",
+    "version" : "1.0.0",
+    "title" : "Pergola API",
+    "contact" : {
+      "email" : "you@your-company.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags" : [ {
+    "name" : "Login",
+    "description" : "Inicio de sesión"
+  }, {
+    "name" : "Logout",
+    "description" : "Salir de la sesión"
+  }, {
+    "name" : "Signup",
+    "description" : "Registrarse"
+  } ],
+  "paths" : {
+    "/api/login" : {
+      "post" : {
+        "summary" : "POST LOGIN",
+        "tags" : [ "Login" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "post-api-login",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "cookie",
+          "name" : "rememberMe",
+          "required" : true
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "email", "password" ],
+                "properties" : {
+                  "email" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "1nh7mg4bh5gb9"
+                    },
+                    "format" : "duration"
+                  },
+                  "password" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "2an0oilfeuzt1"
+                    },
+                    "format" : "password"
+                  },
+                  "rememberMe" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "lxyovtn664dyr"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Inicia sesión con credenciales (usuario/contraseña), devuelve token de autenticació"
+      }
+    },
+    "/api/logout" : {
+      "post" : {
+        "summary" : "POST LOGOUT",
+        "tags" : [ "Logout" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "operationId" : "post-api-logout",
+        "requestBody" : {
+          "content" : { }
+        },
+        "parameters" : [ ],
+        "description" : "Cierra la sesión actual del usuario (invalida token)."
+      }
+    },
+    "/api/signup" : {
+      "post" : {
+        "summary" : "POST SIGNUP",
+        "tags" : [ "Signup" ],
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          },
+          "409" : {
+            "description" : "Conflict"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "post-api-signup",
+        "parameters" : [ ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "name", "lastName", "userName", "email", "phoneNumber", "birthday", "DUI", "password", "userType", "hireDate", "isVerified" ],
+                "properties" : {
+                  "name" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "5kmq47jy02fqm"
+                    }
+                  },
+                  "lastName" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "24ckmkn8xcv30"
+                    }
+                  },
+                  "userName" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "6f6sbi0y2n65l"
+                    }
+                  },
+                  "email" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "tr4mjosodkzzm"
+                    },
+                    "format" : "email"
+                  },
+                  "phoneNumber" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "i99009m6bj7wq"
+                    }
+                  },
+                  "birthday" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "yjokzvzbdvyfx"
+                    },
+                    "format" : "date"
+                  },
+                  "DUI" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "jjofpn2itoxo9"
+                    }
+                  },
+                  "password" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "w0f08tm4jhkn1"
+                    },
+                    "format" : "password"
+                  },
+                  "userType" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "4pa2i6o2j8502"
+                    }
+                  },
+                  "hireDate" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "4ti87mmgfe8mm"
+                    },
+                    "format" : "date"
+                  },
+                  "isVerified" : {
+                    "type" : "boolean",
+                    "x-stoplight" : {
+                      "id" : "ok0krzp6vnjr3"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Registro de un empleado nuevo."
+      }
+    },
+    "/api/signupCustomer" : {
+      "post" : {
+        "summary" : "POST SIGNUP CUSTOMER",
+        "tags" : [ "Signup Customer" ],
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          },
+          "409" : {
+            "description" : "Conflict"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "post-api-signupCustomer",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "name", "lastName", "username", "email", "phoneNumber", "birthDate", "DUI", "password", "address", "isVerified" ],
+                "properties" : {
+                  "name" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "jykbt2jo6u5pb"
+                    }
+                  },
+                  "lastName" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "j4hqf4np15o9h"
+                    }
+                  },
+                  "username" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "q551w5l4k7uni"
+                    }
+                  },
+                  "email" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "zu69wspskars9"
+                    },
+                    "format" : "email"
+                  },
+                  "phoneNumber" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "mej4gpo91lla8"
+                    }
+                  },
+                  "birthDate" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "jzcvjwky5z2l3"
+                    },
+                    "format" : "date"
+                  },
+                  "DUI" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "a3a0njhjyitd3"
+                    }
+                  },
+                  "password" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "oevxjptcf0kc3"
+                    },
+                    "format" : "password"
+                  },
+                  "address" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "tr7pz1b2cs09i"
+                    }
+                  },
+                  "isVerified" : {
+                    "type" : "boolean",
+                    "x-stoplight" : {
+                      "id" : "re0lnqnhmt3sx"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "cookie",
+          "name" : "verCode"
+        } ],
+        "description" : "Registro de un cliente nuevo."
+      }
+    },
+    "/api/signupCustomer/verifyCode" : {
+      "post" : {
+        "summary" : "POST SIGNUP CUSTOMER - VERIFY CODE",
+        "tags" : [ "Signup Customer" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        },
+        "operationId" : "post-api-signupCustomer-verifyCode",
+        "parameters" : [ ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "verCodeRequest" ],
+                "properties" : {
+                  "verCodeRequest" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "7cy4qcy5mznq8"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Verificación de código enviado al correo del cliente."
+      },
+      "parameters" : [ ]
+    },
+    "/api/recoveryPassword/requestCode" : {
+      "post" : {
+        "summary" : "POST RECOVERY PASSWORD - REQUEST CODE",
+        "tags" : [ "Recovery Password" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        },
+        "operationId" : "post-api-recoveryPassword",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "email" ],
+                "properties" : {
+                  "email" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "vaawa1syiqio9"
+                    },
+                    "format" : "email"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Solicita un código de recuperación enviado al correo."
+      },
+      "parameters" : [ ]
+    },
+    "/api/recoveryPassword/verifyCode" : {
+      "post" : {
+        "summary" : "POST RECOVERY PASSWORD - VERIFY CODE",
+        "tags" : [ "Recovery Password" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "operationId" : "post-api-recoveryPassword-verifiCode",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "code" ],
+                "properties" : {
+                  "code" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "wuedsa9dr5syx"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "cookie",
+          "name" : "tokenRecoveryCode"
+        } ],
+        "description" : "Verifica el código de recuperación ingresado."
+      },
+      "parameters" : [ ]
+    },
+    "/api/recoveryPassword/changePassword" : {
+      "post" : {
+        "summary" : "POST RECOVERY PASSWORD - CHANGE PASSWORD",
+        "tags" : [ "Recovery Password" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        },
+        "operationId" : "post-api-recoveryPassword-changePassword",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "newPassword" ],
+                "properties" : {
+                  "newPassword" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "337wcfantrsqg"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Permite cambiar la contraseña tras validación del código."
+      }
+    },
+    "/api/validatePassword" : {
+      "post" : {
+        "summary" : "POST VALIDATE PASSWORD",
+        "tags" : [ "Validate Password" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "404" : {
+            "description" : "Not Found"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "post-api-validatePassword",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "currentPassword" ],
+                "properties" : {
+                  "currentPassword" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "06q5gfacbar59"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Valida si la contraseña del usuario es correcta (requiere token para identificar al usuario)."
+      }
+    },
+    "/api/admin/profile/data-public" : {
+      "get" : {
+        "summary" : "GET ADMIN - PROFILE",
+        "tags" : [ "Admin" ],
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-admin-profile",
+        "description" : "Obtiene el perfil público del administrador."
+      },
+      "parameters" : [ ]
+    },
+    "/api/admin/profile/data" : {
+      "get" : {
+        "summary" : "GET ADMIN PROFILE - DATA (LOGIN)",
+        "tags" : [ "Admin" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "description" : "Obtiene los datos completos del administrador autenticado."
+      },
+      "parameters" : [ ]
+    },
+    "/api/admin/profile" : {
+      "put" : {
+        "summary" : "PUT ADMIN - PROILE",
+        "tags" : [ "Admin" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "put-api-admin-profile",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "name", "lastName", "email" ],
+                "properties" : {
+                  "name" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "ewwsk74j8caap"
+                    }
+                  },
+                  "lastName" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "a4oamlkxe37ai"
+                    }
+                  },
+                  "email" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "ivi0lm955rne5"
+                    },
+                    "format" : "email"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Actualiza el perfil (datos personales + foto de perfil)."
+      }
+    },
+    "/api/admin/profile/password" : {
+      "parameters" : [ ],
+      "put" : {
+        "summary" : "PUT ADMIN - PROFILE - PASSWORD",
+        "tags" : [ "Admin" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        },
+        "operationId" : "put-api-admin-profile-password",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "currentPassword", "newPassword" ],
+                "properties" : {
+                  "currentPassword" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "hyg7e3nxyq4m2"
+                    }
+                  },
+                  "newPassword" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "r8uizpyc0ndew"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Cambia la contraseña del administrador."
+      }
+    },
+    "/api/admin/profile/notifications" : {
+      "put" : {
+        "summary" : "PUT ADMIN - PROFILE - NOTIFICATIONS",
+        "tags" : [ "Admin" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "404" : {
+            "description" : "Not Found"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "put-api-admin-profile-notifications",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "emailNotifications" : {
+                    "type" : "boolean",
+                    "x-stoplight" : {
+                      "id" : "te74zf82fmcxl"
+                    },
+                    "default" : false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Actualiza la configuración de notificaciones."
+      }
+    },
+    "/api/products" : {
+      "get" : {
+        "summary" : "GET PRODUCTS",
+        "tags" : [ "Products" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-products",
+        "security" : [ ],
+        "description" : "Listar todos los productos."
+      },
+      "post" : {
+        "summary" : "POST PRODUCTS",
+        "tags" : [ "Products" ],
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        },
+        "operationId" : "post-api-products",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "name", "description", "codeProduct", "stock", "productionCost", "discount", "collection", "category", "subcategory", "rawMaterialsUsed", "correlative", "movementType", "status", "applicableCosts" ],
+                "properties" : {
+                  "name" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "vovf80eu3lqrx"
+                    }
+                  },
+                  "description" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "fy7ypxzjjdngz"
+                    }
+                  },
+                  "codeProduct" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "3gq0aqm2g2qcu"
+                    }
+                  },
+                  "stock" : {
+                    "type" : "number",
+                    "x-stoplight" : {
+                      "id" : "ycnen3ciaivkp"
+                    }
+                  },
+                  "productionCost" : {
+                    "type" : "number",
+                    "x-stoplight" : {
+                      "id" : "mcxan05bgwe6p"
+                    }
+                  },
+                  "discount" : {
+                    "type" : "number",
+                    "x-stoplight" : {
+                      "id" : "k898cgfii8416"
+                    }
+                  },
+                  "collection" : {
+                    "$ref" : "#/components/schemas/Collections"
+                  },
+                  "category" : {
+                    "$ref" : "#/components/schemas/Categories"
+                  },
+                  "subcategory" : {
+                    "$ref" : "#/components/schemas/Subcategories"
+                  },
+                  "rawMaterialsUsed" : {
+                    "$ref" : "#/components/schemas/RawMaterials"
+                  },
+                  "highlighted" : {
+                    "type" : "boolean",
+                    "x-stoplight" : {
+                      "id" : "ak31ma979pss7"
+                    },
+                    "default" : false
+                  },
+                  "correlative" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "r6fsmjbuichtl"
+                    }
+                  },
+                  "movementType" : {
+                    "x-stoplight" : {
+                      "id" : "wjkj1srv6jdf1"
+                    },
+                    "enum" : [ "venta", "exhibición", "producción", "otro" ]
+                  },
+                  "status" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "aiz39g110hzrw"
+                    }
+                  },
+                  "applicableCosts" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "asvv5fvg33eb2"
+                    }
+                  },
+                  "hasDiscount" : {
+                    "type" : "boolean",
+                    "x-stoplight" : {
+                      "id" : "l85oq7497j4i5"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters" : [ ],
+        "description" : "Crear un nuevo producto (con imágenes)."
+      }
+    },
+    "/api/products/:id" : {
+      "get" : {
+        "summary" : "GET PRODUCTS - :ID",
+        "tags" : [ "Products" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-products-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Obtener un producto por ID."
+      },
+      "put" : {
+        "summary" : "PUT PRODUCTS",
+        "tags" : [ "Products" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        },
+        "operationId" : "put-api-products-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "name" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "3ym7hi7w7i2qg"
+                    }
+                  },
+                  "description" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "1eth55pffzh22"
+                    }
+                  },
+                  "codeProduct" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "xrhdvwgj523el"
+                    }
+                  },
+                  "stock" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "ly6dvug3uhizl"
+                    }
+                  },
+                  "productionCost" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "vjotukmg62oq6"
+                    }
+                  },
+                  "discount" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "b0q0zq6nng4i7"
+                    }
+                  },
+                  "collection" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "3zy2ofbif3p9k"
+                    }
+                  },
+                  "category" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "8ztmyfhl236g2"
+                    }
+                  },
+                  "subCategory" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "nm9q5tilbpsuu"
+                    }
+                  },
+                  "rawMaterialsUsed" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "sn47hevmile60"
+                    }
+                  },
+                  "highlighted" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "p5m840mi299kr"
+                    }
+                  },
+                  "correlative" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "x26s4jxlxxpyd"
+                    }
+                  },
+                  "movementType" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "ar9j5frtatr2w"
+                    }
+                  },
+                  "status" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "3czr0xt7e5at9"
+                    }
+                  },
+                  "applicableCosts" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "tgu1wsa04eu9v"
+                    }
+                  },
+                  "hasDiscount" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "nhq8ajs0t7qvh"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Actualizar un producto existente (con imágenes)."
+      },
+      "delete" : {
+        "summary" : "DELETE PRODUCTS",
+        "tags" : [ "Products" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "delete-api-products-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id"
+        } ],
+        "description" : "Eliminar un producto por ID."
+      }
+    },
+    "/api/rawMaterials" : {
+      "get" : {
+        "summary" : "GET RAW MATERIALS",
+        "tags" : [ "rawMaterials" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-rawMaterials",
+        "description" : "Listar todas las materias primas."
+      },
+      "post" : {
+        "summary" : "POST RAW MATERIALS",
+        "tags" : [ "rawMaterials" ],
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        },
+        "operationId" : "post-api-rawMaterials",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "name", "description", "type", "provider", "presentation", "quantity", "piecesPerPresentation", "totalPieces", "purchaseDate", "stock" ],
+                "properties" : {
+                  "name" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "sit2ps6ent4q3"
+                    }
+                  },
+                  "description" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "v911ovm84fgh4"
+                    }
+                  },
+                  "type" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "wpc82owdtxpr4"
+                    }
+                  },
+                  "color" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "52r1190uiol74"
+                    }
+                  },
+                  "tone" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "3ci9i8detp3m3"
+                    }
+                  },
+                  "toneType" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "xa5g16aqjv8zu"
+                    }
+                  },
+                  "texture" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "nu3xotmtpdrbf"
+                    }
+                  },
+                  "shape" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "jbk177q8r9ib0"
+                    }
+                  },
+                  "dimension" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "l43jukh8d5muz"
+                    }
+                  },
+                  "provider" : {
+                    "$ref" : "#/components/schemas/Suppliers"
+                  },
+                  "brand" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "9arm5k1nxrt9i"
+                    }
+                  },
+                  "presentation" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "qm5qgy1vktvkj"
+                    }
+                  },
+                  "quantity" : {
+                    "type" : "number",
+                    "x-stoplight" : {
+                      "id" : "cxhn8jns9hgm6"
+                    }
+                  },
+                  "piecesPerPresentation" : {
+                    "type" : "number",
+                    "x-stoplight" : {
+                      "id" : "3u9z2ni8rg0p7"
+                    }
+                  },
+                  "totalPieces" : {
+                    "type" : "number",
+                    "x-stoplight" : {
+                      "id" : "j4qqz46uhf0jz"
+                    }
+                  },
+                  "purchaseDate" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "k7py0oyukofth"
+                    },
+                    "format" : "date"
+                  },
+                  "stock" : {
+                    "type" : "number",
+                    "x-stoplight" : {
+                      "id" : "qo1ufdso3g8hz"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Crear una nueva materia prima."
+      }
+    },
+    "/api/rawMaterials/:id" : {
+      "parameters" : [ ],
+      "get" : {
+        "summary" : "GET RAW MATERIALS - :ID",
+        "tags" : [ "rawMaterials" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "404" : {
+            "description" : "Not Found"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-rawMaterials-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Obtener una materia prima por ID."
+      },
+      "put" : {
+        "summary" : "PUT RAW MATERIALS",
+        "tags" : [ "rawMaterials" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        },
+        "operationId" : "put-api-rawMaterials-:id",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "name" ],
+                "properties" : {
+                  "name" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "5tod5fuzao75h"
+                    }
+                  },
+                  "description" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "e3srqhcy3p2uc"
+                    }
+                  },
+                  "type" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "bbp44ihhj2890"
+                    }
+                  },
+                  "color" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "ug1glq7y95l6x"
+                    }
+                  },
+                  "tone" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "c6eov95kcsxy3"
+                    }
+                  },
+                  "toneType" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "4cs8xfsb1d85s"
+                    }
+                  },
+                  "texture" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "t2gt7r737cyt1"
+                    }
+                  },
+                  "shape" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "fe4t4c2jfy37k"
+                    }
+                  },
+                  "dimension" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "ljed3wddf2k26"
+                    }
+                  },
+                  "provider" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "x2i5tpak20ozo"
+                    }
+                  },
+                  "brand" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "9cq7g3plqjdpp"
+                    }
+                  },
+                  "presentation" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "1nifkz7x9eexy"
+                    }
+                  },
+                  "quantity" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "qifb63uvpfx6c"
+                    }
+                  },
+                  "piecesPerPresentation" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "x5d6f4dr9lk6t"
+                    }
+                  },
+                  "totalPieces" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "isux21jyuacuf"
+                    }
+                  },
+                  "piecePrice" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "q7e6bav1mel4d"
+                    }
+                  },
+                  "purchaseDate" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "v3qqio134ee8l"
+                    }
+                  },
+                  "stock" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "4vpznrozhdw1g"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Actualizar una materia prima."
+      },
+      "delete" : {
+        "summary" : "DELETE RAW MATERIALS",
+        "tags" : [ "rawMaterials" ],
+        "responses" : {
+          "204" : {
+            "description" : "No Content"
+          },
+          "404" : {
+            "description" : "Not Found"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "delete-api-rawMaterials-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Eliminar una materia prima por ID."
+      }
+    },
+    "/api/customDesigns" : {
+      "get" : {
+        "summary" : "GET CUSTOM DESIGNS",
+        "tags" : [ "Custom Designs" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-customDesigns",
+        "description" : "Listar todos los diseños personalizados."
+      },
+      "post" : {
+        "summary" : "POST CUSTOM DESIGNS",
+        "tags" : [ "Custom Designs" ],
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        },
+        "operationId" : "post-api-customDesigns",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "codeRequest", "piece", "base", "baseLength", "decoration", "clasp" ],
+                "properties" : {
+                  "codeRequest" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "xvpf12kgtrnl4"
+                    }
+                  },
+                  "piece" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "luav84ny7q6rn"
+                    }
+                  },
+                  "base" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "ssgvbr0ej3omx"
+                    }
+                  },
+                  "baseLength" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "9zewoga2oba6l"
+                    }
+                  },
+                  "decoration" : {
+                    "type" : "array",
+                    "x-stoplight" : {
+                      "id" : "ayjz7zgh2d0d4"
+                    },
+                    "items" : { }
+                  },
+                  "clasp" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "65ulm9mie6z5h"
+                    }
+                  },
+                  "customerComments" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "8u7959lk1pce6"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Crear un nuevo diseño."
+      }
+    },
+    "/api/customDesigns/:id" : {
+      "get" : {
+        "summary" : "GET CUSTOM DESIGNS - :ID",
+        "tags" : [ "Custom Designs" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-customDesigns-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id"
+        } ],
+        "description" : "Obtener un diseño por ID."
+      },
+      "put" : {
+        "summary" : "PUT CUSTOM DESIGNS",
+        "tags" : [ "Custom Designs" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        },
+        "operationId" : "put-api-customDesigns-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "codeRequest", "piece", "base", "baseLength", "decoration", "claps" ],
+                "properties" : {
+                  "codeRequest" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "xtugy74561c56"
+                    }
+                  },
+                  "piece" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "iom9pageciuif"
+                    }
+                  },
+                  "base" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "pjgra5hfvp1sa"
+                    }
+                  },
+                  "baseLength" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "bjnnzm3m0v6cr"
+                    }
+                  },
+                  "decoration" : {
+                    "type" : "array",
+                    "x-stoplight" : {
+                      "id" : "n3h3qkcs0igk1"
+                    },
+                    "items" : { }
+                  },
+                  "claps" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "ao2ea5ncou8ti"
+                    }
+                  },
+                  "customerComments" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "lv4u61pl1qurz"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Actualizar un diseño."
+      },
+      "delete" : {
+        "summary" : "DELETE CUSTOM DESIGNS",
+        "tags" : [ "Custom Designs" ],
+        "responses" : {
+          "204" : {
+            "description" : "No Content"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "delete-api-customDesigns-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ]
+      }
+    },
+    "/api/employees" : {
+      "get" : {
+        "summary" : "GET EMPLOYEES",
+        "tags" : [ "Employees" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-employees",
+        "description" : "Listar empleados."
+      },
+      "post" : {
+        "summary" : "POST EOMPLOYEES",
+        "tags" : [ "Employees" ],
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        },
+        "operationId" : "post-api-employees",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "name", "lastName", "username", "email", "phoneNumber", "birthDate", "DUI", "password", "userType", "hireDate", "isVerified" ],
+                "properties" : {
+                  "name" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "br1v24nwgvui1"
+                    }
+                  },
+                  "lastName" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "wdm53tvl1uf0f"
+                    }
+                  },
+                  "username" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "nuym4f0flfayv"
+                    }
+                  },
+                  "email" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "4j8cf8s3cesph"
+                    },
+                    "format" : "email"
+                  },
+                  "phoneNumber" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "08oa64mlkfe3q"
+                    }
+                  },
+                  "birthDate" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "45or6p66pz0tl"
+                    },
+                    "format" : "date"
+                  },
+                  "DUI" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "qxgfnlqzj30wi"
+                    }
+                  },
+                  "password" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "pmy3f5r82j4sj"
+                    },
+                    "format" : "password"
+                  },
+                  "userType" : {
+                    "x-stoplight" : {
+                      "id" : "x5xbicmuo0dzb"
+                    },
+                    "enum" : [ "Administrador", "Empleado" ]
+                  },
+                  "hireDate" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "8p4dyx0plwbvh"
+                    },
+                    "format" : "date"
+                  },
+                  "isVerified" : {
+                    "type" : "boolean",
+                    "x-stoplight" : {
+                      "id" : "5sjhk1t031h0u"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Registrar un nuevo empleado (con foto)."
+      }
+    },
+    "/employees/:id" : {
+      "get" : {
+        "summary" : "GET EMPLOYEES - :ID",
+        "tags" : [ "Employees" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-employees-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Obtener datos de un empleado específico"
+      },
+      "put" : {
+        "summary" : "PUT EMPLOYEES",
+        "tags" : [ "Employees" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        },
+        "operationId" : "put-employees-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "name", "lastName", "username", "email", "phoneNumber", "birthDate", "DUI", "password", "userType", "hireDate", "isVerified" ],
+                "properties" : {
+                  "name" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "wun7ecnynyszi"
+                    }
+                  },
+                  "lastName" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "k9jle3691kdjp"
+                    }
+                  },
+                  "username" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "esdr4e39x6d2i"
+                    }
+                  },
+                  "email" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "i10rzdnet8p2c"
+                    },
+                    "format" : "email"
+                  },
+                  "phoneNumber" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "41w9m314qqft1"
+                    }
+                  },
+                  "birthDate" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "g2idifqz1p2ld"
+                    },
+                    "format" : "date"
+                  },
+                  "DUI" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "mf7bv76nezwi2"
+                    }
+                  },
+                  "password" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "7ecqqq7oaqn2d"
+                    },
+                    "format" : "password"
+                  },
+                  "userType" : {
+                    "x-stoplight" : {
+                      "id" : "umzgpdvojipj9"
+                    },
+                    "enum" : [ "admin", "colaborador" ]
+                  },
+                  "hireDate" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "whcxqqp5gyeb1"
+                    },
+                    "format" : "date"
+                  },
+                  "isVerified" : {
+                    "type" : "boolean",
+                    "x-stoplight" : {
+                      "id" : "3a5mxujrb6bxg"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Actualizar datos de un empleado (con foto)."
+      },
+      "delete" : {
+        "summary" : "DELETE EMPLOYEES",
+        "tags" : [ "Employees" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "delete-employees-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Eliminar un empleado."
+      }
+    },
+    "/api/collections" : {
+      "get" : {
+        "summary" : "GET COLLECTIONS",
+        "tags" : [ "Collections" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-collections",
+        "description" : "Listar todas las colecciones."
+      },
+      "post" : {
+        "summary" : "POST COLLECTIONS",
+        "tags" : [ "Collections" ],
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        },
+        "operationId" : "post-api-collections",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "name", "description", "isActive" ],
+                "properties" : {
+                  "name" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "nqygqmwf1fcod"
+                    }
+                  },
+                  "description" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "qy7bfwy89tuy9"
+                    }
+                  },
+                  "isActive" : {
+                    "type" : "boolean",
+                    "x-stoplight" : {
+                      "id" : "rhdpstit7culj"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Crear una colección (con imagen)."
+      }
+    },
+    "/api/collections/:id" : {
+      "get" : {
+        "summary" : "GET COLLECTIONS - :ID",
+        "tags" : [ "Collections" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-collections-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Obtener una colección por ID."
+      },
+      "put" : {
+        "summary" : "PUT COLLECTIONS",
+        "tags" : [ "Collections" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        },
+        "operationId" : "put-api-collections-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "name", "description", "isActive" ],
+                "properties" : {
+                  "name" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "phl45ppev1n4c"
+                    }
+                  },
+                  "description" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "bu48oqg25k1vf"
+                    }
+                  },
+                  "isActive" : {
+                    "type" : "boolean",
+                    "x-stoplight" : {
+                      "id" : "uk4iz1iubbgq4"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Actualizar colección (con imagen)."
+      },
+      "delete" : {
+        "summary" : "DELETE COLLECTIONS",
+        "tags" : [ "Collections" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "delete-api-collections-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Eliminar colección."
+      }
+    },
+    "/api/categories" : {
+      "get" : {
+        "summary" : "GET CATEGORIES",
+        "tags" : [ "Categories" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-categories",
+        "description" : "Listar todas las categorías."
+      },
+      "post" : {
+        "summary" : "POST CATEGORIES",
+        "tags" : [ "Categories" ],
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        },
+        "operationId" : "post-api-categories",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "name", "description", "isActive" ],
+                "properties" : {
+                  "name" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "7f4v0290pjcig"
+                    }
+                  },
+                  "description" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "4s2qjbqi64wfv"
+                    }
+                  },
+                  "isActive" : {
+                    "type" : "boolean",
+                    "x-stoplight" : {
+                      "id" : "4adhsk68ycqf0"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Crear una categoría (con imagen)."
+      }
+    },
+    "/api/categories/:id" : {
+      "get" : {
+        "summary" : "GET CATEGORIES - :ID",
+        "tags" : [ "Categories" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-categories-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Obtener una categoría por ID."
+      },
+      "put" : {
+        "summary" : "PUT CATEGORIES",
+        "tags" : [ "Categories" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        },
+        "operationId" : "put-api-categories-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "name", "description", "isActive" ],
+                "properties" : {
+                  "name" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "vmp1vwz7jr72s"
+                    }
+                  },
+                  "description" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "pary9rgc80e89"
+                    }
+                  },
+                  "isActive" : {
+                    "type" : "boolean",
+                    "x-stoplight" : {
+                      "id" : "47h48k5gzqa9a"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Actualizar categoría (con imagen)."
+      },
+      "delete" : {
+        "summary" : "DELETE CATEGORIES",
+        "tags" : [ "Categories" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "404" : {
+            "description" : "Not Found"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "delete-api-categories-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Eliminar categoría."
+      }
+    },
+    "/api/subCategories" : {
+      "get" : {
+        "summary" : "GET SUBCATEGORIES",
+        "tags" : [ "Subcategories" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-subCategories",
+        "description" : "Listar todas las subcategorías."
+      },
+      "post" : {
+        "summary" : "POST SUBCATEGORIES",
+        "tags" : [ "Subcategories" ],
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        },
+        "operationId" : "post-api-subCategories",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "name", "description", "isActive" ],
+                "properties" : {
+                  "name" : {
+                    "type" : "string"
+                  },
+                  "description" : {
+                    "type" : "string"
+                  },
+                  "isActive" : {
+                    "type" : "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Crear una subcategoría (con imagen)."
+      },
+      "parameters" : [ ]
+    },
+    "/api/subCategories/:id" : {
+      "get" : {
+        "summary" : "GET SUBCATEGORIES - :ID",
+        "tags" : [ "Subcategories" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-subCategories-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Obtener una subcategoría por ID."
+      },
+      "put" : {
+        "summary" : "PUT SUBCATEGORIES",
+        "tags" : [ "Subcategories" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        },
+        "operationId" : "put-api-subCategories-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "name", "description", "isActive" ],
+                "properties" : {
+                  "name" : {
+                    "type" : "string"
+                  },
+                  "description" : {
+                    "type" : "string"
+                  },
+                  "isActive" : {
+                    "type" : "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Actualizar subcategoría (con imagen)."
+      },
+      "delete" : {
+        "summary" : "DELETE SUBCATEGORIES",
+        "tags" : [ "Subcategories" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "404" : {
+            "description" : "Not Found"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "delete-api-subCategories-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Eliminar subcategoría."
+      },
+      "parameters" : [ ]
+    },
+    "/api/customers" : {
+      "get" : {
+        "summary" : "GET CUSTOMERS",
+        "tags" : [ "Customers" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-customer",
+        "description" : "Listar clientes."
+      },
+      "parameters" : [ ],
+      "post" : {
+        "summary" : "POST CUSTOMERS",
+        "tags" : [ "Customers" ],
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        },
+        "operationId" : "post-api-customers",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "name", "lastName", "username", "email", "phoneNumber", "birthDate", "DUI", "password", "address", "isVerified" ],
+                "properties" : {
+                  "name" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "i98pvut88l32u"
+                    }
+                  },
+                  "lastName" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "m7dmovi0et6bt"
+                    }
+                  },
+                  "username" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "jgx9co7niiwky"
+                    }
+                  },
+                  "email" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "fqa0ojujg01st"
+                    },
+                    "format" : "email"
+                  },
+                  "phoneNumber" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "g55u6yd7ner4t"
+                    }
+                  },
+                  "birthDate" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "9eiqfcjrermii"
+                    },
+                    "format" : "date"
+                  },
+                  "DUI" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "8v6e505qd9hql"
+                    }
+                  },
+                  "password" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "awpv9rijoy390"
+                    },
+                    "format" : "password"
+                  },
+                  "address" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "hw356kj7pf7jz"
+                    }
+                  },
+                  "isVerified" : {
+                    "type" : "boolean",
+                    "x-stoplight" : {
+                      "id" : "9n0bmvbtro0sh"
+                    }
+                  },
+                  "preferredColors" : {
+                    "type" : "array",
+                    "x-stoplight" : {
+                      "id" : "jkejwpsl8ice3"
+                    },
+                    "items" : { }
+                  },
+                  "preferredMaterials" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "ko27mvglkaztn"
+                    }
+                  },
+                  "preferredJewelStyle" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "ejzvn0gie86kd"
+                    }
+                  },
+                  "purchaseOpportunity" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "mfs71lgg3wt4o"
+                    }
+                  },
+                  "allergies" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "q145oyq8pxryq"
+                    }
+                  },
+                  "jewelSize" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "oygajn8m5ugzd"
+                    }
+                  },
+                  "budget" : {
+                    "type" : "number",
+                    "x-stoplight" : {
+                      "id" : "go35lzllahylm"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Registrar un nuevo cliente (con imagen)."
+      }
+    },
+    "/api/customers/:id" : {
+      "get" : {
+        "summary" : "GET CUSTOMERS - :ID",
+        "tags" : [ "Customers" ],
+        "responses" : {
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-customers-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Obtener un cliente por ID."
+      },
+      "put" : {
+        "summary" : "PUT CUSTOMERS",
+        "tags" : [ "Customers" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        },
+        "operationId" : "put-api-customers-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "name", "lastName", "username", "email", "phoneNumber", "birthDate", "DUI", "password", "address", "isVerified" ],
+                "properties" : {
+                  "name" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "p4iyi6cqk6bd9"
+                    }
+                  },
+                  "lastName" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "0h9zxxtwv906u"
+                    }
+                  },
+                  "username" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "it14ongi8fq9m"
+                    }
+                  },
+                  "email" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "gnbdv67z9s6ju"
+                    },
+                    "format" : "email"
+                  },
+                  "phoneNumber" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "iib09ewpxv6ug"
+                    }
+                  },
+                  "birthDate" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "5kclgu3kl86l9"
+                    },
+                    "format" : "date"
+                  },
+                  "DUI" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "clkha5mgj4eln"
+                    }
+                  },
+                  "password" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "383r4c7x0xa1h"
+                    },
+                    "format" : "password"
+                  },
+                  "address" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "5g6ijugvosr2u"
+                    }
+                  },
+                  "isVerified" : {
+                    "type" : "boolean",
+                    "x-stoplight" : {
+                      "id" : "pr22cgyic95io"
+                    }
+                  },
+                  "preferredColors" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "okgn142usehbn"
+                    }
+                  },
+                  "preferredMaterials" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "luvn08a3jd24o"
+                    }
+                  },
+                  "preferredJewelStyle" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "13nu41wywuu7y"
+                    }
+                  },
+                  "purchaseOpportunity" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "ze5ab4agfngy4"
+                    }
+                  },
+                  "allergies" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "kx8rj5y95nq5g"
+                    }
+                  },
+                  "jewelSize" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "g3dwxzivyr8v0"
+                    }
+                  },
+                  "budget" : {
+                    "type" : "number",
+                    "x-stoplight" : {
+                      "id" : "kkhfto03t1pg5"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Actualizar datos de un cliente (con imagen)."
+      },
+      "delete" : {
+        "summary" : "DELETE CUSTOMERS",
+        "tags" : [ "Customers" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "404" : {
+            "description" : "Not Found"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "delete-api-customers-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Eliminar cliente."
+      }
+    },
+    "/api/orders" : {
+      "get" : {
+        "summary" : "GET ORDERS",
+        "tags" : [ "Orders" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-orders",
+        "description" : "Listar pedidos."
+      },
+      "post" : {
+        "summary" : "POST ORDERS",
+        "tags" : [ "Orders" ],
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        },
+        "operationId" : "post-api-orders",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "orderCode", "customer", "receiver", "timetable", "mailingAddress", "paymentMethod", "status", "paymentStatus", "deliveryDate", "items", "subtotal", "total" ],
+                "properties" : {
+                  "orderCode" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "2266saunjune5"
+                    }
+                  },
+                  "customer" : {
+                    "$ref" : "#/components/schemas/Customers"
+                  },
+                  "receiver" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "ltf8kqe84mqki"
+                    }
+                  },
+                  "timetable" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "ptrch7uivx1en"
+                    }
+                  },
+                  "mailingAddress" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "cvggl6o37l4p7"
+                    },
+                    "format" : "email"
+                  },
+                  "paymentMethod" : {
+                    "x-stoplight" : {
+                      "id" : "gxujagejuia23"
+                    },
+                    "enum" : [ "tarjeta", "paypal", "transferencia" ]
+                  },
+                  "status" : {
+                    "x-stoplight" : {
+                      "id" : "ea76zc5if19uy"
+                    },
+                    "enum" : [ "pendiente", "enviado", "entregado", "cancelado" ]
+                  },
+                  "paymentStatus" : {
+                    "x-stoplight" : {
+                      "id" : "5zrhnup737ftz"
+                    },
+                    "enum" : [ "pendiente", "pagado", "rechazado" ]
+                  },
+                  "deliveryDate" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "143gaq9j8d2r3"
+                    },
+                    "format" : "date"
+                  },
+                  "items" : {
+                    "$ref" : "#/components/schemas/Products"
+                  },
+                  "subtotal" : {
+                    "type" : "number",
+                    "x-stoplight" : {
+                      "id" : "954uc7vbfa1kb"
+                    }
+                  },
+                  "total" : {
+                    "type" : "number",
+                    "x-stoplight" : {
+                      "id" : "rc1gzpt9rynp3"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Crear un nuevo pedido."
+      }
+    },
+    "/api/orders/:id" : {
+      "get" : {
+        "summary" : "GET ORDERS - :ID",
+        "tags" : [ "Orders" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-orders-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Obtener un pedido por ID."
+      },
+      "put" : {
+        "summary" : "PUT ORDERS",
+        "tags" : [ "Orders" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        },
+        "operationId" : "put-api-orders-:id",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "orderCode", "customer", "receiver", "timetable", "mailingAddress", "paymentStatus", "status", "deliveryDate" ],
+                "properties" : {
+                  "orderCode" : {
+                    "$ref" : "#/components/schemas/Orders"
+                  },
+                  "customer" : {
+                    "$ref" : "#/components/schemas/Customers"
+                  },
+                  "receiver" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "iuuyrzurtxyax"
+                    }
+                  },
+                  "timetable" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "d7yfksqp71udv"
+                    }
+                  },
+                  "mailingAddress" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "1h0zrdexq59fe"
+                    },
+                    "format" : "email"
+                  },
+                  "paymentStatus" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "051aywxzks9d5"
+                    }
+                  },
+                  "status" : {
+                    "x-stoplight" : {
+                      "id" : "j4u9l15zqqgxk"
+                    },
+                    "enum" : [ "disponible", "agotado", "en producción", "descontinuado" ]
+                  },
+                  "deliveryDate" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "ue72cql3nj6o7"
+                    },
+                    "format" : "date"
+                  },
+                  "items" : {
+                    "$ref" : "#/components/schemas/Products"
+                  },
+                  "subtotal" : {
+                    "type" : "number",
+                    "x-stoplight" : {
+                      "id" : "wim0aaym6k692"
+                    }
+                  },
+                  "total" : {
+                    "type" : "number",
+                    "x-stoplight" : {
+                      "id" : "mdhfw7fup54h3"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Actualizar un pedido."
+      },
+      "delete" : {
+        "summary" : "DELETE ORDERS",
+        "tags" : [ "Orders" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "404" : {
+            "description" : "Not Found"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "delete-api-orders-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Eliminar un pedido."
+      }
+    },
+    "/api/reviews" : {
+      "get" : {
+        "summary" : "GET REVIEWS",
+        "tags" : [ "Reviews" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-reviews",
+        "description" : "Listar reseñas."
+      },
+      "post" : {
+        "summary" : "POST REVIEWS",
+        "tags" : [ "Reviews" ],
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        },
+        "operationId" : "post-api-reviews",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "product", "customer", "rating", "comment" ],
+                "properties" : {
+                  "product" : {
+                    "$ref" : "#/components/schemas/Products"
+                  },
+                  "customer" : {
+                    "$ref" : "#/components/schemas/Customers"
+                  },
+                  "rating" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "354uzodzyya5z"
+                    }
+                  },
+                  "comment" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "ix5d77wnm2fo3"
+                    }
+                  },
+                  "response" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "0k03yb0go34py"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Crear una reseña."
+      }
+    },
+    "/api/reviews/:id" : {
+      "get" : {
+        "summary" : "GET REVIEWS - :ID",
+        "tags" : [ "Reviews" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "404" : {
+            "description" : "Not Found"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-reviews-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Obtener reseña por ID."
+      },
+      "put" : {
+        "summary" : "PUT REVIEWS",
+        "tags" : [ "Reviews" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        },
+        "operationId" : "put-api-reviews-:id",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "product", "customer", "rating", "comment" ],
+                "properties" : {
+                  "product" : {
+                    "$ref" : "#/components/schemas/Products"
+                  },
+                  "customer" : {
+                    "$ref" : "#/components/schemas/Customers"
+                  },
+                  "rating" : {
+                    "type" : "number",
+                    "x-stoplight" : {
+                      "id" : "3z5rr4lzvj6wb"
+                    }
+                  },
+                  "comment" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "e8vga4b9gv4ey"
+                    }
+                  },
+                  "response" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "uurq1gluibpxh"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Actualizar reseña."
+      },
+      "delete" : {
+        "summary" : "DELETE REVIEWS",
+        "tags" : [ "Reviews" ],
+        "responses" : {
+          "204" : {
+            "description" : "No Content"
+          },
+          "404" : {
+            "description" : "Not Found"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "delete-api-reviews-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ]
+      }
+    },
+    "/api/refunds" : {
+      "get" : {
+        "summary" : "GET REFUNDS",
+        "tags" : [ "Refunds" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-refunds",
+        "description" : "Listar solicitudes de reembolso."
+      },
+      "post" : {
+        "summary" : "POST REFUNDS",
+        "tags" : [ "Refunds" ],
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        },
+        "operationId" : "post-api-refunds",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "refundCode", "order", "customer", "requestDate", "reason", "items", "status", "amount", "refundMethod" ],
+                "properties" : {
+                  "refundCode" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "y8iow9lhds6vv"
+                    }
+                  },
+                  "order" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "d7wslxmycltyi"
+                    }
+                  },
+                  "customer" : {
+                    "$ref" : "#/components/schemas/Customers"
+                  },
+                  "requestDate" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "h86z4hlh0ik0h"
+                    },
+                    "format" : "date"
+                  },
+                  "reason" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "lpsac1vr49mbd"
+                    }
+                  },
+                  "comment" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "ju5m8v2ebbrxz"
+                    }
+                  },
+                  "items" : {
+                    "$ref" : "#/components/schemas/Products"
+                  },
+                  "status" : {
+                    "x-stoplight" : {
+                      "id" : "w6fav37wtgllu"
+                    },
+                    "enum" : [ "pendiente", "en proceso", "enviado", "entregado", "cancelado" ]
+                  },
+                  "amount" : {
+                    "type" : "number",
+                    "x-stoplight" : {
+                      "id" : "iuqk0ntvs8raj"
+                    }
+                  },
+                  "refundMethod" : {
+                    "x-stoplight" : {
+                      "id" : "l21hsyccdiqdx"
+                    },
+                    "enum" : [ "efectivo", "tarjeta de crédito", "transferencia", "vale", "otro" ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Crear una solicitud de reembolso."
+      }
+    },
+    "/api/refunds/:id" : {
+      "get" : {
+        "summary" : "GET REFUNDS - :ID",
+        "tags" : [ "Refunds" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-refunds-:id",
+        "description" : "Obtener reembolso por ID."
+      },
+      "put" : {
+        "summary" : "PUT REFUNDS",
+        "tags" : [ "Refunds" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        },
+        "operationId" : "put-api-refunds-:id",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "refundCode", "order", "customer", "requestDate", "reason", "items", "status", "amount", "refundMethod" ],
+                "properties" : {
+                  "refundCode" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "ox2vydx8t373p"
+                    }
+                  },
+                  "order" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "1j4l9r0i8uk4l"
+                    }
+                  },
+                  "customer" : {
+                    "$ref" : "#/components/schemas/Customers"
+                  },
+                  "requestDate" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "3s1zz87agduns"
+                    },
+                    "format" : "date"
+                  },
+                  "reason" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "ocftytgqm451d"
+                    }
+                  },
+                  "comment" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "117a4gnvdhagt"
+                    }
+                  },
+                  "items" : {
+                    "$ref" : "#/components/schemas/Products"
+                  },
+                  "status" : {
+                    "x-stoplight" : {
+                      "id" : "4336jcj15xm17"
+                    },
+                    "enum" : [ "disponible", "agotado", "en producción", "descontinuado" ]
+                  },
+                  "amount" : {
+                    "type" : "number",
+                    "x-stoplight" : {
+                      "id" : "tkfyqem534sey"
+                    }
+                  },
+                  "refundMethod" : {
+                    "x-stoplight" : {
+                      "id" : "ng91p3edisdox"
+                    },
+                    "enum" : [ "efectivo", "tarjeta de crédito", "transferencia", "vale", "mismo método de pago", "otro" ]
+                  }
+                }
+              },
+              "examples" : { }
+            }
+          }
+        },
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Actualizar estado o datos de un reembolso."
+      },
+      "delete" : {
+        "summary" : "DELETE REFUNDS",
+        "tags" : [ "Refunds" ],
+        "responses" : {
+          "204" : {
+            "description" : "No Content"
+          },
+          "404" : {
+            "description" : "Not Found"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "delete-api-refunds-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Eliminar reembolso."
+      }
+    },
+    "/api/transactions" : {
+      "get" : {
+        "summary" : "GET TRANSACTIONS",
+        "tags" : [ "Transactions" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-transactions",
+        "description" : "Listar transacciones."
+      },
+      "post" : {
+        "summary" : "POST TRANSACTIONS",
+        "tags" : [ "Transactions" ],
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        },
+        "operationId" : "post-api-transactions",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "order", "customer", "amount", "type", "paymentMethod", "status" ],
+                "properties" : {
+                  "transactionCode" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "nvtn0iz4znkxu"
+                    }
+                  },
+                  "order" : {
+                    "$ref" : "#/components/schemas/Orders"
+                  },
+                  "customer" : {
+                    "$ref" : "#/components/schemas/Customers"
+                  },
+                  "amount" : {
+                    "type" : "number",
+                    "x-stoplight" : {
+                      "id" : "gvk7ppk5bbue3"
+                    }
+                  },
+                  "type" : {
+                    "x-stoplight" : {
+                      "id" : "axu24kx8orn5w"
+                    },
+                    "enum" : [ "pendiente", "completado", "fallido", "revertido" ]
+                  },
+                  "paymentMethod" : {
+                    "x-stoplight" : {
+                      "id" : "tkv3osv2c3i2o"
+                    },
+                    "enum" : [ "efectivo", "tarjeta de crédito", "transferencia", "paypal", "otro" ]
+                  },
+                  "status" : {
+                    "x-stoplight" : {
+                      "id" : "zjemfs251nf28"
+                    },
+                    "enum" : [ "pendiente", "en proceso", "enviado", "entregado", "cancelado" ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Registrar una transacción."
+      }
+    },
+    "/api/transactions/:id" : {
+      "get" : {
+        "summary" : "GET TRANSACTIONS - :ID",
+        "tags" : [ "Transactions" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-transactions-:id",
+        "description" : "Obtener una transacción por ID."
+      },
+      "put" : {
+        "summary" : "PUT TRANSACTIONS",
+        "tags" : [ "Transactions" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        },
+        "operationId" : "put-api-transactions-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "transactionCode", "order", "customer", "amount", "type", "paymentMethod", "status" ],
+                "properties" : {
+                  "transactionCode" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "44olfxt1u0f0t"
+                    }
+                  },
+                  "order" : {
+                    "$ref" : "#/components/schemas/Orders"
+                  },
+                  "customer" : {
+                    "$ref" : "#/components/schemas/Customers"
+                  },
+                  "amount" : {
+                    "type" : "number",
+                    "x-stoplight" : {
+                      "id" : "9h6x0yjat3o5z"
+                    }
+                  },
+                  "type" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "x4nt8xsnlf54b"
+                    }
+                  },
+                  "paymentMethod" : {
+                    "x-stoplight" : {
+                      "id" : "rbxo0zf2i6471"
+                    },
+                    "enum" : [ "efectivo", "tarjeta de crédito", "transferencia", "paypal" ]
+                  },
+                  "status" : {
+                    "x-stoplight" : {
+                      "id" : "lyh80o7rc7rb7"
+                    },
+                    "enum" : [ "pendiente", "completado", "fallido", "revertido" ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "DELETE TRANSACTIONS",
+        "tags" : [ "Transactions" ],
+        "responses" : {
+          "204" : {
+            "description" : "No Content"
+          },
+          "404" : {
+            "description" : "Not Found"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "delete-api-transactions-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id"
+        } ],
+        "description" : "Eliminar transacción."
+      }
+    },
+    "/api/suppliers" : {
+      "get" : {
+        "summary" : "GET SUPPLIERS",
+        "tags" : [ "Suppliers" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-suppliers",
+        "description" : "Listar proveedores."
+      },
+      "post" : {
+        "summary" : "Your POST endpoint",
+        "tags" : [ "Suppliers" ],
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        },
+        "operationId" : "post-api-suppliers",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "phoneNumber", "email", "address" ],
+                "properties" : {
+                  "name" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "5r0s2y2jir00q"
+                    }
+                  },
+                  "contactPerson" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "ohn2xl7otz3i9"
+                    }
+                  },
+                  "phoneNumber" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "18dtvjnpgclnm"
+                    }
+                  },
+                  "email" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "aip52sx3z5bef"
+                    },
+                    "format" : "email"
+                  },
+                  "address" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "2e3jzirlspmuf"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Registrar un nuevo proveedor."
+      }
+    },
+    "/api/suppliers/:id" : {
+      "get" : {
+        "summary" : "GET SUPPLIERS - :ID",
+        "tags" : [ "Suppliers" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "get-api-suppliers-:id",
+        "description" : "Obtener proveedor por ID."
+      },
+      "put" : {
+        "summary" : "PUT SUPPLIERS",
+        "tags" : [ "Suppliers" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        },
+        "operationId" : "put-api-suppliers-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "name", "contactPerson", "phoneNumber", "email", "address" ],
+                "properties" : {
+                  "name" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "ahyrlfltl3onv"
+                    }
+                  },
+                  "contactPerson" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "s9piyvsdj2hq8"
+                    }
+                  },
+                  "phoneNumber" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "v2c7ywd193zrs"
+                    }
+                  },
+                  "email" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "5wfv9ferqhd7h"
+                    },
+                    "format" : "email"
+                  },
+                  "address" : {
+                    "type" : "string",
+                    "x-stoplight" : {
+                      "id" : "78hp9wnjgu330"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "Actualizar proveedor."
+      },
+      "delete" : {
+        "summary" : "Your DELETE endpoint",
+        "tags" : [ "Suppliers" ],
+        "responses" : {
+          "204" : {
+            "description" : "No Content"
+          },
+          "404" : {
+            "description" : "Not Found"
+          },
+          "500" : {
+            "description" : "Internal Server Error"
+          }
+        },
+        "operationId" : "delete-api-suppliers-:id",
+        "parameters" : [ {
+          "schema" : {
+            "type" : "string"
+          },
+          "in" : "query",
+          "name" : "id",
+          "required" : true
+        } ],
+        "description" : "Eliminar proveedor."
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Admin" : {
+        "title" : "Admin",
+        "type" : "object",
+        "description" : "Modelo de Administrador.",
+        "required" : [ "name", "lastName", "email" ],
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "r6mhncbf3chl2"
+            }
+          },
+          "lastName" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "qy5utuiuluaru"
+            }
+          },
+          "email" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "ksjbk5t0k7k4r"
+            },
+            "description" : "unique\r\n",
+            "format" : "email"
+          },
+          "profilePic" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "o9vzithlq57o8"
+            },
+            "description" : "default: ''",
+            "default" : "''"
+          },
+          "userType" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "by5ldcc65as91"
+            },
+            "description" : "default: admin",
+            "default" : "admin"
+          },
+          "emailNotifications" : {
+            "type" : "boolean",
+            "x-stoplight" : {
+              "id" : "xrwfg03q8g968"
+            },
+            "description" : "default: fals",
+            "default" : false
+          }
+        }
+      },
+      "Categories" : {
+        "title" : "Categories",
+        "type" : "object",
+        "description" : "Modelo de Categories.",
+        "required" : [ "name", "description", "isActive" ],
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "jpw2mixw4t2kh"
+            },
+            "description" : "minlength: 3\r\nmaxlength: 100\r\nNo puede estar vacío\r\n",
+            "pattern" : "/^https?:\\/\\/.+\\.(jpg|jpeg|png|webp|svg)$/.test(v)",
+            "minLength" : 3,
+            "maxLength" : 100
+          },
+          "description" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "qbuidu5hq9b4y"
+            },
+            "description" : "minlength: 10\r\nmaxlength: 500\r\nNo puede estar vacío",
+            "minLength" : 10,
+            "maxLength" : 500
+          },
+          "image" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "r71xh5yfv8okw"
+            },
+            "description" : "Url no puede estar vacío\r\n",
+            "pattern" : "/^https?:\\/\\/.+\\.(jpg|jpeg|png|webp|svg)$/"
+          },
+          "isActive" : {
+            "type" : "boolean",
+            "x-stoplight" : {
+              "id" : "8mjvi3jjal86p"
+            },
+            "default" : true
+          }
+        }
+      },
+      "Collections" : {
+        "title" : "Collections",
+        "type" : "object",
+        "description" : "MNodelo de Colections.",
+        "required" : [ "name", "description", "isActive" ],
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "obe8tkqf9ibll"
+            },
+            "description" : "minlength: 3\r\nmaxlength: 100\r\nNo puede estar vacío\r\n\r\n",
+            "minLength" : 3,
+            "maxLength" : 100
+          },
+          "description" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "9800ouy9sdhrh"
+            },
+            "description" : "minlength: 10\r\nmaxlength: 500\r\nNo puede estar vacío\r\n",
+            "minLength" : 10,
+            "maxLength" : 500
+          },
+          "image" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "6btbvz5ctzf6i"
+            },
+            "description" : "No puede estar vacío\r\n",
+            "pattern" : "/^https?:\\/\\/.+\\.(jpg|jpeg|png|webp|svg)$/"
+          },
+          "isActive" : {
+            "type" : "boolean",
+            "x-stoplight" : {
+              "id" : "ch59sv2eflrr1"
+            },
+            "default" : true
+          }
+        }
+      },
+      "CustomDesigns" : {
+        "title" : "CustomDesigns",
+        "type" : "object",
+        "required" : [ "codeRequest", "piece", "base", "baseLength", "decoration", "clasp" ],
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "codeRequest" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "jyqtfgzjqmxj2"
+            },
+            "description" : "minlength: 5\r\nNo puede estar vacío",
+            "minLength" : 5
+          },
+          "piece" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "18ig58wr641uw"
+            },
+            "description" : "Debe de ser:\r\nPulsera, Cadena o Tobillera\r\nNo puede estar vacío"
+          },
+          "base" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "yleojryndniez"
+            },
+            "description" : "No puede estar vacío"
+          },
+          "baseLength" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "cffnju6zberuh"
+            },
+            "description" : "La longitud no puede estar vacía y debe tener formato: 123cm o 123mm",
+            "pattern" : "/^\\d{1,3}(cm|mm)?$/"
+          },
+          "decoration" : {
+            "type" : "array",
+            "x-stoplight" : {
+              "id" : "26cu2ok56wvb1"
+            },
+            "description" : "El array no puede estar vacío",
+            "items" : { }
+          },
+          "clasp" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "qx1b267kftc1l"
+            },
+            "description" : "No puede estar vacío"
+          },
+          "customerComments" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "uozkqyl24v7zk"
+            },
+            "description" : "maxLength: 300\r\nNo puede estar vacío",
+            "maxLength" : 300
+          }
+        },
+        "description" : "Modelo de CustomDesigns."
+      },
+      "Customers" : {
+        "title" : "Customers",
+        "type" : "object",
+        "description" : "Modelo de Customers.",
+        "required" : [ "name", "lastName", "username", "email", "phoneNumber", "birthDate", "DUI", "password", "address", "isVerified" ],
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "minlength: 2\r\nmaxlength: 100",
+            "minLength" : 2,
+            "maxLength" : 100
+          },
+          "lastName" : {
+            "type" : "string",
+            "description" : "minlength: 2\r\nmaxlength: 100",
+            "minLength" : 2,
+            "maxLength" : 100
+          },
+          "username" : {
+            "type" : "string",
+            "description" : "minlength: 5\r\nmaxlength: 50",
+            "minLength" : 5,
+            "maxLength" : 50
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "unique\r\n",
+            "format" : "email",
+            "pattern" : "/^[\\w.-]+@([\\w-]+\\.)+[a-zA-Z]{2,}$/"
+          },
+          "phoneNumber" : {
+            "type" : "string",
+            "description" : "default: admin",
+            "pattern" : "/^(?:\\+503\\s?)?(6|7)\\d{3}-?\\d{4}$/"
+          },
+          "birthDate" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "e59661kegioy2"
+            },
+            "format" : "date",
+            "description" : "La fecha de nacimiento debe ser anterior a la fecha actual\r\n"
+          },
+          "DUI" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "qornslhextvyg"
+            },
+            "description" : "El DUI no puede estar vacío y debe tener formato 12345678-9",
+            "pattern" : "/^\\d{8}-\\d$/"
+          },
+          "password" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "w0kfxa7guklhz"
+            },
+            "description" : "La contraseña no puede estar vacía y debe incluir mayúsculas, minúsculas, números y caracteres especiales",
+            "format" : "password"
+          },
+          "profilePic" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "7cmtuaa3cgir9"
+            },
+            "description" : "La URL no puede estar vacía y debe ser válida (jpg/jpeg/png/webp/svg)",
+            "pattern" : "/^https?:\\/\\/.+\\.(jpg|jpeg|png|webp|svg)$/"
+          },
+          "address" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "xmumud3g0yz8q"
+            },
+            "description" : "No puede estar vacía\r\n",
+            "minLength" : 5,
+            "maxLength" : 200
+          },
+          "isVerified" : {
+            "type" : "boolean",
+            "x-stoplight" : {
+              "id" : "ljf9gfh988b2e"
+            },
+            "default" : false
+          },
+          "preferredColors" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "sytzg5ikqkggw"
+            }
+          },
+          "preferredMaterials" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "j605s3azg0kd5"
+            }
+          },
+          "preferredJewelStyle" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "gtnjogo0aun99"
+            }
+          },
+          "purchaseOpportunity" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "h8uf01fl6rhzy"
+            }
+          },
+          "jewelSize" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "z3prckz0892q8"
+            },
+            "description" : "values: \"pequeño\", \"mediano\", \"grande\", \"muy grande\""
+          },
+          "budget" : {
+            "type" : "number",
+            "x-stoplight" : {
+              "id" : "i2vidrmq6k3vs"
+            }
+          }
+        }
+      },
+      "DesignElements" : {
+        "title" : "DesignElements",
+        "type" : "object",
+        "required" : [ "type", "name", "image" ],
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "uwm9m3an38z74"
+            },
+            "description" : "El tipo debe ser 'base', 'decoration' o 'clasp'"
+          },
+          "name" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "7dipla3s81fok"
+            },
+            "minLength" : 2,
+            "maxLength" : 100
+          },
+          "image" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "gwgl3d7mlcr2r"
+            },
+            "pattern" : "/^https?:\\/\\/.+\\.(jpg|jpeg|png|webp|svg)$/"
+          }
+        },
+        "description" : "Modelo de DesignElements."
+      },
+      "Employees" : {
+        "title" : "Employees",
+        "type" : "object",
+        "required" : [ "name", "lastName", "username", "email", "phoneNumber", "birthDate", "DUI", "password", "isVerified" ],
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "minlength: 2\r\nmaxlength: 100",
+            "minLength" : 2,
+            "maxLength" : 100
+          },
+          "lastName" : {
+            "type" : "string",
+            "description" : "minlength: 2\r\nmaxlength: 100",
+            "minLength" : 2,
+            "maxLength" : 100
+          },
+          "username" : {
+            "type" : "string",
+            "description" : "minlength: 5\r\nmaxlength: 50",
+            "minLength" : 5,
+            "maxLength" : 50
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "unique\r\n",
+            "pattern" : "/^[\\w.-]+@([\\w-]+\\.)+[a-zA-Z]{2,}$/"
+          },
+          "phoneNumber" : {
+            "type" : "string",
+            "description" : "default: admin",
+            "pattern" : "/^(?:\\+503\\s?)?(6|7)\\d{3}-?\\d{4}$/"
+          },
+          "birthDate" : {
+            "type" : "string",
+            "format" : "date",
+            "description" : "La fecha de nacimiento debe ser anterior a la fecha actual\r\n"
+          },
+          "DUI" : {
+            "type" : "string",
+            "description" : "El DUI no puede estar vacío y debe tener formato 12345678-9",
+            "pattern" : "/^\\d{8}-\\d$/"
+          },
+          "password" : {
+            "type" : "string",
+            "description" : "La contraseña no puede estar vacía y debe incluir mayúsculas, minúsculas, números y caracteres especiales",
+            "format" : "password",
+            "maxLength" : 100,
+            "minLength" : 8
+          },
+          "userType" : {
+            "x-stoplight" : {
+              "id" : "d04cjo3eq03e8"
+            },
+            "description" : "Values: \"admin\", colaborador\"\r\nNo puede estar vacío",
+            "default" : "colaborador",
+            "enum" : [ "admin", "colaborador" ]
+          },
+          "profilePic" : {
+            "type" : "string",
+            "description" : "La URL no puede estar vacía y debe ser válida (jpg/jpeg/png/webp/svg)",
+            "pattern" : "/^https?:\\/\\/.+\\.(jpg|jpeg|png|webp|svg)$/"
+          },
+          "hireDate" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "ewebgnqdk34dl"
+            },
+            "description" : "La fecha de contratación no puede estar en el futuro",
+            "format" : "date"
+          },
+          "isVerified" : {
+            "type" : "boolean",
+            "default" : false
+          }
+        },
+        "description" : "Modelo de Employees."
+      },
+      "Orders" : {
+        "title" : "Orders",
+        "type" : "object",
+        "required" : [ "orderCode", "customer", "receiver", "timetable", "mailingAddress", "paymentMethod", "status", "paymentStatus", "items", "subtotal", "total" ],
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "orderCode" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "tawc3xwzpf5lh"
+            },
+            "description" : "\"El código no puede estar vacío y solo puede contener letras mayúsculas, números y guiones"
+          },
+          "customer" : {
+            "$ref" : "#/components/schemas/Customers"
+          },
+          "receiver" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "fvd15o3j31bkh"
+            },
+            "description" : "minlength: 5\r\nmaxlength: 100\r\nNo puede estar vacío",
+            "minLength" : 5,
+            "maxLength" : 100
+          },
+          "timetable" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "8l8p8nzai844w"
+            },
+            "description" : "maxlength: 100\r\nNo puede estar vacío",
+            "maxLength" : 100
+          },
+          "mailingAddress" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "264ejrib3ag3k"
+            },
+            "description" : "minlength: 10\r\nmaxlength: 200\r\nNo puede estar vacío.\r\n",
+            "minLength" : 10,
+            "maxLength" : 200,
+            "format" : "email"
+          },
+          "paymentMethod" : {
+            "x-stoplight" : {
+              "id" : "umk28bxqp836b"
+            },
+            "description" : "valores: \"efectivo\", \"tarjeta de crédito\", \"transferencia\", \"paypal\", \"otro\"\r\nNo puede estar vacío",
+            "enum" : [ "efectivo", "tarjeta de crédito", "transferencia", "paypal", "otro" ]
+          },
+          "status" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "1y59k3o9qazen"
+            },
+            "description" : "valores: \"pendiente\", \"en proceso\", \"enviado\", \"entregado\", \"cancelado\"\r\nNo puede estar vacio\r\nvalor predefinido: pendiente"
+          },
+          "paymentStatus" : {
+            "x-stoplight" : {
+              "id" : "4t35nihqfmaq0"
+            },
+            "description" : "valores: pendiente\", \"pagado\", \"reembolsado\", \"fallido\"\r\nNo puede estar vacío",
+            "default" : "pendiente",
+            "enum" : [ "pendiente", "pagado", "reembolsado", "fallido" ]
+          },
+          "deliveryDate" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "yvznih8f11etf"
+            },
+            "format" : "date",
+            "description" : "La fecha debe de ser futura"
+          },
+          "items" : {
+            "$ref" : "#/components/schemas/Products"
+          },
+          "subtotal" : {
+            "type" : "number",
+            "x-stoplight" : {
+              "id" : "fsbso61zxg8im"
+            },
+            "description" : "No puede ser negativo",
+            "exclusiveMinimum" : false,
+            "minimum" : 0
+          },
+          "total" : {
+            "type" : "number",
+            "x-stoplight" : {
+              "id" : "52xtoc2pbt1w7"
+            },
+            "description" : "No puede ser negativo",
+            "minimum" : 0
+          }
+        },
+        "description" : "Modelo de Orders."
+      },
+      "Products" : {
+        "title" : "Products",
+        "type" : "object",
+        "required" : [ "name", "description", "codeProduct", "stock", "price", "productionCost", "discount", "collection", "category", "subcategory", "rawMaterialsUsed", "correlative", "movementType", "status", "applicableCosts" ],
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "raz238gc6rtaf"
+            },
+            "description" : "minlength: 3\r\nmaxlength: 100\r\nNo puede estar vacío",
+            "minLength" : 3,
+            "maxLength" : 100
+          },
+          "description" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "kh0aqpys63udu"
+            },
+            "description" : "minlength: 3\r\nmaxlength: 100\r\nNo puede estar vacío",
+            "minLength" : 10,
+            "maxLength" : 1000
+          },
+          "codeProduct" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "wazjch8vfpdeh"
+            },
+            "description" : "El código no puede estar vacío y solo puede contener letras mayúsculas, números y guiones"
+          },
+          "stock" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "1vp4xnyvucmqv"
+            },
+            "description" : "No puede ser negativo",
+            "minLength" : 0
+          },
+          "price" : {
+            "type" : "number",
+            "x-stoplight" : {
+              "id" : "pteu7w2ioprq4"
+            },
+            "description" : "Debe ser mayor a 0"
+          },
+          "productionCost" : {
+            "type" : "number",
+            "x-stoplight" : {
+              "id" : "07uggu30n0eh7"
+            },
+            "description" : "No puede ser negativo"
+          },
+          "discount" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "35btkhfik6dwm"
+            },
+            "description" : "No puede ser negativo\r\nEl descuento máximo es 1 (100%)",
+            "minLength" : 0,
+            "maxLength" : 1
+          },
+          "images" : {
+            "type" : "array",
+            "x-stoplight" : {
+              "id" : "4f9dh86oi8m14"
+            },
+            "description" : "Todas las URLs de imágenes deben ser válidas y el arreglo no puede estar vacío.",
+            "items" : { }
+          },
+          "collection" : {
+            "$ref" : "#/components/schemas/Collections"
+          },
+          "category" : {
+            "$ref" : "#/components/schemas/Categories"
+          },
+          "subcategory" : {
+            "$ref" : "#/components/schemas/Subcategories"
+          },
+          "rawMaterialsUsed" : {
+            "$ref" : "#/components/schemas/RawMaterials"
+          },
+          "highlighted" : {
+            "type" : "boolean",
+            "x-stoplight" : {
+              "id" : "ta0qqkppheso4"
+            },
+            "default" : false
+          },
+          "correlative" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "0xnnuxhbhn5q1"
+            },
+            "description" : "El correlativo no puede estar vacío y solo puede contener letras mayúsculas, números y guiones",
+            "pattern" : "/^[A-Z0-9-]+$/"
+          },
+          "movementType" : {
+            "x-stoplight" : {
+              "id" : "emdfmmshzvzg9"
+            },
+            "description" : "values: \"venta\", \"exhibición\", \"producción\", \"otro\"\r\nNo puede estar vacío",
+            "enum" : [ "venta", "exhibición", "producción", "otro" ]
+          },
+          "status" : {
+            "x-stoplight" : {
+              "id" : "i8oteq8cezizb"
+            },
+            "description" : "Estados a elegir:\r\ndisponible\", \"agotado\", \"en producción\", \"descontinuado\"\r\nNo puede estar vacío",
+            "enum" : [ "disponible", "agotado", "en producción", "descontinuado" ]
+          },
+          "applicableCosts" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "d7k2gfnx8zois"
+            },
+            "description" : "No puede estar vacío"
+          },
+          "hasDiscount" : {
+            "x-stoplight" : {
+              "id" : "amgrs68kamtet"
+            },
+            "type" : "boolean",
+            "default" : false
+          }
+        },
+        "description" : "Modelo Products."
+      },
+      "RawMaterials" : {
+        "title" : "RawMaterials",
+        "type" : "object",
+        "required" : [ "correlative", "name", "description", "provider", "brand", "presentation", "quantity", "piecesPerPresentation", "totalPieces", "purchaseDate", "stock" ],
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "3rh5il4nweu32"
+            }
+          },
+          "correlative" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "q3diu0u2freas"
+            },
+            "description" : "El correlativo no puede estar vacío y solo puede contener letras mayúsculas, números y guiones",
+            "pattern" : "/^[A-Z0-9-]+$/"
+          },
+          "name" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "n9lpem27gxw2u"
+            },
+            "description" : "minlength: 3\r\nmaxlength: 100\r\nNo puede estar vacío",
+            "minLength" : 3,
+            "maxLength" : 100
+          },
+          "description" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "i7vvs7q03digh"
+            },
+            "description" : "minlegth: 10\r\nmaxlength: 500\r\nNo puede estar vacío",
+            "minLength" : 10,
+            "maxLength" : 500
+          },
+          "type" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "thp86vlkgx5m1"
+            },
+            "description" : "No puede estar vacío"
+          },
+          "color" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "nxwv2dv5s1ptj"
+            },
+            "description" : "No puede estar vacío"
+          },
+          "tone" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "lmm22j5l5m5jd"
+            },
+            "description" : "No puede estar vacío"
+          },
+          "toneTpe" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "oefzvdkq24m0r"
+            },
+            "description" : "No puede estar vacío"
+          },
+          "texture" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "mjg3zwx500f2r"
+            },
+            "description" : "No puede estar vacío"
+          },
+          "shape" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "52u1uigsta1be"
+            },
+            "description" : "No puede estar vacío"
+          },
+          "dimension" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "zp4hnzj9mqct1"
+            },
+            "description" : "No puede estar vacío"
+          },
+          "provider" : {
+            "$ref" : "#/components/schemas/Suppliers"
+          },
+          "brand" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "okpz97uqpkvxo"
+            },
+            "description" : "No puede estar vacío"
+          },
+          "presentation" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "fbaugm3n7p7fe"
+            },
+            "description" : "No puede estar vacío"
+          },
+          "quantity" : {
+            "type" : "number",
+            "x-stoplight" : {
+              "id" : "07py4lliwrno2"
+            },
+            "description" : "min: 0\r\nNo puede ser negativo",
+            "minimum" : 0
+          },
+          "piecesPerPresentation" : {
+            "type" : "number",
+            "x-stoplight" : {
+              "id" : "9hwipxmwwwi7t"
+            },
+            "description" : "min: 1",
+            "minimum" : 1
+          },
+          "totalPieces" : {
+            "type" : "number",
+            "x-stoplight" : {
+              "id" : "kqz3wvbn3q6j6"
+            },
+            "description" : "min: 0.01 \r\nEl precio debe ser mayor a 0",
+            "minimum" : 0
+          },
+          "piecePrice" : {
+            "type" : "number",
+            "x-stoplight" : {
+              "id" : "sh05pxowgn5sb"
+            },
+            "minimum" : 0.01
+          },
+          "purchaseDate" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "a9wzpx3onndaz"
+            },
+            "format" : "date",
+            "description" : "La fecha de compra debe ser anterior o igual a la fecha actual"
+          },
+          "stock" : {
+            "type" : "number",
+            "x-stoplight" : {
+              "id" : "2ljaoz4jwkugr"
+            },
+            "description" : "min: 0\r\nNo puede ser negativo",
+            "minimum" : 0
+          }
+        },
+        "description" : "Modelo de RawMaterials."
+      },
+      "Refunds" : {
+        "title" : "Refunds",
+        "type" : "object",
+        "required" : [ "refundCode", "order", "customer", "requestDate", "reason", "items", "status", "amount", "refundMethod" ],
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "refundCode" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "f41qcy32d2ats"
+            },
+            "description" : "El código no puede estar vacío y solo puede contener letras mayúsculas, números y guiones"
+          },
+          "order" : {
+            "$ref" : "#/components/schemas/Orders"
+          },
+          "customer" : {
+            "$ref" : "#/components/schemas/Customers"
+          },
+          "requestDate" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "ps202w3wmf4hg"
+            },
+            "description" : "La fecha de solicitud no puede ser futura",
+            "format" : "date",
+            "default" : "Date.now"
+          },
+          "reason" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "6fat7c32omsrv"
+            },
+            "description" : "minlength: 10\r\nmaxlength: 200\r\nNo puede estar vacío",
+            "minLength" : 10,
+            "maxLength" : 200
+          },
+          "comments" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "qkdfyd8gssjh0"
+            },
+            "description" : "maxlength: 500\r\nNo puede estar vacío",
+            "maxLength" : 500
+          },
+          "items" : {
+            "$ref" : "#/components/schemas/Products"
+          },
+          "status" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "gquwf1pttwzdo"
+            },
+            "description" : "Valores: \"pendiente\", \"aprobado\", \"rechazado\", \"procesado\"\r\n"
+          },
+          "amount" : {
+            "type" : "number",
+            "x-stoplight" : {
+              "id" : "f2nzd3zkyumf0"
+            },
+            "description" : "min: 0.01\r\nEl monto debe ser mayor a 0"
+          },
+          "refundMethod" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "jwcmrvfhavz2l"
+            },
+            "description" : "Values: \"efectivo\", \"tarjeta de crédito\", \"transferencia\", \"vale\", \"mismo método de pago\", \"otro\"\r\nNo puede estar vacío"
+          }
+        },
+        "description" : "Modelo de Refunds."
+      },
+      "Reviews" : {
+        "title" : "Reviews",
+        "type" : "object",
+        "required" : [ "product", "customer", "rating", "comment" ],
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "product" : {
+            "$ref" : "#/components/schemas/Products"
+          },
+          "customer" : {
+            "$ref" : "#/components/schemas/Customers"
+          },
+          "rating" : {
+            "type" : "number",
+            "x-stoplight" : {
+              "id" : "3amhiuqfvv95h"
+            },
+            "description" : "min: 1\r\nmax: 5\r\nDebe ser número entero.",
+            "minimum" : 1,
+            "maximum" : 5
+          },
+          "comment" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "bal0gsoksq7x7"
+            },
+            "description" : "No puede estar vacío",
+            "minLength" : 10
+          },
+          "response" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "1bw8r3xfcqzxu"
+            },
+            "description" : "maxlength: 500\r\nNo puede estar vacío",
+            "maxLength" : 500
+          }
+        },
+        "description" : "Modelo de Reviews."
+      },
+      "Subcategories" : {
+        "title" : "SubCategories",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "7zsvxy4tl0r5p"
+            },
+            "description" : "minlength: 3\r\nmaxlength: 100\r\nNo puede estar vacío",
+            "minLength" : 3,
+            "maxLength" : 100
+          },
+          "description" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "ij5n9ffuv2826"
+            },
+            "description" : "minlength: 10\r\nmaxlength: 500\r\nNo puede estar vacío",
+            "minLength" : 10,
+            "maxLength" : 500
+          },
+          "image" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "6fwkybmyi5ygf"
+            },
+            "description" : "La URL no puede estar vacía y debe ser válida (jpg/jpeg/png/webp/svg)",
+            "pattern" : "/^https?:\\/\\/.+\\.(jpg|jpeg|png|webp|svg)$/"
+          },
+          "isActive" : {
+            "type" : "boolean",
+            "x-stoplight" : {
+              "id" : "k2cldqocnil3p"
+            },
+            "description" : "default: true",
+            "default" : true
+          }
+        },
+        "description" : "Modelo de Subcategories."
+      },
+      "Suppliers" : {
+        "title" : "Suppliers",
+        "type" : "object",
+        "required" : [ "name", "contactPerson", "phoneNumber", "email", "address" ],
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "1vcduo4lma89n"
+            },
+            "description" : "minlength: 3\r\nmaxlength: 255\r\nNo puede estar vacío",
+            "minLength" : 3,
+            "maxLength" : 255
+          },
+          "contactPerson" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "wvfiob3277kil"
+            },
+            "description" : "minlength: 3\r\nmaxlength: 255\r\nNo puede estar vacío",
+            "minLength" : 3,
+            "maxLength" : 255
+          },
+          "phoneNumber" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "1ecfep1w8hvnu"
+            },
+            "description" : "El teléfono no puede estar vacío y debe ser válido en El Salvador",
+            "pattern" : "/^(?:\\+503\\s?)?(6|7)\\d{3}-?\\d{4}$/"
+          },
+          "email" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "quvjoy3fzefgh"
+            },
+            "description" : "El correo no puede estar vacío y debe tener un formato válido",
+            "pattern" : "/^[^\\s@]+@[^\\s@]+\\.[^\\s@]",
+            "format" : "email"
+          },
+          "address" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "k7c7al6gfm894"
+            },
+            "description" : "minlength: 5\r\nmaxlength: 500\r\nNo puede estar vacío",
+            "minLength" : 5,
+            "maxLength" : 500
+          }
+        },
+        "description" : "Modelo de Suippliers."
+      },
+      "Transactions" : {
+        "title" : "Transactions",
+        "type" : "object",
+        "required" : [ "transactionCode", "order", "customer", "amount", "type", "paymentMethod", "status" ],
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "transactionCode" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "x0glw0o3fvx0v"
+            },
+            "description" : "El código solo puede contener letras mayúsculas, números y guiones\r\nNo puede estar vacío",
+            "pattern" : "/^[A-Z0-9-]"
+          },
+          "order" : {
+            "$ref" : "#/components/schemas/Orders"
+          },
+          "customer" : {
+            "$ref" : "#/components/schemas/Customers"
+          },
+          "amount" : {
+            "type" : "number",
+            "x-stoplight" : {
+              "id" : "6on66wm9iz7ty"
+            },
+            "minimum" : 0.01
+          },
+          "type" : {
+            "x-stoplight" : {
+              "id" : "i21h28gcduvd5"
+            },
+            "description" : "Values: \"pago\", \"reembolso\", \"ajuste\"\r\nNo puede estar vacío",
+            "enum" : [ "pago", "reembolso", "ajuste" ]
+          },
+          "paymentMethod" : {
+            "x-stoplight" : {
+              "id" : "up9rbxdiuwqc8"
+            },
+            "description" : "Values: \"efectivo\", \"tarjeta de crédito\", \"transferencia\", \"paypal\", \"otro\"\r\n",
+            "enum" : [ "efectivo", "tarjeta de crédito", "transferencia", "paypal", "otro" ]
+          },
+          "status" : {
+            "x-stoplight" : {
+              "id" : "haiujpuypvrgu"
+            },
+            "description" : "Values: \"pendiente\", \"completado\", \"fallido\", \"revertido\"\r\nNo puede estar vacío",
+            "enum" : [ "pendiente", "completado", "fallido", "" ]
+          }
+        },
+        "description" : "Modelo de Transactions."
+      }
+    }
+  }
+}
