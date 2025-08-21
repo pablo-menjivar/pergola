@@ -30,15 +30,21 @@ export const AuthProvider = ({ children }) => {
       }
 
       console.log("✅ Login exitoso, obteniendo info del usuario...")
-      
+      // Add a small delay to ensure cookie is properly set
+      await new Promise(resolve => setTimeout(resolve, 100))
       // Valida el token y obtiene info básica del usuario
       const userInfoResponse = await fetch(`${API}/validateAuthToken`, {
         method: "POST",
         credentials: "include",
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache'
+      }
       })
       
       if (!userInfoResponse.ok) {
+        const errorData = await userInfoResponse.json()
+        console.log("❌ Validation failed:", errorData)
         throw new Error("No se pudo validar el token")
       }
       
