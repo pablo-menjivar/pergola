@@ -1,5 +1,5 @@
 import { useAuth } from '../useAuth.js'
-import useDataCategories from '../CategoriesHooks/useDataCategories'
+import useDataCategories from '../categoriesHooks/useDataCategories'
 import useDataSubcategories from '../subcategoriesHooks/useDataSubcategories'
 import useDataCollections from '../collectionsHooks/useDataCollections'
 import useDataSuppliers from '../SuppliersHooks/useDataSuppliers'
