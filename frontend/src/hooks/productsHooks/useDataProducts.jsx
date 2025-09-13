@@ -41,7 +41,7 @@ const useDataProducts = () => {
   // Cargar colecciones
   const fetchCollections = async () => {
     try {
-      const response = await fetch("http://localhost:4000/api/collections", {
+      const response = await fetch("https://pergola.onrender.com/api/collections", {
         credentials: "include"
       })
       if (!response.ok) {
@@ -57,7 +57,7 @@ const useDataProducts = () => {
   // Cargar categorías
   const fetchCategories = async () => {
     try {
-      const response = await fetch("http://localhost:4000/api/categories", {
+      const response = await fetch("https://pergola.onrender.com/api/categories", {
         credentials: "include"
       })
       if (!response.ok) {
@@ -73,7 +73,7 @@ const useDataProducts = () => {
   // Cargar subcategorías
   const fetchSubcategories = async () => {
     try {
-      const response = await fetch("http://localhost:4000/api/subcategories", {
+      const response = await fetch("https://pergola.onrender.com/api/subcategories", {
         credentials: "include"
       })
       if (!response.ok) {
@@ -89,7 +89,7 @@ const useDataProducts = () => {
   // Cargar materias primas
   const fetchRawMaterials = async () => {
     try {
-      const response = await fetch("http://localhost:4000/api/rawmaterials", {
+      const response = await fetch("https://pergola.onrender.com/api/rawmaterials", {
         credentials: "include"
       })
       if (!response.ok) {
