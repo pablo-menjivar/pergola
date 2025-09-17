@@ -197,35 +197,36 @@ const SignUp = () => {
 
   // Render principal del formulario de registro
   return (
-    <div className="flex flex-col lg:flex-row h-screen">
+    <div className="flex flex-col lg:flex-row min-h-screen">
       {/* Sección Izquierda - Branding */}
-      <div className="w-full lg:w-2/5 h-64 lg:h-screen flex flex-col justify-center items-center px-6 sm:px-8 lg:px-12 py-8 relative" style={{ backgroundColor: '#E8E1D8' }}>
+      <div className="w-full lg:w-2/5 lg:min-h-screen flex flex-col justify-center items-center px-4 sm:px-6 lg:px-12 py-6 lg:py-8 relative" style={{ backgroundColor: '#E8E1D8' }}>
         {/* P decorativa en esquina superior izquierda */}
-        <div className="absolute top-4 left-4 sm:top-6 sm:left-6 lg:top-8 lg:left-8">
-          <img src={Pergola} alt="P decorativa" className="w-8 h-auto sm:w-10 lg:w-12 opacity-60 object-contain"/>
+        <div className="absolute top-3 left-3 sm:top-4 sm:left-4 lg:top-6 lg:left-6">
+          <img src={Pergola} alt="P decorativa" className="w-7 h-auto sm:w-8 lg:w-10 opacity-60 object-contain"/>
         </div>
-        <div className="text-center">
-          {/* Logo placeholder */}
-          <img src={Logo} alt="Pérgola Joyería Logo" className="mb-6 lg:mb-8 mx-auto max-w-full object-contain" style={{ width: 'min(320px, 90vw)', height: 'auto', maxHeight: '400px' }}/>
+        <div className="text-center w-full max-w-xs lg:max-w-sm">
+          {/* Logo */}
+          <img src={Logo} alt="Pérgola Joyería Logo" className="mb-4 lg:mb-6 mx-auto w-48 sm:w-56 lg:w-64 h-auto object-contain"/>
           {/* Texto debajo de la imagen */}
-          <div className="max-w-sm mx-auto">
-            <h3 className="text-lg sm:text-xl lg:text-2xl font-[Quicksand] font-semibold mb-1 sm:mb-2" style={{ color: '#A73249' }}>
+          <div className="max-w-xs mx-auto">
+            <h3 className="text-base sm:text-lg lg:text-xl font-[Quicksand] font-semibold mb-1" style={{ color: '#A73249' }}>
               TU BELLEZA
             </h3>
-            <h4 className="text-lg sm:text-xl lg:text-2xl font-[Quicksand] font-semibold mb-1 sm:mb-2" style={{ color: '#A73249' }}>
+            <h4 className="text-base sm:text-lg lg:text-xl font-[Quicksand] font-semibold mb-1" style={{ color: '#A73249' }}>
               MERECE CADA
             </h4>
-            <p className="text-lg sm:text-xl lg:text-2xl font-[Quicksand] font-semibold flex items-center justify-center" style={{ color: '#A73249' }}>
-              PIEZA <span className="ml-2">✨</span>
+            <p className="text-base sm:text-lg lg:text-xl font-[Quicksand] font-semibold flex items-center justify-center" style={{ color: '#A73249' }}>
+              PIEZA <span className="ml-1">✨</span>
             </p>
           </div>
         </div>
       </div>
+      
       {/* Sección Derecha - Signup Content */}
-      <div className="w-full lg:w-3/5 h-full max-h-screen overflow-y-auto px-8 sm:px-12 lg:px-16 py-8 relative" style={{ backgroundColor: '#E3C6B8' }}>
-        <div className="w-full max-w-2xl mx-auto pb-8">
+      <div className="w-full lg:w-3/5 flex-1 px-4 sm:px-6 lg:px-12 py-6 lg:py-8 relative" style={{ backgroundColor: '#E3C6B8' }}>
+        <div className="w-full max-w-2xl mx-auto">
           {/* Header */}
-          <div className="flex justify-between items-center mb-8 lg:mb-10">
+          <div className="flex justify-between items-center mb-6 lg:mb-8">
             <button
               onClick={() => navigate(-1)}
               className="flex items-center font-[Quicksand] font-semibold hover:opacity-70 transition-opacity text-sm lg:text-base"
@@ -235,20 +236,22 @@ const SignUp = () => {
               Atrás
             </button>
           </div>
+          
           {/* Content */}
-          <div className="mb-8 lg:mb-10">
+          <div className="mb-6 lg:mb-8">
             {/* Title */}
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-[Quicksand] font-bold mb-3 lg:mb-4 text-center" style={{ color: '#3D1609' }}>
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-[Quicksand] font-bold mb-2 lg:mb-3 text-center" style={{ color: '#3D1609' }}>
               Únete al Equipo
             </h2>
             {/* Subtitle */}
-            <h3 className="text-lg sm:text-xl lg:text-2xl font-[Quicksand] font-medium mb-8 lg:mb-10 text-center" style={{ color: '#A73249' }}>
+            <h3 className="text-lg sm:text-xl lg:text-2xl font-[Quicksand] font-medium mb-6 lg:mb-8 text-center" style={{ color: '#A73249' }}>
               Crea una cuenta
             </h3>
+            
             {/* Registration Form */}
-            <div className="space-y-6">
+            <div className="space-y-4 lg:space-y-6">
               {/* Información Personal */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 lg:gap-4">
                 <TextInput
                   text="Nombre *"
                   name="name"
@@ -268,7 +271,8 @@ const SignUp = () => {
                   required
                 />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 lg:gap-4">
                 <TextInput
                   text="Nombre de Usuario *"
                   name="username"
@@ -287,8 +291,9 @@ const SignUp = () => {
                   required
                 />
               </div>
+              
               {/* Fechas */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 lg:gap-4">
                 <DateInput
                   text="Fecha de Nacimiento *"
                   name="birthDate"
@@ -308,8 +313,9 @@ const SignUp = () => {
                   required
                 />
               </div>
+              
               {/* Información de Contacto */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 lg:gap-4">
                 <TextInput
                   text="Correo Electrónico *"
                   type="email"
@@ -329,8 +335,9 @@ const SignUp = () => {
                   required
                 />
               </div>
+              
               {/* Contraseñas */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 lg:gap-4">
                 <PasswordInput
                   text="Contraseña *"
                   name="password"
@@ -350,6 +357,7 @@ const SignUp = () => {
                   required
                 />
               </div>
+              
               {/* Tipo de Usuario */}
               <SelectInput
                 text="Tipo de Usuario *"
@@ -361,21 +369,22 @@ const SignUp = () => {
                 disabled={isLoading}
                 required
               />
+              
               {/* Información sobre roles */}
-              <div className="bg-white/30 rounded-lg p-4 border border-white/50 font-[Quicksand]">
-                <h4 className=" font-semibold mb-2" style={{ color: '#3D1609' }}>
+              <div className="bg-white/30 rounded-lg p-3 lg:p-4 border border-white/50 font-[Quicksand] text-sm">
+                <h4 className="font-semibold mb-2" style={{ color: '#3D1609' }}>
                   ℹ️ Información sobre roles:
                 </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm font-semibold">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 lg:gap-4">
                   <div>
                     <strong style={{ color: '#A73249' }}>Colaborador:</strong>
-                    <p style={{ color: '#3D1609' }}>
+                    <p className="text-xs lg:text-sm" style={{ color: '#3D1609' }}>
                       Acceso a funciones básicas del sistema, gestión de productos y ventas.
                     </p>
                   </div>
                   <div>
                     <strong style={{ color: '#A73249' }}>Administrador:</strong>
-                    <p style={{ color: '#3D1609' }}>
+                    <p className="text-xs lg:text-sm" style={{ color: '#3D1609' }}>
                       Acceso completo al sistema, gestión de empleados y configuración.
                     </p>
                   </div>
@@ -383,26 +392,27 @@ const SignUp = () => {
               </div>
 
               {/* Verificación */}
-              <div className="flex items-center space-x-3 p-4 bg-blue-50/30 rounded-lg border border-blue-200/50">
+              <div className="flex items-start space-x-3 p-3 bg-blue-50/30 rounded-lg border border-blue-200/50">
                 <input
                   type="checkbox"
                   name="isVerified"
                   checked={formData.isVerified}
                   onChange={handleInputChange}
-                  className="w-4 h-4 rounded"
-                  style={{ accentColor: '#A73249', borderColor: '#A73249', }}
+                  className="w-4 h-4 rounded mt-1"
+                  style={{ accentColor: '#A73249', borderColor: '#A73249' }}
                 />
-                <label className="text-sm font-[Quicksand] font-medium" style={{ color: '#3D1609' }}>
+                <label className="text-sm font-[Quicksand] font-medium flex-1" style={{ color: '#3D1609' }}>
                   Marcar como empleado verificado (recomendado para empleados de confianza)
                 </label>
               </div>
             </div>
           </div>
+          
           {/* Register Button */}
           <button
             onClick={handleSubmit}
             disabled={isLoading}
-            className="w-full py-4 px-4 rounded-lg font-[Quicksand] font-bold text-xl transition-all duration-300 hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+            className="w-full py-3 lg:py-4 px-4 rounded-lg font-[Quicksand] font-bold text-lg lg:text-xl transition-all duration-300 hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
             style={{ 
               backgroundColor: '#A73249',
               color: '#FFFFFF'
@@ -417,8 +427,9 @@ const SignUp = () => {
               'Registrarse'
             )}
           </button>
+          
           {/* Login Link */}
-          <p className="text-center font-[Quicksand] text-sm mt-6" style={{ color: '#3D1609' }}>
+          <p className="text-center font-[Quicksand] text-sm mt-4 lg:mt-6" style={{ color: '#3D1609' }}>
             ¿Ya tienes una cuenta?{' '}
             <button 
               onClick={handleGoToLogin}
