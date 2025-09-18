@@ -4,7 +4,6 @@ import toast from 'react-hot-toast'
 import { useAuth } from '../hooks/useAuth'
 import TextInput from '../components/Input/Input'
 import PasswordInput from '../components/Input/PasswordInput'
-import SelectInput from '../components/Input/SelectInput'
 import PhoneInput from '../components/Input/PhoneInput'
 import DUIInput from '../components/Input/DUIInput'
 import DateInput from '../components/Input/DateInput'
@@ -24,7 +23,6 @@ const SignUp = () => {
     phoneNumber: '',
     birthDate: '',
     DUI: '',
-    userType: '',
     hireDate: '',
     isVerified: false
   })
@@ -43,14 +41,6 @@ const SignUp = () => {
     }
   }, [user, authLoading, navigate, location])
 
-  // Opciones para el tipo de usuario
-  const userTypeOptions = [
-    {
-      value: 'colaborador',
-      label: 'Colaborador'
-    }
-  ]
-
   // Maneja cambios en los inputs del formulario
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target
@@ -59,18 +49,16 @@ const SignUp = () => {
         ...prev,
         [name]: type === 'checkbox' ? checked : value
       }
-      console.log('Nuevo formData:', newData)
       return newData
     })
-    console.log(e.target.value)
   }
 
   // Valida los datos del formulario antes de enviar
   const validateForm = () => {
-    const { name, lastName, username, email, password, confirmPassword, phoneNumber, birthDate, DUI, userType, hireDate } = formData
+    const { name, lastName, username, email, password, confirmPassword, phoneNumber, birthDate, DUI, hireDate } = formData
 
     // Validaciones de campos obligatorios
-    if (!name || !lastName || !username || !email || !password || !phoneNumber || !birthDate || !DUI || !userType || !hireDate) {
+    if (!name || !lastName || !username || !email || !password || !phoneNumber || !birthDate || !DUI || !hireDate) {
       toast.error('Todos los campos marcados con * son obligatorios')
       return false
     }
@@ -92,10 +80,6 @@ const SignUp = () => {
     }
     if (DUI.length !== 10) {
       toast.error('El número de DUI debe tener el formato correcto (00000000-0)')
-      return false
-    }
-    if (!'colaborador'.includes(userType)) {
-      toast.error('Debe seleccionar un tipo de usuario válido')
       return false
     }
     // Validar fechas
@@ -135,7 +119,6 @@ const SignUp = () => {
           phoneNumber: formData.phoneNumber,
           birthDate: formData.birthDate,
           DUI: formData.DUI,
-          userType: formData.userType,
           hireDate: formData.hireDate,
           isVerified: formData.isVerified
         })
@@ -196,13 +179,20 @@ const SignUp = () => {
       <div className="flex-1 flex flex-col items-center px-4 pb-6">
         <div className="w-full max-w-md">
           {/* Títulos */}
-          <div className="text-center mb-6">
+          <div className="text-center mb-4">
             <h2 className="text-2xl font-[Quicksand] font-bold mb-2" style={{ color: '#3D1609' }}>
               Únete al Equipo
             </h2>
             <h3 className="text-lg font-[Quicksand] font-medium" style={{ color: '#A73249' }}>
               Crea una cuenta
             </h3>
+          </div>
+
+          {/* Mensaje para administradores */}
+          <div className="bg-blue-50/40 rounded-xl p-3 mb-4 text-center border border-blue-200/50">
+            <p className="font-[Quicksand] text-sm font-medium" style={{ color: '#3D1609' }}>
+              💼 Si eres administrador, puedes omitir este paso
+            </p>
           </div>
 
           {/* Formulario */}
@@ -314,39 +304,6 @@ const SignUp = () => {
                   disabled={isLoading}
                   required
                 />
-              </div>
-
-              {/* Tipo de Usuario */}
-              <SelectInput
-                text="Rol *"
-                name="userType"
-                value={formData.userType}
-                onChange={handleInputChange}
-                options={userTypeOptions}
-                placeholder="Selecciona tu rol"
-                disabled={isLoading}
-                required
-              />
-            </div>
-          </div>
-
-          {/* Información adicional */}
-          <div className="bg-white/30 rounded-xl p-4 mb-4 border border-white/50 font-[Quicksand] text-sm">
-            <h4 className="font-semibold mb-2" style={{ color: '#3D1609' }}>
-              ℹ️ Información sobre roles:
-            </h4>
-            <div className="space-y-2">
-              <div>
-                <strong style={{ color: '#A73249' }}>Colaborador:</strong>
-                <p style={{ color: '#3D1609' }}>
-                  Acceso a funciones básicas del sistema, gestión de productos y ventas.
-                </p>
-              </div>
-              <div>
-                <strong style={{ color: '#A73249' }}>Administrador:</strong>
-                <p style={{ color: '#3D1609' }}>
-                  Acceso completo al sistema, gestión de empleados y configuración.
-                </p>
               </div>
             </div>
           </div>
