@@ -65,7 +65,6 @@ export const employeesConfig = {
     { key: 'phoneNumber', label: 'Teléfono', searchable: true },
     { key: 'birthDate', label: 'Fecha de Nacimiento', sortable: true, type: 'date' },
     { key: 'DUI', label: 'DUI', sortable: true, searchable: true },
-    { key: 'userType', label: 'Tipo de Usuario', sortable: true },
     { key: 'hireDate', label: 'Fecha de Contratación', sortable: true, type: 'date' },
     { key: 'isVerified', label: 'Verificado', sortable: true, type: 'boolean' },
     { key: 'profilePic', label: 'Foto', type: 'image' },
@@ -86,10 +85,7 @@ export const employeesConfig = {
     { name: 'phoneNumber', type: 'tel', label: 'Teléfono', required: true, placeholder: 'Ej: +503-7123-4567', helperText: 'Formato: +503 seguido de 8 dígitos (ej: +503-7123-4567)' },
     { name: 'birthDate', type: 'date', label: 'Fecha de Nacimiento', required: true },
     { name: 'DUI', type: 'text', label: 'DUI', required: true, placeholder: '12345678-9' },
-    { name: 'password', type: 'password', label: 'Contraseña', required: true, placeholder: '********' },
-    { name: 'userType', type: 'select', label: 'Tipo de Usuario', required: true, options: [
-      { value: 'colaborador', label: 'Colaborador' }
-    ] },
+    { name: 'password', type: 'password', label: 'Contraseña', required: true, placeholder: '********' },,
     { name: 'hireDate', type: 'date', label: 'Fecha de Contratación', required: true },
     { name: 'profilePic', type: 'image', label: 'Foto de Perfil', accept: 'image/*', placeholder: 'Seleccionar imagen' },
     { name: 'isVerified', type: 'checkbox', label: 'Verificado' }

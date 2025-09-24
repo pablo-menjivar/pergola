@@ -19,7 +19,7 @@ const Sidebar = ({ currentView, setCurrentView, onLogout }) => {
     // Permisos por tipo de usuario
     const permissions = {
       'admin': [ 'dashboard', 'search', 'products', 'customdesigns', 'designelements', 'rawmaterials', 'employees', 'categories','subcategories', 'collections', 'customers', 'orders', 'reviews', 'refunds', 'transactions', 'suppliers', 'settings' ],
-      'colaborador': [ 'dashboard', 'search', 'products', 'customdesigns', 'designelements', 'rawmaterials', 'categories','subcategories', 'collections', 'reviews', 'suppliers', 'settings' ],
+      'employee': [ 'dashboard', 'search', 'products', 'customdesigns', 'designelements', 'rawmaterials', 'categories','subcategories', 'collections', 'reviews', 'suppliers', 'settings' ],
     }
     const allowedViews = permissions[user.userType] || []
     return menuItems.filter(item => allowedViews.includes(item.id))

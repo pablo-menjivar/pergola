@@ -66,7 +66,7 @@ const DataTable = ({data = [], columns = [], isLoading = false,
           'true': 'bg-green-100 text-green-800',
           'false': 'bg-red-100 text-red-800',
           // Otros
-          'colaborador': 'bg-blue-100 text-blue-800',
+          'employee': 'bg-blue-100 text-blue-800',
           'customer': 'bg-blue-100 text-blue-800'
         }
         let displayText = value

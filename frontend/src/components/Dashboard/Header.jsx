@@ -26,7 +26,7 @@ const Header = () => {
     // Mapear userType a texto legible
     const roleMap = {
       'admin': 'Administrador',
-      'colaborador': 'Colaborador',
+      'employee': 'Colaborador',
     }
     return roleMap[user.userType] || 'Empleado'
   }

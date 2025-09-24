@@ -1,19 +1,16 @@
 import { createContext, useState, useEffect } from "react"
-const API = "https://pergola.onrender.com/api"
+const API = "https://pergola-production.up.railway.app/api"
 const AuthContext = createContext()
 
 // Proveedor de contexto de autenticación
 export const AuthProvider = ({ children }) => {
   // Estados para usuario, cookie de autenticación y carga
   const [user, setUser] = useState(null)
-  const [authCookie, setAuthCookie] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
 
   // Función para iniciar sesión
   const Login = async (email, password, rememberMe = false) => {
-    try {
-      console.log("🔄 Iniciando login...", { email })
-      
+    try {      
       // Llama al endpoint de login
       const response = await fetch(`${API}/login`, {
         method: "POST",
@@ -21,35 +18,22 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify({ email, password, rememberMe }),
         credentials: "include"
       })
-
       const data = await response.json()
-      console.log("📥 Respuesta del servidor:", data)
       
       if (!response.ok) {
         throw new Error(data.message || "Error en la autenticación")
       }
-
-      console.log("✅ Login exitoso, obteniendo info del usuario...")
-      // Add a small delay to ensure cookie is properly set
+      // Pequeño retraso para garantizar que la cookie se configure correctamente
       await new Promise(resolve => setTimeout(resolve, 100))
       // Valida el token y obtiene info básica del usuario
       const userInfoResponse = await fetch(`${API}/validateAuthToken`, {
         method: "POST",
         credentials: "include",
-        headers: { 
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache'
-      }
+        headers: { 'Content-Type': 'application/json' }
       })
       
-      if (!userInfoResponse.ok) {
-        const errorData = await userInfoResponse.json()
-        console.log("❌ Validation failed:", errorData)
-        throw new Error("No se pudo validar el token")
-      }
-      
+      if (!userInfoResponse.ok) throw new Error("No se pudo validar el token")
       const userInfo = await userInfoResponse.json()
-      console.log("📋 Info del usuario obtenida:", userInfo)
       
       // Estructura base del usuario
       let userData = { 
@@ -59,9 +43,8 @@ export const AuthProvider = ({ children }) => {
         id: userInfo.userId,  
         name: userInfo.name || '', 
         lastName: userInfo.lastName || '',
-        profilePic: '' 
+        profilePic: userInfo.profilePic || '' 
       }
-
       // Obtener datos completos según el tipo de usuario
       try {
         let userDataEndpoint = ''
@@ -70,12 +53,9 @@ export const AuthProvider = ({ children }) => {
         if (userInfo.userType === 'admin') {
           userDataEndpoint = `${API}/admin/profile/data`
           useCredentials = true
-        } else if (userInfo.userType === 'customer') {
-          userDataEndpoint = `${API}/customers/${userInfo.userId}`
         } else {
           userDataEndpoint = `${API}/employees/${userInfo.userId}`
         }        
-        
         console.log("🔄 Obteniendo datos completos desde:", userDataEndpoint)
         
         const userDataResponse = await fetch(userDataEndpoint, {
@@ -83,9 +63,7 @@ export const AuthProvider = ({ children }) => {
         })
         
         if (userDataResponse.ok) {
-          const completeUserData = await userDataResponse.json()
-          console.log("📊 Datos completos obtenidos:", completeUserData)
-          
+          const completeUserData = await userDataResponse.json()          
           // Actualizar userData con datos completos
           userData = {
             ...userData,
@@ -96,30 +74,19 @@ export const AuthProvider = ({ children }) => {
             // Para admin, mantener 'admin' como id, para otros usar userId real
             id: userInfo.userType === 'admin' ? 'admin' : userInfo.userId
           }
-          console.log("✅ Datos de usuario finales:", userData)
         } else {
-          console.log("⚠️ No se pudieron obtener datos completos, usando datos básicos")
+          console.warn("⚠️ No se pudieron obtener datos completos, usando datos básicos")
         }
       } catch (error) {
-        console.log("❌ Error obteniendo datos completos en login:", error)
+        console.warn("⚠️ No se pudieron obtener datos completos, usando datos básicos")
       }
-
-      // Guardar usuario en localStorage
-      localStorage.setItem("user", JSON.stringify(userData))
-      
       // Actualizar estado
       setUser(userData)
-      setAuthCookie(true)
-      
-      console.log("🎉 Login completado exitosamente")
-      return { success: true, message: data.message, user: userData }
-      
+      return { success: true, message: data.message, user: userData }      
     } catch (error) {
-      console.log("❌ Login error:", error.message)
       return { success: false, message: error.message }
     }
   }
-
   // Función para cerrar sesión
   const logout = async () => {
     try {
@@ -128,15 +95,10 @@ export const AuthProvider = ({ children }) => {
         method: "POST",
         credentials: "include", // Para incluir cookies en la petición
       })
-      console.log("✅ Server logout successful")
     } catch (error) {
-      console.error("❌ Error durante el logout:", error)
     } finally {
-      // Limpiar datos locales
-      localStorage.removeItem("user")
-      setAuthCookie(null)
+      // Limpiar estado y cookie
       setUser(null)
-      console.log("🧹 Datos locales limpiados")
     }
   }
 
@@ -144,103 +106,59 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        console.log("🔍 Verificando autenticación inicial...")
-        // Intentar restaurar usuario desde localStorage
-        const savedUser = localStorage.getItem("user")
-        if (savedUser) {
-          console.log("👤 Usuario guardado encontrado, validando sesión...")
-          // Verificar si la sesión sigue siendo válida con el servidor
-          const response = await fetch(`${API}/validateAuthToken`, {
-            method: "POST",
-            credentials: "include",
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          })
-          if (response.ok) {
-            const validationData = await response.json()
-            const savedUserData = JSON.parse(savedUser)
-            console.log("✅ Sesión válida, restaurando usuario")
-            // Obtener datos completos incluyendo profilePic
-            let completeUserData = savedUserData
-            if (validationData.userType === 'admin') {
-              try {
-                const adminDataResponse = await fetch(`${API}/admin/profile/data`, {
-                  credentials: 'include'  // CON credentials aquí
-                })
-                if (adminDataResponse.ok) {
-                  const adminInfo = await adminDataResponse.json()
-                  completeUserData = {
-                    ...savedUserData,
-                    name: adminInfo.name || "Admin",
-                    lastName: adminInfo.lastName || "Pérgola",
-                    profilePic: adminInfo.profilePic || "",
-                    id: "admin",
-                    userType: "admin"
-                  }
-                }
-              } catch (error) {
-                console.log("Error obteniendo datos de admin en checkAuth:", error)
-              }
-            } else if (validationData.userType !== 'admin') {
-              try {
-                let userDataEndpoint = ''
-                if (validationData.userType === 'customer') {
-                  userDataEndpoint = `${API}/customers/${validationData.userId}`
-                } else {
-                  userDataEndpoint = `${API}/employees/${validationData.userId}`
-                }                
-                const userDataResponse = await fetch(userDataEndpoint, {
-                  credentials: 'include'
-                })
-                if (userDataResponse.ok) {
-                  const freshUserData = await userDataResponse.json()
-                  
-                  completeUserData = {
-                    ...savedUserData,
-                    name: freshUserData.name,
-                    lastName: freshUserData.lastName,
-                    profilePic: freshUserData.profilePic || '',
-                    phoneNumber: freshUserData.phoneNumber,
-                    id: validationData.userId,
-                    userType: validationData.userType
-                  }
-                }
-              } catch (error) {
-                console.log("Error obteniendo datos completos:", error)
-              }
-            }
-            // Actualizar localStorage con datos frescos
-            localStorage.setItem("user", JSON.stringify(completeUserData))
-            // Sesión válida, restaurar usuario
-            setUser(completeUserData)
-            setAuthCookie(true) // Indicador de que hay cookie válida
-          } else {
-            // Sesión inválida, limpiar datos locales
-            localStorage.removeItem("user")
-            setUser(null)
-            setAuthCookie(null)
+        // Verificar si la sesión sigue siendo válida con el servidor
+        const response = await fetch(`${API}/validateAuthToken`, {
+          method: "POST",
+          credentials: "include",
+          headers: { 'Content-Type': 'application/json' }
+        })
+        if (response.ok) {
+          const validationData = await response.json()
+
+          let userData = {
+            email: validationData.email,
+            userType: validationData.userType,
+            userId: validationData.userId,
+            id: validationData.userType === "admin" ? "admin" : validationData.userId,
+            name: validationData.name || "",
+            lastName: validationData.lastName || "",
+            profilePic: validationData.profilePic || "",
           }
+          // Cargar datos completos
+          let endpoint = ""
+          if (validationData.userType === "admin") {
+            endpoint = `${API}/admin/profile/data`
+          } else if (validationData.userType === "customer") {
+            endpoint = `${API}/customers/${validationData.userId}`
+          } else {
+            endpoint = `${API}/employees/${validationData.userId}`
+          }
+          const extraRes = await fetch(endpoint, { credentials: "include" })
+          if (extraRes.ok) {
+            const extraData = await extraRes.json()
+            userData = {
+              ...userData,
+              ...extraData,
+              id: validationData.userType === "admin" ? "admin" : validationData.userId,
+            }
+          }
+          setUser(userData)
         } else {
-          console.log("📭 No se encontro ningún usuario guardado")
+          // Sesión inválida
+          setUser(null)
         }
       } catch (error) {
-        console.error("❌ Error revisando autenticación:", error)
-        // En caso de error, limpiar datos locales
-        localStorage.removeItem("user")
+        // En caso de error
         setUser(null)
-        setAuthCookie(null)
       } finally {
-        console.log("✅ Comprobación de autenticación inicial completada")
         setIsLoading(false)
       }
     }
     checkAuth()
   }, []) // Solo ejecutar una vez al montar
-
   // Provee el contexto a los componentes hijos
   return (
-    <AuthContext.Provider value={{ user, Login,  logout, authCookie, setAuthCookie, setUser, API, isLoading }}>
+    <AuthContext.Provider value={{ user, Login, logout, API, isLoading  }}>
       {children}
     </AuthContext.Provider>
   )
