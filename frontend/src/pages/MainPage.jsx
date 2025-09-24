@@ -47,7 +47,7 @@ const MainPage = () => {
     }
     try {
       const filename = `${sectionName.toLowerCase().replace(/\s+/g, '_')}`
-      const title = `Reporte de ${sectionName} - MixArt`
+      const title = `Reporte de ${sectionName} - Pergola`
       
       handleExport(format, data, filename, title)
       toast.success(`Exportación de ${sectionName} iniciada en formato ${format.toUpperCase()}`)

@@ -82,7 +82,7 @@ const VerifyCode = () => {
   const handleResendCode = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch('https://pergola.onrender.com/api/recoveryPassword/requestCode', {
+      const response = await fetch('https://pergola-production.up.railway.app/api/recoveryPassword/requestCode', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

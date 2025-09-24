@@ -85,9 +85,9 @@ const SettingsPage = () => {
   
     if (isEdge) {
       toast.success('🔔 Edge detectado: Las notificaciones pueden no mostrarse en localhost. Revisa el centro de notificaciones de Windows o prueba en Chrome.')
-      new Notification('MixArt Test', { body: 'Prueba en Edge' })
+      new Notification('Pergola Test', { body: 'Prueba en Edge' })
     } else {
-      new Notification('🎨 MixArt Test', {
+      new Notification('💎 Pergola Test', {
         body: 'Esta es una notificación de prueba',
         icon: '/vite.svg'
       })
@@ -120,7 +120,7 @@ const SettingsPage = () => {
       // Determinar el endpoint según el tipo de usuario
       let endpoint = ''
       if (user.userType === 'admin') {
-        endpoint = `https://pergola.onrender.com/api/admin/profile`
+        endpoint = `https://pergola-production.up.railway.app/api/admin/profile`
       } else if (user.userType === 'customer') {
         endpoint = `${API}/customers/${user.id}`
       } else {
