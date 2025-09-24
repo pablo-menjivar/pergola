@@ -158,7 +158,7 @@ export const AuthProvider = ({ children }) => {
   }, []) // Solo ejecutar una vez al montar
   // Provee el contexto a los componentes hijos
   return (
-    <AuthContext.Provider value={{ user, Login, logout, API, isLoading  }}>
+    <AuthContext.Provider value={{ user, setUser, Login, logout, API, isLoading  }}>
       {children}
     </AuthContext.Provider>
   )
