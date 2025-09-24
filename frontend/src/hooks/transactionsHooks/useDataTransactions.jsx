@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast";
 
 // Hook para manejar transacciones y sus datos relacionados
 const useDataTransactions = () => {
-  const API = "https://pergola.onrender.com/api/transactions";
+  const API = "https://pergola-production.up.railway.app/api/transactions";
   const [transactions, setTransactions] = useState([]); // Lista de transacciones
   const [orders, setOrders] = useState([]); // Lista de pedidos
   const [customers, setCustomers] = useState([]); // Lista de clientes
@@ -37,7 +37,7 @@ const useDataTransactions = () => {
   // Cargar clientes desde el servidor
   const fetchCustomers = async () => {
     try {
-      const response = await fetch("https://pergola.onrender.com/api/customers", {
+      const response = await fetch("https://pergola-production.up.railway.app/api/customers", {
         credentials: "include"
       });
       if (!response.ok) {
@@ -52,7 +52,7 @@ const useDataTransactions = () => {
   // Cargar productos desde el servidor
   const fetchOrders = async () => {
     try {
-      const response = await fetch("https://pergola.onrender.com/api/orders", {
+      const response = await fetch("https://pergola-production.up.railway.app/api/orders", {
         credentials: "include"
       });
       if (!response.ok) {

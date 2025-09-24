@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast"
 
 // Hook para manejar datos de colecciones
 const useDataCollections = () => {
-  const API = "https://pergola.onrender.com/api/collections"
+  const API = "https://pergola-production.up.railway.app/api/collections"
   const [collections, setCollections] = useState([]) // estado con colecciones
   const [loading, setLoading] = useState(true) // estado de carga
 

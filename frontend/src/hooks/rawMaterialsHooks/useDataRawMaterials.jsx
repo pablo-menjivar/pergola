@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast"
 
 // Hook personalizado para manejar materias primas y sus proveedores
 const useDataRawMaterials = () => {
-  const API = "https://pergola.onrender.com/api/rawmaterials" // URL base de la API
+  const API = "https://pergola-production.up.railway.app/api/rawmaterials" // URL base de la API
   const [rawMaterials, setRawMaterials] = useState([]) // Lista de materias primas
   const [suppliers, setSuppliers] = useState([]) // Lista de proveedores
   const [loading, setLoading] = useState(true) // Estado de carga
@@ -45,7 +45,7 @@ const useDataRawMaterials = () => {
   // Obtener proveedores desde la API
   const fetchSuppliers = async () => {
     try {
-      const response = await fetch("https://pergola.onrender.com/api/suppliers", {
+      const response = await fetch("https://pergola-production.up.railway.app/api/suppliers", {
         credentials: "include"
       })
       // Si la respuesta no es exitosa, lanza error

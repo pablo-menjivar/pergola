@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast"
 
 // Hook para manejar datos de cliente
 const useDataCustomers = () => {
-  const API = "https://pergola.onrender.com/api/customers"
+  const API = "https://pergola-production.up.railway.app/api/customers"
   const [customers, setCustomers] = useState([]) // clientes
   const [loading, setLoading] = useState(true) // estado de carga
 

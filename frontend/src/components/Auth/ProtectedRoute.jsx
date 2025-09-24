@@ -27,7 +27,7 @@ const ProtectedRoute = ({ children }) => {
       }
       try {
         // Verifica el token con el servidor
-        const response = await fetch('https://pergola.onrender.com/api/validateAuthToken', {
+        const response = await fetch('https://pergola-production.up.railway.app/api/validateAuthToken', {
           method: 'POST',
           credentials: 'include',
           headers: {

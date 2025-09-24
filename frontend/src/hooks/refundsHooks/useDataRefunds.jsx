@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast";
 
 // Hook para manejar reembolsos y sus datos relacionados
 const useDataRefunds = () => {
-  const API = "https://pergola.onrender.com/api/refunds";
+  const API = "https://pergola-production.up.railway.app/api/refunds";
   const [refunds, setRefunds] = useState([]); // Lista de reembolsos
   const [orders, setOrders] = useState([]); // Lista de pedidos
   const [customers, setCustomers] = useState([]); // Lista de clientes
@@ -38,7 +38,7 @@ const useDataRefunds = () => {
   // Cargar clientes desde el servidor
   const fetchCustomers = async () => {
     try {
-      const response = await fetch("https://pergola.onrender.com/api/customers", {
+      const response = await fetch("https://pergola-production.up.railway.app/api/customers", {
         credentials: "include"
       });
       if (!response.ok) {
@@ -53,7 +53,7 @@ const useDataRefunds = () => {
   // Cargar productos desde el servidor
   const fetchOrders = async () => {
     try {
-      const response = await fetch("https://pergola.onrender.com/api/orders", {
+      const response = await fetch("https://pergola-production.up.railway.app/api/orders", {
         credentials: "include"
       });
       if (!response.ok) {
@@ -68,7 +68,7 @@ const useDataRefunds = () => {
   // Cargar productos desde el servidor
   const fetchProducts = async () => {
     try {
-      const response = await fetch("https://pergola.onrender.com/api/products", {
+      const response = await fetch("https://pergola-production.up.railway.app/api/products", {
         credentials: "include"
       });
       if (!response.ok) {

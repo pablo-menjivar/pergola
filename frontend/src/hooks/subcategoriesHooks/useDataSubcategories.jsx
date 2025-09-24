@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast"
 
 // Hook para manejar datos de subcategorías
 const useDataSubcategories = () => {
-  const API = "https://pergola.onrender.com/api/subcategories"
+  const API = "https://pergola-production.up.railway.app/api/subcategories"
   const [subcategories, setSubcategories] = useState([]) // estado con subcategorías
   const [loading, setLoading] = useState(true) // estado de carga
 

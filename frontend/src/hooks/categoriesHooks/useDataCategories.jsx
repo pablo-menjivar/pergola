@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast"
 
 // Hook personalizado para manejar datos de categorías
 const useDataCategories = () => {
-  const API = "https://pergola.onrender.com/api/categories"
+  const API = "https://pergola-production.up.railway.app/api/categories"
   // Estado para almacenar categorías y estado de carga
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)

@@ -53,7 +53,7 @@ const VerifyCode = () => {
     setIsLoading(true)
     try {
       // Petición para verificar el código
-      const response = await fetch('https://pergola.onrender.com/api/recoveryPassword/verifyCode', {
+      const response = await fetch('https://pergola-production.up.railway.app/api/recoveryPassword/verifyCode', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
