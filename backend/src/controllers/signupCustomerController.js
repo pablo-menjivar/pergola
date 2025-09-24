@@ -6,12 +6,12 @@ import jsonwebtoken from "jsonwebtoken"
 import nodemailer from 'nodemailer'
 import crypto from 'crypto'
 import { config } from "../utils/config.js"
-//Post (CREATE)
+// POST (CREATE)
 signupCustomerController.registerCustomer = async (req, res) => {
-    const {name, lastName, username, email, phoneNumber, birthDate, DUI, password, address, isVerified} = req.body
-    try {
+  const { name, lastName, username, email, phoneNumber, birthDate, DUI, password, address, isVerified } = req.body
+  try {
         const customerExist = await customersModel.findOne({email})
-        //Si existe un empleado, entonces se va a responder con un mensaje de error
+        // Si existe un empleado, entonces se va a responder con un mensaje de error
         if(customerExist){
             return res.status(409).json({message: "El cliente ya existe"})
         }

@@ -4,7 +4,7 @@ import employeesModel from "../models/Employees.js"
 import bcryptjs from "bcryptjs"
 import jsonwebtoken from "jsonwebtoken"
 import { config } from "../utils/config.js"
-//POST (CREATE)
+// POST (CREATE)
 signupController.registerEmployee = async (req, res) => {
     const {name, lastName, username, email, phoneNumber, birthDate, DUI, password, userType, hireDate, isVerified} = req.body
 
