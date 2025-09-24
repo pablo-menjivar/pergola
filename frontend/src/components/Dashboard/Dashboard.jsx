@@ -394,7 +394,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        {/* Tabla de Ventas Recientes */}
+        {/* Tabla de Ventas Recientes
         <div className="bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-semibold text-gray-800">Ventas Recientes</h3>
@@ -441,7 +441,7 @@ const Dashboard = () => {
               </tbody>
             </table>
           </div>
-        </div>
+        </div>  */}
       </div>
     </div>
   )
