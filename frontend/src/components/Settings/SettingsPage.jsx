@@ -42,6 +42,7 @@ const SettingsPage = () => {
 
   const [isLoading, setIsLoading] = useState(false)
   const [activeTab, setActiveTab] = useState('profile')
+  const [hasChanges, setHasChanges] = useState(false)
 
   // Verificar estado de notificaciones del navegador
   useEffect(() => {
@@ -49,7 +50,16 @@ const SettingsPage = () => {
       setBrowserNotifications(Notification.permission)
     }
   }, [])
-
+  // Detectar cambios en los datos del perfil
+  useEffect(() => {
+    const hasProfileChanges = 
+      profileData.name !== (user?.name || '') ||
+      profileData.lastName !== (user?.lastName || '') ||
+      profileData.email !== (user?.email || '') ||
+      profileData.phoneNumber !== (user?.phoneNumber || '')
+    
+    setHasChanges(hasProfileChanges)
+  }, [profileData, user])
   // Manejar notificaciones del navegador
   const handleBrowserNotifications = async () => {
     if (!('Notification' in window)) {
@@ -177,7 +187,45 @@ const SettingsPage = () => {
       setIsLoading(false)
     }
   }
+  // Manejar eliminación de foto de perfil
+const handleDeleteProfilePic = async () => {
+  if (!profileData.profilePic) {
+    toast.error('No hay foto de perfil para eliminar')
+    return
+  }
+  if (!window.confirm('¿Estás seguro de que quieres eliminar tu foto de perfil?')) {
+    return
+  }
+  try {
+    setIsLoading(true)
+    // Determinar el endpoint según el tipo de usuario
+    let endpoint = ''
+    if (user.userType === 'admin') {
+      endpoint = `https://pergola-production.up.railway.app/api/admin/profile/delete-profile-pic`
+    } else {
+      endpoint = `${API}/employees/${user.id}/delete-profile-pic`
+    }
+    const response = await fetch(endpoint, {
+      method: 'DELETE',
+      credentials: 'include'
+    })
+    if (!response.ok) {
+      throw new Error('Error al eliminar la foto de perfil')
+    }
+    // Actualizar el estado local y localStorage
+    setProfileData(prev => ({ ...prev, profilePic: '' }))
+    const updatedUser = { ...user, profilePic: '' }
+    localStorage.setItem("user", JSON.stringify(updatedUser))
+    setUser(updatedUser)
 
+    toast.success('Foto de perfil eliminada correctamente')
+  } catch (error) {
+    console.error('Error al eliminar foto:', error)
+    toast.error('Error al eliminar la foto de perfil')
+  } finally {
+    setIsLoading(false)
+  }
+}
   // Manejar actualización del perfil
   const handleProfileUpdate = async () => {
     try {
@@ -188,17 +236,13 @@ const SettingsPage = () => {
         toast.error('Por favor completa todos los campos obligatorios')
         return
       }
-
       // Determinar el endpoint según el tipo de usuario
       let endpoint = ''
       if (user.userType === 'admin') {
         endpoint = `${API.replace('/api', '')}/api/admin/profile`
-      } else if (user.userType === 'customer') {
-        endpoint = `${API}/customers/${user.id}`
       } else {
         endpoint = `${API}/employees/${user.id}`
       }
-
       const response = await fetch(endpoint, {
         method: 'PUT',
         headers: {
@@ -367,13 +411,39 @@ const SettingsPage = () => {
                       {`${profileData.name?.charAt(0) || user?.name?.charAt(0) || 'U'}${profileData.lastName?.charAt(0) || user?.lastName?.charAt(0) || ''}`}
                     </div>
                   </div>
-                  <button onClick={() => fileInputRef.current?.click()} disabled={isLoading} className="absolute -bottom-2 -right-2 bg-[#A73249] text-white p-2 rounded-full hover:bg-[#8A2A3E] transition-colors shadow-lg disabled:opacity-50 group">
-                    {isLoading ? (
-                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"/>
-                    ) : (
-                      <Camera className="w-4 h-4 group-hover:scale-110 transition-transform"/>
+                  {/* Botones de cámara y eliminar */}
+                  <div className="absolute -bottom-2 -right-2 flex space-x-1">
+                    {/* Botón eliminar foto (solo si hay foto) */}
+                    {profileData.profilePic && (
+                      <button 
+                        onClick={handleDeleteProfilePic} 
+                        disabled={isLoading} 
+                        className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors shadow-lg disabled:opacity-50 group"
+                        title="Eliminar foto de perfil"
+                      >
+                        {isLoading ? (
+                          <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin"/>
+                        ) : (
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        )}
+                      </button>
                     )}
-                  </button>
+                    {/* Botón cambiar foto */}
+                    <button 
+                      onClick={() => fileInputRef.current?.click()} 
+                      disabled={isLoading} 
+                      className="bg-[#A73249] text-white p-2 rounded-full hover:bg-[#8A2A3E] transition-colors shadow-lg disabled:opacity-50 group"
+                      title="Cambiar foto de perfil"
+                    >
+                      {isLoading ? (
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"/>
+                      ) : (
+                        <Camera className="w-4 h-4 group-hover:scale-110 transition-transform"/>
+                      )}
+                    </button>
+                  </div>
                   <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageUpload} className="hidden"/>
                 </div>
                 <div>
@@ -431,11 +501,21 @@ const SettingsPage = () => {
                   </div>
                 )}
               </div>
-
               {/* Botón para actualizar perfil */}
-              <button onClick={handleProfileUpdate} disabled={isLoading} className="flex items-center space-x-2 bg-[#A73249] text-white px-6 py-3 rounded-lg hover:bg-[#8A2A3E] transition-colors disabled:opacity-50">
+              <button onClick={handleProfileUpdate} disabled={isLoading || !hasChanges} className={`flex items-center space-x-2 px-6 py-3 rounded-lg transition-colors ${
+                  hasChanges && !isLoading 
+                    ? 'bg-[#A73249] text-white hover:bg-[#8A2A3E]' 
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                } ${isDarkMode && hasChanges && !isLoading ? 'bg-[#A73249] hover:bg-[#8A2A3E]' : ''} ${isDarkMode && (!hasChanges || isLoading) ? 'bg-gray-600 text-gray-400' : ''}`}>
                 <Save className="w-4 h-4" />
-                <span>{isLoading ? (t('saving') || 'Guardando...') : (t('saveChanges') || 'Guardar Cambios')}</span>
+                <span>
+                  {isLoading 
+                    ? (t('saving') || 'Guardando...') 
+                    : hasChanges 
+                      ? (t('saveChanges') || 'Guardar Cambios')
+                      : (t('noChanges') || 'Sin Cambios')
+                  }
+                </span>
               </button>
             </div>
           )}
