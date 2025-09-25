@@ -4,7 +4,7 @@ import { useLanguage, useTranslation } from '../../context/LanguageContext'
 import { useEmailNotifications } from '../../hooks/useEmailNotifications.js'
 import { useTheme } from '../../context/ThemeContext'
 import { toast } from 'react-hot-toast'
-import { User, Camera, Mail, Phone, Shield, Palette, Moon, Sun, Bell, Save, Eye, EyeOff } from 'lucide-react'
+import { User, Camera, Mail, Phone, Shield, Palette, Moon, Sun, Bell, Save, Eye, EyeOff, X } from 'lucide-react'
 
 const SettingsPage = () => {
   const { user, API, setUser } = useAuth()
@@ -201,9 +201,9 @@ const handleDeleteProfilePic = async () => {
     // Determinar el endpoint según el tipo de usuario
     let endpoint = ''
     if (user.userType === 'admin') {
-      endpoint = `https://pergola-production.up.railway.app/api/admin/profile/delete-profile-pic`
+      endpoint = `https://pergola-production.up.railway.app/api/admin/profile/delete-profilepic`
     } else {
-      endpoint = `${API}/employees/${user.id}/delete-profile-pic`
+      endpoint = `${API}/employees/${user.id}/delete-profilepic`
     }
     const response = await fetch(endpoint, {
       method: 'DELETE',
@@ -424,9 +424,7 @@ const handleDeleteProfilePic = async () => {
                         {isLoading ? (
                           <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin"/>
                         ) : (
-                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                          </svg>
+                          <X className="w-3 h-3" />
                         )}
                       </button>
                     )}
