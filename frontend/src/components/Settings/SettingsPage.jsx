@@ -154,7 +154,6 @@ const SettingsPage = () => {
         setProfileData(prev => ({ ...prev, profilePic: newProfilePic }))
         
         const updatedUser = { ...user, profilePic: newProfilePic }
-        localStorage.setItem("user", JSON.stringify(updatedUser))
         setUser(updatedUser)
       } else {
         await response.text()
@@ -174,7 +173,6 @@ const SettingsPage = () => {
           const freshUserData = await userDataResponse.json()
           setProfileData(prev => ({ ...prev, profilePic: freshUserData.profilePic }))
           const updatedUser = { ...user, profilePic: freshUserData.profilePic }
-          localStorage.setItem("user", JSON.stringify(updatedUser))
           setUser(updatedUser)
         }
       }
@@ -215,7 +213,6 @@ const handleDeleteProfilePic = async () => {
     // Actualizar el estado local y localStorage
     setProfileData(prev => ({ ...prev, profilePic: '' }))
     const updatedUser = { ...user, profilePic: '' }
-    localStorage.setItem("user", JSON.stringify(updatedUser))
     setUser(updatedUser)
 
     toast.success('Foto de perfil eliminada correctamente')
@@ -269,7 +266,6 @@ const handleDeleteProfilePic = async () => {
           lastName: profileData.lastName,
           profilePic: responseData.user?.profilePic || user.profilePic
         }
-        localStorage.setItem("user", JSON.stringify(updatedUser))
         setUser(updatedUser)
       }
 

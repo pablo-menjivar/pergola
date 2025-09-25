@@ -41,7 +41,7 @@ const ProtectedRoute = ({ children }) => {
           setHasShownError(false) // Reinicia el flag de error
         } else {
           // Token inválido, limpia datos locales
-          await logout() // Limpia localStorage y cookies
+          await logout() // Limpia cookies
           setIsAuthenticated(false)
           // Solo muestra el error una vez
           if (!hasShownError) {
