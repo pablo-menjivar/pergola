@@ -210,7 +210,7 @@ const handleDeleteProfilePic = async () => {
     if (!response.ok) {
       throw new Error('Error al eliminar la foto de perfil')
     }
-    // Actualizar el estado local y localStorage
+    // Actualizar el estado local
     setProfileData(prev => ({ ...prev, profilePic: '' }))
     const updatedUser = { ...user, profilePic: '' }
     setUser(updatedUser)

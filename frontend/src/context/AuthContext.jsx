@@ -95,6 +95,7 @@ export const AuthProvider = ({ children }) => {
         method: "POST",
         credentials: "include", // Para incluir cookies en la petición
       })
+      console.log("Llamado a logout")
     } catch (error) {
     } finally {
       // Limpiar estado y cookie
