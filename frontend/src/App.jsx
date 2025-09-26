@@ -11,6 +11,7 @@ import Login from './pages/Login'
 import SignUp from './pages/Signup'
 import MainPage from './pages/MainPage'
 import ProtectedRoute from './components/Auth/ProtectedRoute'
+import VerifyCodeEmail from './pages/VerifyCodeEmail'
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
               <Route path="/register" element={<SignUp/>}/>
               <Route path="/login" element={<Login/>}/>
               <Route path="/forgot-password" element={<ForgotPassword/>}/>
+              <Route path="/verify-code-email" element={<VerifyCodeEmail/>}/>
               <Route path="/verify-code" element={<VerifyCode/>}/>
               <Route path="/reset-password" element={<ResetPassword/>}/>
               {/* Rutas protegidas */}
