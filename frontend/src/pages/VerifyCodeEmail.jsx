@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import { useAuth } from '../hooks/useAuth'
 import { ChevronLeft } from 'lucide-react'
 import Logo from '../assets/logo.png'
 
@@ -9,7 +8,6 @@ const VerifyCodeEmail = () => {
   const [verificationCode, setVerificationCode] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
-  const { API } = useAuth()
 
   // Maneja cambios en el input del código
   const handleCodeChange = (e) => {
@@ -25,10 +23,11 @@ const VerifyCodeEmail = () => {
       toast.error('El código debe tener 6 caracteres')
       return
     }
-
+    // Debug: verificar cookies
+    console.log('Cookies disponibles:', document.cookie)
     setIsLoading(true)
     try {
-      const response = await fetch(`${API}/signup/verifyCode`, {
+      const response = await fetch(`https://pergola-production.up.railway.app/api/signup/verifyCode`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
