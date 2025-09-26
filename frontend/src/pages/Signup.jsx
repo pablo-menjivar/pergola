@@ -70,15 +70,19 @@ const SignUp = () => {
       toast.error('La contraseña debe tener al menos 8 caracteres')
       return false
     }
-    if (!email.includes('@')) {
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/.test(password)) {
+      toast.error('La contraseña debe incluir mayúsculas, minúsculas, números y caracteres especiales')
+      return false
+    }
+    if (!/^[\w.-]+@([\w-]+\.)+[a-zA-Z]{2,}$/.test(email)) {
       toast.error('El email no es válido')
       return false
     }
-    if (phoneNumber.length !== 13 || !phoneNumber.startsWith('+503')) {
+    if (!/^\+503[-\d]{8,12}$/.test(phoneNumber)) {
       toast.error('El teléfono debe tener el formato correcto (+5030000-0000)')
       return false
     }
-    if (DUI.length !== 10) {
+    if (!/^\d{8}-\d$/.test(DUI)) {
       toast.error('El número de DUI debe tener el formato correcto (00000000-0)')
       return false
     }
@@ -132,7 +136,7 @@ const SignUp = () => {
       toast.success('¡Registro exitoso! Redirigiendo...')
       // Pequeño delay antes de redirigir
       setTimeout(() => {
-        navigate('/main')
+        navigate('/verify-code-email')
       }, 2000)
     } catch (error) {
       console.error('Error:', error)
@@ -141,7 +145,6 @@ const SignUp = () => {
       setIsLoading(false)
     }
   }
-
   // Navega a la página de login
   const handleGoToLogin = () => {
     navigate('/login')
@@ -306,21 +309,6 @@ const SignUp = () => {
                 />
               </div>
             </div>
-          </div>
-
-          {/* Verificación */}
-          <div className="flex items-center space-x-3 p-3 bg-blue-50/30 rounded-xl border border-blue-200/50 mb-4">
-            <input
-              type="checkbox"
-              name="isVerified"
-              checked={formData.isVerified}
-              onChange={handleInputChange}
-              className="w-4 h-4 rounded"
-              style={{ accentColor: '#A73249', borderColor: '#A73249' }}
-            />
-            <label className="text-sm font-[Quicksand] font-medium" style={{ color: '#3D1609' }}>
-              Empleado verificado
-            </label>
           </div>
 
           {/* Botón de registro */}
