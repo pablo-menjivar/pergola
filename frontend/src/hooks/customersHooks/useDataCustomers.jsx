@@ -94,7 +94,7 @@ const useDataCustomers = () => {
         
         const response = await fetch(`${API}/customers/${id}`, {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: headers,
           credentials: "include",
           body
         })        
