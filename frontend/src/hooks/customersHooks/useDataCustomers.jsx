@@ -77,6 +77,9 @@ const useDataCustomers = () => {
     },
     // Handler para editar cliente
     onEdit: async (id, data) => {
+      console.log('📤 Sending data:', data)
+      console.log('📤 Image field:', data.image)
+      console.log('📤 Image type:', typeof data.image)   
       try {
         let body
         let headers = { credentials: "include" }
@@ -101,10 +104,7 @@ const useDataCustomers = () => {
         if (!response.ok) {
           const errorData = await response.json()
           throw new Error(errorData.message || "Error al actualizar cliente")
-        }   
-        console.log('📤 Sending data:', data)
-        console.log('📤 Image field:', data.image)
-        console.log('📤 Image type:', typeof data.image)     
+        }     
         toast.success('Cliente actualizado exitosamente')
         fetchCustomers() 
       } catch (error) {
