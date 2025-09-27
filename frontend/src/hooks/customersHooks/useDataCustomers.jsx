@@ -78,13 +78,13 @@ const useDataCustomers = () => {
     // Handler para editar cliente
     onEdit: async (id, data) => {
       console.log('📤 Sending data:', data)
-      console.log('📤 Image field:', data.image)
-      console.log('📤 Image type:', typeof data.image)   
+      console.log('📤 Image field:', data.profilePic)
+      console.log('📤 Image type:', typeof data.profilePic)   
       try {
         let body
         let headers = { credentials: "include" }
         // Usa FormData si hay imagen
-        if (data.image && data.image instanceof File) {
+        if (data.profilePic && data.profilePic instanceof File) {
           const formData = new FormData()
           Object.keys(data).forEach(key => {
             formData.append(key, data[key])
