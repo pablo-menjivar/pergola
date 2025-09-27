@@ -189,7 +189,7 @@ const useDataProducts = () => {
 
         const response = await fetch(`${API}/products/${id}`, {
           method: "PUT",
-          headers,
+          headers: headers, // No forzado
           credentials: "include",
           body
         })

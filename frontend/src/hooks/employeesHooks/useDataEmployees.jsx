@@ -92,7 +92,7 @@ const useDataEmployees = () => {
         }
         const response = await fetch(`${API}/employees/${id}`, {
           method: "PUT",
-          headers, // No forzado
+          headers: headers, // No forzado
           credentials: "include",
           body
         })

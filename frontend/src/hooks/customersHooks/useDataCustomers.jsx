@@ -77,9 +77,6 @@ const useDataCustomers = () => {
     },
     // Handler para editar cliente
     onEdit: async (id, data) => {
-      console.log('📤 Sending data:', data)
-      console.log('📤 Image field:', data.profilePic)
-      console.log('📤 Image type:', typeof data.profilePic)   
       try {
         let body
         let headers = { credentials: "include" }

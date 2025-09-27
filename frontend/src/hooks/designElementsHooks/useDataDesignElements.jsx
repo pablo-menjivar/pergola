@@ -56,7 +56,7 @@ const useDataDesignElements = () => {
         // Realiza la petición POST
         const response = await fetch(`${API}/designelements`, {
           method: "POST",
-          headers, // No forzado
+          headers: headers, // No forzado
           credentials: "include",
           body
         })

@@ -91,7 +91,7 @@ const useDataCollections = () => {
         // Realiza la petición PUT
         const response = await fetch(`${API}/collections/${id}`, {
           method: "PUT",
-          headers, // No forzado
+          headers: headers, // No forzado
           credentials: "include",
           body
         })
