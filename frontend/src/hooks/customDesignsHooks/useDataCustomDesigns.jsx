@@ -5,6 +5,7 @@ import { toast } from "react-hot-toast"
 const useDataCustomDesigns = () => {
   const API = "https://pergola-production.up.railway.app/api/customdesigns"
   const [customdesigns, setCustomDesigns] = useState([]) // estado de diseños
+  const [designelements, setDesignElements] = useState([]) // estado con elementos de diseño
   const [loading, setLoading] = useState(true) // estado de carga
 
   // Obtiene los diseños desde el backend
@@ -31,10 +32,26 @@ const useDataCustomDesigns = () => {
       setLoading(false)
     }
   }
+  // Cargar elementos de diseño desde el servidor
+  const fetchDesignElements = async () => {
+    try {
+      const response = await fetch("https://pergola-production.up.railway.app/api/designelements", {
+        credentials: "include"
+      });
+      if (!response.ok) {
+        throw new Error("Error al obtener elementos de diseño")
+      }
+      const data = await response.json();
+      setDesignElements(data)
+    } catch (error) {
+      console.error("Error al obtener elementos de diseño:", error);
+    }
+  }
 
   // Ejecuta la carga inicial al montar el componente
   useEffect(() => {
-    fetchCustomDesigns() // carga al montar
+    fetchCustomDesigns(); // carga al montar
+    fetchDesignElements(); // carga inicial al montar
   }, [])
 
   // Genera handlers para CRUD
@@ -110,6 +127,7 @@ const useDataCustomDesigns = () => {
   // Retorna estados y funciones
   return {
     customdesigns,
+    designelements,
     loading,
     deleteCustomDesign,
     fetchCustomDesigns,

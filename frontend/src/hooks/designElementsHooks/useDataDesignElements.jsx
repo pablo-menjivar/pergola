@@ -56,7 +56,7 @@ const useDataDesignElements = () => {
         // Realiza la petición POST
         const response = await fetch(`${API}/designelements`, {
           method: "POST",
-          headers: headers, // No forzado
+          headers, // No forzado
           credentials: "include",
           body
         })
@@ -89,7 +89,7 @@ const useDataDesignElements = () => {
         // Realiza la petición PUT
         const response = await fetch(`${API}/designelements/${id}`, {
           method: "PUT",
-          headers, // No forzado
+          headers: headers, // No forzado
           credentials: "include",
           body
         })
@@ -126,6 +126,7 @@ const useDataDesignElements = () => {
   }
   // Retorna estados y funciones para usar en componentes
   return {
+    designElements: designelements, // Alias para consistencia
     designelements,
     loading,
     deleteDesignElement,

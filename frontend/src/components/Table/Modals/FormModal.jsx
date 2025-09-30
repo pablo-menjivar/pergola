@@ -145,6 +145,13 @@ const FormModal = ({isOpen, onClose, onSubmit, title, fields, initialData = {}, 
         message: `Máximo ${field.maxLength} caracteres`
       }
     }
+    // AGREGAR en la función getValidationRules después de la línea 70:
+    if (field.pattern) {
+      rules.pattern = {
+        value: new RegExp(field.pattern),
+        message: field.patternMessage || 'Formato inválido'
+      }
+    }
     return rules
   }
   // Maneja el preview de imágenes

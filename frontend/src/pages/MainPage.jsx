@@ -6,7 +6,6 @@ import Header from '../components/Dashboard/Header'
 import Dashboard from '../components/Dashboard/Dashboard'
 import TableContainer from '../components/Table/TableContainer'
 import SettingsPage from '../components/Settings/SettingsPage'
-import ProgressScreen from '../components/Misc/ProgressScreen'
 import { handleExport } from '../utils/exportUtils.js'
 import GlobalSearch from '../components/Search/GlobalSearch'
 import { useConditionalData } from '../hooks/mainHook/useConditionalData.js'
@@ -47,7 +46,7 @@ const MainPage = () => {
     }
     try {
       const filename = `${sectionName.toLowerCase().replace(/\s+/g, '_')}`
-      const title = `Reporte de ${sectionName} - Pergola`
+      const title = `Reporte de ${sectionName} - Pérgola`
       
       handleExport(format, data, filename, title)
       toast.success(`Exportación de ${sectionName} iniciada en formato ${format.toUpperCase()}`)
@@ -158,7 +157,7 @@ const MainPage = () => {
         return (
           <div className="p-6 bg-white min-h-screen">
             <div className="max-w-7xl mx-auto">
-              <TableContainer config={customDesignsConfig} {...customDesignsData.createHandlers(API)} onExport={handleDataExport}/>
+              <TableContainer config={customDesignsConfig} {...customDesignsData.createHandlers(API)} designElementsData={designElementsData} onExport={handleDataExport}/>
             </div>
           </div>
         )

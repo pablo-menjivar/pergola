@@ -85,7 +85,7 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
         }
       }
       // Opciones para materias primas
-      if (field.options === 'rawMaterials' && rawMaterialsData?.rawMaterials) {
+      if (field.options === 'rawmaterials' && rawMaterialsData?.rawMaterials) {
         return {
             ...field,
             options: rawMaterialsData.rawMaterials.map(material => ({

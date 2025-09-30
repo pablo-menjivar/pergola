@@ -65,6 +65,7 @@ export const employeesConfig = {
     { key: 'phoneNumber', label: 'Teléfono', searchable: true },
     { key: 'birthDate', label: 'Fecha de Nacimiento', sortable: true, type: 'date' },
     { key: 'DUI', label: 'DUI', sortable: true, searchable: true },
+    { key: 'userType', label: 'Tipo de Usuario', sortable: true },
     { key: 'hireDate', label: 'Fecha de Contratación', sortable: true, type: 'date' },
     { key: 'isVerified', label: 'Verificado', sortable: true, type: 'boolean' },
     { key: 'profilePic', label: 'Foto', type: 'image' },
@@ -85,7 +86,7 @@ export const employeesConfig = {
     { name: 'phoneNumber', type: 'tel', label: 'Teléfono', required: true, placeholder: 'Ej: +503-7123-4567', helperText: 'Formato: +503 seguido de 8 dígitos (ej: +503-7123-4567)' },
     { name: 'birthDate', type: 'date', label: 'Fecha de Nacimiento', required: true },
     { name: 'DUI', type: 'text', label: 'DUI', required: true, placeholder: '12345678-9' },
-    { name: 'password', type: 'password', label: 'Contraseña', required: true, placeholder: '********' },,
+    { name: 'password', type: 'password', label: 'Contraseña', required: true, placeholder: '********' },
     { name: 'hireDate', type: 'date', label: 'Fecha de Contratación', required: true },
     { name: 'profilePic', type: 'image', label: 'Foto de Perfil', accept: 'image/*', placeholder: 'Seleccionar imagen' },
     { name: 'isVerified', type: 'checkbox', label: 'Verificado' }
@@ -353,7 +354,7 @@ export const customDesignsConfig = {
     canView: true
   },
   formFields: [
-    { name: 'codeRequest', type: 'text', label: 'Código de Solicitud', required: true, placeholder: 'Ej: D-001' },
+    { name: 'codeRequest', type: 'text', label: 'Código de Solicitud', required: true, placeholder: 'Ej: D-001', minLength: 5 },
     { name: 'piece', type: 'select', label: 'Pieza', required: true, 
       options: [
         { value: 'Pulsera', label: 'Pulsera' },
@@ -361,11 +362,12 @@ export const customDesignsConfig = {
         { value: 'Tobillera', label: 'Tobillera' }
       ]
     },
-    { name: 'base', type: 'text', label: 'Base', required: true, placeholder: 'Ej: Cadena de eslabones' },
-    { name: 'baseLength', type: 'text', label: 'Longitud de Base', required: true, placeholder: 'Ej: 18cm' },
-    { name: 'decoration', type: 'textarea', label: 'Decoración', required: true, placeholder: 'Describe los elementos decorativos...', rows: 3 },
-    { name: 'clasp', type: 'text', label: 'Cierre', required: true, placeholder: 'Ej: Cierre mosquetón' },
-    { name: 'customerComments', type: 'textarea', label: 'Comentarios del Cliente', required: false, placeholder: 'Comentarios adicionales del cliente...', rows: 3, maxlength: 300 }
+    // Referencias a DesignElements
+    { name: 'base', type: 'select', label: 'Base', required: true, options: 'designelements' },
+    { name: 'baseLength', type: 'text', label: 'Longitud de Base', required: true, placeholder: 'Ej: 18cm o 180mm', helperText: 'Formato: 1-3 dígitos seguidos de cm o mm (ej: 18cm, 180mm)', pattern: '^\\d{1,3}(cm|mm)?$', patternMessage: 'La longitud debe tener formato: 123cm o 123mm' },
+    { name: 'decoration', type: 'select-multiple', label: 'Decoración', required: true, options: 'designelements' },
+    { name: 'clasp', type: 'select', label: 'Cierre', required: true, options: 'designelements' },
+    { name: 'customerComments', type: 'textarea', label: 'Comentarios del Cliente', required: true, placeholder: 'Comentarios adicionales del cliente...', rows: 3, maxLength: 300 }
   ]
 }
 // Configuración corregida para Elementos de Diseño
