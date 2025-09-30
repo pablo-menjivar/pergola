@@ -230,7 +230,7 @@ export const productsConfig = {
     { name: 'collection', type: 'select', label: 'Colección', required: true, options: 'collections' },
     { name: 'category', type: 'select', label: 'Categoría', required: true, options: 'categories' },
     { name: 'subcategory', type: 'select', label: 'Subcategoría', required: true, options: 'subcategories' },
-    { name: 'rawMaterialsUsed', type: 'select-multiple', label: 'Materiales Usados', required: true, options: 'rawMaterials' },
+    { name: 'rawMaterialsUsed', type: 'select-multiple', label: 'Materiales Usados', required: true, options: 'rawmaterials' },
     { name: 'highlighted', type: 'checkbox', label: 'Producto Destacado' },
     { name: 'correlative', type: 'text', label: 'Correlativo', required: true, placeholder: 'Ej: 001' },
     { name: 'movementType', type: 'select', label: 'Tipo de Movimiento', required: true, 
