@@ -6,7 +6,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import OrderItemsField from '../../Fields/OrderItemsField'
 
 // Componente modal para formularios dinámicos
-const FormModal = ({isOpen, onClose, onSubmit, title, fields, initialData = {}, isLoading = false, submitButtonText = 'Guardar'}) => {
+const FormModal = ({isOpen, onClose, onSubmit, title, fields, initialData = {}, isLoading = false, submitButtonText = 'Guardar', productsData}) => {
   // Estados para mostrar/ocultar contraseñas, previews de imágenes y archivos seleccionados, y si el formulario está inicializado
   const [showPasswords, setShowPasswords] = useState({})
   const [imagePreviews, setImagePreviews] = useState({})
