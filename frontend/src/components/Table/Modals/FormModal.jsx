@@ -261,14 +261,17 @@ const FormModal = ({isOpen, onClose, onSubmit, title, fields, initialData = {}, 
             onChange={(newItems) => {
               // Calcular subtotal y total automáticamente
               const subtotal = newItems.reduce((sum, item) => sum + (item.quantity * item.price), 0);
-              const total = subtotal; 
+              const total = subtotal;
+              
               // Actualizar los campos de subtotal y total
               setValue('subtotal', subtotal);
               setValue('total', total);
+              
               // Actualizar los items
               setValue(field.name, newItems);
             }}
-            products={productsData?.products || []}
+            // ✅ CORREGIDO: Usar productsData del campo procesado
+            products={field.productsData || []}
             disabled={isLoading}
           />
         );

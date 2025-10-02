@@ -8,6 +8,12 @@ const OrderItemsField = ({
   products = [], 
   disabled = false 
 }) => {
+  console.log('🔍 OrderItemsField - Props recibidas:', {
+    value,
+    products,
+    productsCount: products?.length,
+    productNames: products?.map(p => p.name)
+  });
   const [items, setItems] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState('');
   const [quantity, setQuantity] = useState(1);
