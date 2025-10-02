@@ -1,7 +1,13 @@
+// components/FormFields/OrderItemsField.jsx
 import { useState, useEffect } from 'react';
-import { Plus, Trash2, ShoppingCart } from 'lucide-react';
+import { Plus, Trash2, ShoppingCart, AlertCircle } from 'lucide-react';
 
-const OrderItemsField = ({ value = [], onChange, products = [], disabled = false }) => {
+const OrderItemsField = ({ 
+  value = [], 
+  onChange, 
+  products = [], 
+  disabled = false 
+}) => {
   const [items, setItems] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState('');
   const [quantity, setQuantity] = useState(1);
@@ -10,15 +16,65 @@ const OrderItemsField = ({ value = [], onChange, products = [], disabled = false
   // Inicializar items cuando cambia el value
   useEffect(() => {
     if (value && Array.isArray(value)) {
-      setItems(value);
+      // Procesar items para asegurar que tengan la estructura correcta
+      const processedItems = value.map(item => {
+        // Si el item ya tiene la estructura correcta
+        if (item.itemId && item.quantity && item.price) {
+          // Buscar información del producto para mostrar
+          const productInfo = products.find(p => p._id === item.itemId);
+          return {
+            ...item,
+            product: productInfo,
+            name: productInfo?.name || 'Producto no encontrado',
+            subtotal: item.quantity * item.price
+          };
+        }
+        
+        // Si es un objeto simple (caso de edición)
+        if (typeof item === 'object' && !item.itemId) {
+          const productInfo = products.find(p => p._id === item._id);
+          return {
+            itemId: item._id,
+            product: productInfo,
+            quantity: 1,
+            price: item.price || 0,
+            name: productInfo?.name || item.name || 'Producto',
+            subtotal: 1 * (item.price || 0)
+          };
+        }
+        
+        // Si es solo un ID string
+        if (typeof item === 'string') {
+          const productInfo = products.find(p => p._id === item);
+          return {
+            itemId: item,
+            product: productInfo,
+            quantity: 1,
+            price: productInfo?.price || 0,
+            name: productInfo?.name || 'Producto',
+            subtotal: 1 * (productInfo?.price || 0)
+          };
+        }
+        
+        return item;
+      });
+      
+      setItems(processedItems);
     } else {
       setItems([]);
     }
-  }, [value]);
+  }, [value, products]);
 
   // Notificar cambios al padre
   useEffect(() => {
-    onChange(items);
+    // Preparar datos para el backend (solo lo necesario)
+    const backendItems = items.map(item => ({
+      itemId: item.itemId,
+      quantity: item.quantity,
+      price: item.price
+    }));
+    
+    onChange(backendItems);
   }, [items, onChange]);
 
   // Agregar nuevo item
@@ -30,7 +86,7 @@ const OrderItemsField = ({ value = [], onChange, products = [], disabled = false
 
     const newItem = {
       itemId: selectedProduct,
-      product, // Guardar info del producto para mostrar
+      product, // Para mostrar en la UI
       quantity: Number(quantity),
       price: Number(price),
       name: product.name,
@@ -54,7 +110,10 @@ const OrderItemsField = ({ value = [], onChange, products = [], disabled = false
   const updateItem = (index, field, newValue) => {
     setItems(prev => prev.map((item, i) => {
       if (i === index) {
-        const updated = { ...item, [field]: Number(newValue) };
+        const updated = { 
+          ...item, 
+          [field]: field === 'quantity' || field === 'price' ? Number(newValue) : newValue 
+        };
         
         // Recalcular subtotal si cambia quantity o price
         if (field === 'quantity' || field === 'price') {
@@ -80,6 +139,21 @@ const OrderItemsField = ({ value = [], onChange, products = [], disabled = false
       setPrice(product.price || 0);
     }
   };
+
+  // Verificar si hay productos disponibles
+  if (products.length === 0) {
+    return (
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+        <div className="flex items-center gap-2 text-yellow-800">
+          <AlertCircle className="w-5 h-5" />
+          <div>
+            <p className="font-medium">No hay productos disponibles</p>
+            <p className="text-sm mt-1">Agrega productos primero para poder crear pedidos.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">

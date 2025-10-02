@@ -6,7 +6,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import OrderItemsField from '../../Fields/OrderItemsField'
 
 // Componente modal para formularios dinámicos
-const FormModal = ({isOpen, onClose, onSubmit, title, fields, initialData = {}, isLoading = false, submitButtonText = 'Guardar', productsData}) => {
+const FormModal = ({isOpen, onClose, onSubmit, title, fields, initialData = {}, isLoading = false, submitButtonText = 'Guardar', productsData = {}}) => {
   // Estados para mostrar/ocultar contraseñas, previews de imágenes y archivos seleccionados, y si el formulario está inicializado
   const [showPasswords, setShowPasswords] = useState({})
   const [imagePreviews, setImagePreviews] = useState({})
@@ -261,7 +261,7 @@ const FormModal = ({isOpen, onClose, onSubmit, title, fields, initialData = {}, 
             onChange={(newItems) => {
               // Calcular subtotal y total automáticamente
               const subtotal = newItems.reduce((sum, item) => sum + (item.quantity * item.price), 0);
-              const total = subtotal; // Puedes agregar impuestos/descuentos aquí
+              const total = subtotal; 
               // Actualizar los campos de subtotal y total
               setValue('subtotal', subtotal);
               setValue('total', total);
