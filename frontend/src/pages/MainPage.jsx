@@ -149,7 +149,7 @@ const MainPage = () => {
         return (
           <div className="p-6 bg-white min-h-screen">
             <div className="max-w-7xl mx-auto">
-              <TableContainer config={ordersConfig} {...ordersData.createHandlers(API)} onExport={handleDataExport} customersData={{customers: customers}} productsData={{ products: products }}/>
+              <TableContainer config={ordersConfig} {...ordersData.createHandlers(API)} onExport={handleDataExport} customersData={{customers: ordersData.customers || []}} productsData={{ products: products }}/>
             </div>
           </div>
         )
