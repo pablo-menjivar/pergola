@@ -106,7 +106,6 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
           }))
         }
       }
-      
       // ✅ FIX PRINCIPAL: Para campos order-items, pasar la lista completa de productos
       if (field.type === 'order-items') {
         console.log('✅ Processing order-items field. Products available:', productsData?.products?.length);
@@ -117,7 +116,7 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
       }
       
       // Opciones para pedidos
-      if (field.options === 'order-items' && ordersData?.orders) {
+      if (field.options === 'orders' && ordersData?.orders) {
         return {
           ...field,
           options: ordersData.orders.map(order => ({
