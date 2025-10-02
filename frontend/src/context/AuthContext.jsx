@@ -9,19 +9,23 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true)
 
   // Función para iniciar sesión
-  const Login = async (email, password, rememberMe = false) => {
+  const Login = async (email, password, rememberMe= false, platform= "web") => {
     try {      
       // Llama al endpoint de login
       const response = await fetch(`${API}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, rememberMe }),
+        body: JSON.stringify({ email, password, rememberMe, platform }),
         credentials: "include"
       })
       const data = await response.json()
       
       if (!response.ok) {
-        throw new Error(data.message || "Error en la autenticación")
+        return {
+          success: false,
+          message: data.message || "Error en la autenticación",
+          remainingMinutes: data.remainingMinutes, // Para usuarios bloqueados
+        }
       }
       // Pequeño retraso para garantizar que la cookie se configure correctamente
       await new Promise(resolve => setTimeout(resolve, 100))
@@ -84,7 +88,7 @@ export const AuthProvider = ({ children }) => {
       setUser(userData)
       return { success: true, message: data.message, user: userData }      
     } catch (error) {
-      return { success: false, message: error.message }
+      return { success: false, message: error.message, remainingMinutes: undefined }
     }
   }
   // Función para cerrar sesión
