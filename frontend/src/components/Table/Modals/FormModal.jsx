@@ -255,6 +255,11 @@ const FormModal = ({isOpen, onClose, onSubmit, title, fields, initialData = {}, 
         )
       // En FormModal.jsx, dentro de renderField function, agrega:
       case 'order-items':
+        console.log('🔍 FormModal - Rendering order-items field:', {
+          fieldName: field.name,
+          productsData: field.productsData,
+          productsCount: field.productsData?.length
+        });
         return (
           <OrderItemsField
             value={initialData[field.name] || []}
@@ -270,7 +275,6 @@ const FormModal = ({isOpen, onClose, onSubmit, title, fields, initialData = {}, 
               // Actualizar los items
               setValue(field.name, newItems);
             }}
-            // ✅ CORREGIDO: Usar productsData del campo procesado
             products={field.productsData || []}
             disabled={isLoading}
           />

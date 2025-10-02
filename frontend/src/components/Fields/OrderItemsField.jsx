@@ -8,7 +8,7 @@ const OrderItemsField = ({
   products = [], 
   disabled = false 
 }) => {
-  console.log('🔍 OrderItemsField - Props recibidas:', {
+  console.log('📋 OrderItemsField - Props recibidas:', {
     value,
     products,
     productsCount: products?.length,
@@ -150,7 +150,7 @@ const OrderItemsField = ({
   // Verificar si hay productos disponibles
   if (products.length === 0) {
     return (
-      <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-4">
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
         <div className="flex items-center gap-2 text-yellow-800">
           <AlertCircle className="w-5 h-5" />
           <div>
@@ -165,8 +165,8 @@ const OrderItemsField = ({
   return (
     <div className="space-y-4">
       {/* Formulario para agregar items */}
-      <div className="bg-[#E8E1D8] p-4 rounded-lg border border-[#A73249]/20">
-        <h4 className="text-sm font-medium text-[#3D1609] mb-3 flex items-center gap-2 font-[Quicksand]">
+      <div className="bg-[#E8E1D8] p-4 rounded-lg border border-gray-200">
+        <h4 className="text-sm font-semibold text-[#3D1609] mb-3 flex items-center gap-2 font-[Quicksand]">
           <ShoppingCart className="w-4 h-4" />
           Agregar Productos al Pedido
         </h4>
@@ -181,7 +181,7 @@ const OrderItemsField = ({
               value={selectedProduct}
               onChange={(e) => handleProductSelect(e.target.value)}
               disabled={disabled}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#A73249] focus:border-[#A73249] bg-white font-[Quicksand]"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#A73249] focus:border-transparent bg-white font-[Quicksand]"
             >
               <option value="">Seleccionar producto</option>
               {products.map(product => (
@@ -203,7 +203,7 @@ const OrderItemsField = ({
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
               disabled={disabled}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#A73249] focus:border-[#A73249] font-[Quicksand]"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#A73249] focus:border-transparent bg-white font-[Quicksand]"
             />
           </div>
 
@@ -219,7 +219,7 @@ const OrderItemsField = ({
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               disabled={disabled}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#A73249] focus:border-[#A73249] font-[Quicksand]"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#A73249] focus:border-transparent bg-white font-[Quicksand]"
             />
           </div>
         </div>
@@ -230,7 +230,7 @@ const OrderItemsField = ({
             type="button"
             onClick={addItem}
             disabled={!selectedProduct || quantity < 1 || price < 0 || disabled}
-            className="flex items-center gap-2 px-4 py-2 bg-[#A73249] text-white text-sm rounded-lg hover:bg-[#8b2a3d] disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-[Quicksand] font-medium"
+            className="flex items-center gap-2 px-4 py-2 bg-[#A73249] text-white text-sm rounded-lg hover:bg-[#A73249]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-[Quicksand] font-medium"
           >
             <Plus className="w-4 h-4" />
             Agregar Producto
@@ -240,9 +240,9 @@ const OrderItemsField = ({
 
       {/* Lista de items agregados */}
       {items.length > 0 && (
-        <div className="border border-gray-200 rounded-lg overflow-hidden">
+        <div className="border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm">
           <div className="bg-[#E8E1D8] px-4 py-3 border-b border-gray-200">
-            <h4 className="text-sm font-medium text-[#3D1609] font-[Quicksand]">
+            <h4 className="text-sm font-semibold text-[#3D1609] font-[Quicksand]">
               Productos en el Pedido ({items.length})
             </h4>
           </div>
@@ -272,7 +272,7 @@ const OrderItemsField = ({
                         value={item.quantity}
                         onChange={(e) => updateItem(index, 'quantity', e.target.value)}
                         disabled={disabled}
-                        className="w-20 px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-[#A73249] font-[Quicksand]"
+                        className="w-20 px-2 py-1 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#A73249] bg-white font-[Quicksand]"
                       />
                       
                       {/* Editar precio */}
@@ -283,7 +283,7 @@ const OrderItemsField = ({
                         value={item.price}
                         onChange={(e) => updateItem(index, 'price', e.target.value)}
                         disabled={disabled}
-                        className="w-24 px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-[#A73249] font-[Quicksand]"
+                        className="w-24 px-2 py-1 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#A73249] bg-white font-[Quicksand]"
                       />
                       
                       {/* Botón eliminar */}
@@ -291,7 +291,8 @@ const OrderItemsField = ({
                         type="button"
                         onClick={() => removeItem(index)}
                         disabled={disabled}
-                        className="p-1 text-red-600 hover:bg-red-50 rounded transition-colors"
+                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Eliminar producto"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
