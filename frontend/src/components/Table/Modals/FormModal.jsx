@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import BaseModal from './BaseModal'
 import { Save, X, Upload, Eye, EyeOff, Image, Trash2 } from 'lucide-react'
 import { useState, useEffect, useRef, useCallback } from 'react'
+import OrderItemsField from '../../Fields/OrderItemsField'
 
 // Componente modal para formularios dinámicos
 const FormModal = ({isOpen, onClose, onSubmit, title, fields, initialData = {}, isLoading = false, submitButtonText = 'Guardar'}) => {
@@ -252,6 +253,25 @@ const FormModal = ({isOpen, onClose, onSubmit, title, fields, initialData = {}, 
             </div>
           </div>
         )
+      // En FormModal.jsx, dentro de renderField function, agrega:
+      case 'order-items':
+        return (
+          <OrderItemsField
+            value={initialData[field.name] || []}
+            onChange={(newItems) => {
+              // Calcular subtotal y total automáticamente
+              const subtotal = newItems.reduce((sum, item) => sum + (item.quantity * item.price), 0);
+              const total = subtotal; // Puedes agregar impuestos/descuentos aquí
+              // Actualizar los campos de subtotal y total
+              setValue('subtotal', subtotal);
+              setValue('total', total);
+              // Actualizar los items
+              setValue(field.name, newItems);
+            }}
+            products={productsData?.products || []}
+            disabled={isLoading}
+          />
+        );
       case 'image':
         return (
           <div className="space-y-3">

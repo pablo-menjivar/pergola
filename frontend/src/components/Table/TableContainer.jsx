@@ -336,19 +336,19 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
     }
     if (item.items && Array.isArray(item.items)) {
     processedItem.items = item.items.map(orderItem => {
-      if (typeof orderItem === 'object') {
-        // Si es objeto con itemId (estructura populada)
-        if (orderItem.itemId && typeof orderItem.itemId === 'object') {
-          return {
-            itemId: orderItem.itemId._id,
-            quantity: orderItem.quantity || 1,
-            price: orderItem.price || 0
-          }
-        }
-        // Si es objeto directo (estructura simple)
+      // Si ya tiene la estructura correcta (con itemId, quantity, price)
+      if (orderItem.itemId && typeof orderItem.itemId === 'object') {
         return {
-          itemId: orderItem._id || orderItem.itemId,
+          itemId: orderItem.itemId._id,
           quantity: orderItem.quantity || 1,
+          price: orderItem.price || 0
+        }
+      }
+      // Si es objeto directo sin estructura
+      if (typeof orderItem === 'object') {
+        return {
+          itemId: orderItem._id,
+          quantity: 1,
           price: orderItem.price || 0
         }
       }

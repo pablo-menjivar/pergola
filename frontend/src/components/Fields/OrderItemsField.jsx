@@ -1,0 +1,247 @@
+import { useState, useEffect } from 'react';
+import { Plus, Trash2, ShoppingCart } from 'lucide-react';
+
+const OrderItemsField = ({ value = [], onChange, products = [], disabled = false }) => {
+  const [items, setItems] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState('');
+  const [quantity, setQuantity] = useState(1);
+  const [price, setPrice] = useState(0);
+
+  // Inicializar items cuando cambia el value
+  useEffect(() => {
+    if (value && Array.isArray(value)) {
+      setItems(value);
+    } else {
+      setItems([]);
+    }
+  }, [value]);
+
+  // Notificar cambios al padre
+  useEffect(() => {
+    onChange(items);
+  }, [items, onChange]);
+
+  // Agregar nuevo item
+  const addItem = () => {
+    if (!selectedProduct || quantity < 1 || price < 0) return;
+
+    const product = products.find(p => p._id === selectedProduct);
+    if (!product) return;
+
+    const newItem = {
+      itemId: selectedProduct,
+      product, // Guardar info del producto para mostrar
+      quantity: Number(quantity),
+      price: Number(price),
+      name: product.name,
+      subtotal: Number(quantity) * Number(price)
+    };
+
+    setItems(prev => [...prev, newItem]);
+    
+    // Reset form
+    setSelectedProduct('');
+    setQuantity(1);
+    setPrice(0);
+  };
+
+  // Eliminar item
+  const removeItem = (index) => {
+    setItems(prev => prev.filter((_, i) => i !== index));
+  };
+
+  // Actualizar item existente
+  const updateItem = (index, field, newValue) => {
+    setItems(prev => prev.map((item, i) => {
+      if (i === index) {
+        const updated = { ...item, [field]: Number(newValue) };
+        
+        // Recalcular subtotal si cambia quantity o price
+        if (field === 'quantity' || field === 'price') {
+          updated.subtotal = updated.quantity * updated.price;
+        }
+        
+        return updated;
+      }
+      return item;
+    }));
+  };
+
+  // Calcular total automáticamente
+  const calculateTotal = () => {
+    return items.reduce((total, item) => total + (item.quantity * item.price), 0);
+  };
+
+  // Cuando seleccionan un producto, auto-completar el precio
+  const handleProductSelect = (productId) => {
+    setSelectedProduct(productId);
+    const product = products.find(p => p._id === productId);
+    if (product) {
+      setPrice(product.price || 0);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      {/* Formulario para agregar items */}
+      <div className="bg-gray-50 p-4 rounded-lg border">
+        <h4 className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
+          <ShoppingCart className="w-4 h-4" />
+          Agregar Productos al Pedido
+        </h4>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          {/* Selector de producto */}
+          <div>
+            <label className="block text-xs font-medium text-gray-600 mb-1">
+              Producto *
+            </label>
+            <select
+              value={selectedProduct}
+              onChange={(e) => handleProductSelect(e.target.value)}
+              disabled={disabled}
+              className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="">Seleccionar producto</option>
+              {products.map(product => (
+                <option key={product._id} value={product._id}>
+                  {product.name} - ${product.price}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Cantidad */}
+          <div>
+            <label className="block text-xs font-medium text-gray-600 mb-1">
+              Cantidad *
+            </label>
+            <input
+              type="number"
+              min="1"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              disabled={disabled}
+              className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+
+          {/* Precio */}
+          <div>
+            <label className="block text-xs font-medium text-gray-600 mb-1">
+              Precio Unitario *
+            </label>
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              disabled={disabled}
+              className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+        </div>
+
+        {/* Botón agregar */}
+        <div className="mt-3">
+          <button
+            type="button"
+            onClick={addItem}
+            disabled={!selectedProduct || quantity < 1 || price < 0 || disabled}
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Plus className="w-4 h-4" />
+            Agregar Producto
+          </button>
+        </div>
+      </div>
+
+      {/* Lista de items agregados */}
+      {items.length > 0 && (
+        <div className="border rounded-lg overflow-hidden">
+          <div className="bg-gray-50 px-4 py-3 border-b">
+            <h4 className="text-sm font-medium text-gray-700">
+              Productos en el Pedido ({items.length})
+            </h4>
+          </div>
+          
+          <div className="divide-y">
+            {items.map((item, index) => (
+              <div key={index} className="px-4 py-3 flex items-center justify-between hover:bg-gray-50">
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="font-medium text-sm text-gray-900">
+                        {item.name || `Producto ${index + 1}`}
+                      </span>
+                      <div className="text-xs text-gray-500 mt-1">
+                        Cantidad: {item.quantity} × ${item.price?.toFixed(2)} = 
+                        <span className="font-semibold text-green-600 ml-1">
+                          ${item.subtotal?.toFixed(2)}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3">
+                      {/* Editar cantidad */}
+                      <input
+                        type="number"
+                        min="1"
+                        value={item.quantity}
+                        onChange={(e) => updateItem(index, 'quantity', e.target.value)}
+                        disabled={disabled}
+                        className="w-20 px-2 py-1 border border-gray-300 rounded text-sm"
+                      />
+                      
+                      {/* Editar precio */}
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={item.price}
+                        onChange={(e) => updateItem(index, 'price', e.target.value)}
+                        disabled={disabled}
+                        className="w-24 px-2 py-1 border border-gray-300 rounded text-sm"
+                      />
+                      
+                      {/* Botón eliminar */}
+                      <button
+                        type="button"
+                        onClick={() => removeItem(index)}
+                        disabled={disabled}
+                        className="p-1 text-red-600 hover:bg-red-50 rounded"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Total */}
+          <div className="bg-green-50 px-4 py-3 border-t">
+            <div className="flex justify-between items-center">
+              <span className="font-semibold text-gray-900">Total del Pedido:</span>
+              <span className="text-lg font-bold text-green-600">
+                ${calculateTotal().toFixed(2)}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {items.length === 0 && (
+        <div className="text-center py-8 text-gray-500 border-2 border-dashed rounded-lg">
+          <ShoppingCart className="w-12 h-12 mx-auto text-gray-300 mb-2" />
+          <p className="text-sm">No hay productos en el pedido</p>
+          <p className="text-xs mt-1">Agrega productos usando el formulario superior</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default OrderItemsField;
