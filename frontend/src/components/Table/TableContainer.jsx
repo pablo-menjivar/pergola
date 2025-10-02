@@ -163,17 +163,16 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
       }
       // ✅ ITEMS CON ESTRUCTURA ANIDADA
       if (column.key === 'items' && Array.isArray(value)) {
-        return value.map(item => {
-          if (typeof item === 'object') {
-            // Estructura anidada
-            if (item.itemId && typeof item.itemId === 'object') {
-              const product = item.itemId
+        return value.map(orderItem => {
+          if (typeof orderItem === 'object') {
+            // ✅ Manejar tanto estructura populada como simple
+            const product = orderItem.itemId || orderItem;
+            if (typeof product === 'object') {
               return `${product.name || ''} ${product.description || ''} ${product.codeProduct || ''} ${product.price || ''}`
             }
-            // Estructura simple
-            return `${item.name || ''} ${item.description || ''} ${item.codeProduct || ''} ${item.price || ''}`
+            return product.toString();
           }
-          return item.toString()
+          return orderItem.toString();
         }).join(' ').toLowerCase()
       }
       if (column.key === 'employee') {
@@ -336,10 +335,31 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
       )
     }
     if (item.items && Array.isArray(item.items)) {
-      processedItem.items = item.items.map(item => 
-        typeof item === 'object' ? item._id : item
-      )
-    }
+    processedItem.items = item.items.map(orderItem => {
+      if (typeof orderItem === 'object') {
+        // Si es objeto con itemId (estructura populada)
+        if (orderItem.itemId && typeof orderItem.itemId === 'object') {
+          return {
+            itemId: orderItem.itemId._id,
+            quantity: orderItem.quantity || 1,
+            price: orderItem.price || 0
+          }
+        }
+        // Si es objeto directo (estructura simple)
+        return {
+          itemId: orderItem._id || orderItem.itemId,
+          quantity: orderItem.quantity || 1,
+          price: orderItem.price || 0
+        }
+      }
+      // Si es solo ID string
+      return {
+        itemId: orderItem,
+        quantity: 1,
+        price: 0
+      }
+    })
+  }
     // Procesa campos de tipo fecha
     config.formFields.forEach(field => {
       if (field.type === 'date' && processedItem[field.name]) {

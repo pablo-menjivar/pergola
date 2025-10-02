@@ -137,38 +137,32 @@ const DataTable = ({data = [], columns = [], isLoading = false,
         if (Array.isArray(value) && value.length > 0) {
           return (
             <div className="flex flex-wrap gap-1">
-              {value.slice(0, 2).map((item, index) => {
+              {value.slice(0, 2).map((orderItem, index) => {
                 let displayText = ''
+                let product = orderItem;
+
+                // Manejar estructura de items de pedido
+                if (orderItem.itemId) {
+                  product = orderItem.itemId;
+                }
                 
-                if (typeof item === 'object') {
-                  // ✅ ESTRUCTURA ANIDADA: items[].itemId
-                  if (item.itemId && typeof item.itemId === 'object') {
-                    const product = item.itemId
-                    if (product.name && product.price) {
-                      displayText = `${product.name} - $${product.price}`
-                    } else if (product.name) {
-                      displayText = product.name
-                    } else {
-                      displayText = 'Producto'
-                    }
-                    // Agregar cantidad si existe
-                    if (item.quantity) {
-                      displayText += ` (x${item.quantity})`
-                    }
-                  }
-                  // ✅ ESTRUCTURA SIMPLE: objeto directo
-                  else if (item.name && item.price) {
-                    displayText = `${item.name} - $${item.price}`
-                  } else if (item.name) {
-                    displayText = item.name
+                if (typeof product === 'object') {
+                  if (product.name && product.price) {
+                    displayText = `${product.name} - $${product.price}`
+                  } else if (product.name) {
+                    displayText = product.name
                   } else {
                     displayText = 'Producto'
                   }
+                  
+                  // Agregar cantidad si existe
+                  if (orderItem.quantity) {
+                    displayText += ` (x${orderItem.quantity})`
+                  }
                 } else {
-                  // Si es solo un string (ID)
+                  // SOLO MOSTRAR NOMBRE SI NO EXISTE itemId
                   displayText = 'Producto'
                 }
-                
                 return (
                   <span key={index} className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">
                     {displayText}
