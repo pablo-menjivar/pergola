@@ -105,7 +105,7 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
         }
       }
       // Opciones para pedidos
-      if (field.options === 'orders' && ordersData?.orders) {
+      if (field.options === 'order-items' && ordersData?.orders) {
         return {
           ...field,
           options: ordersData.orders.map(order => ({
@@ -507,6 +507,7 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
           title={`Agregar ${config.title?.slice(0) || 'Elemento'}`} 
           fields={processedFormFields} 
           isLoading={isSubmitting}
+          productsData={productsData}
         />
       )}
       {/* Modal de Editar */}
@@ -519,6 +520,7 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
           fields={processedFormFields} 
           initialData={selectedItem} 
           isLoading={isSubmitting}
+          productsData={productsData}
         />
       )}
       {/* Modal de Confirmar Eliminación */}
