@@ -23,6 +23,8 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
 
   // Procesa los campos del formulario con opciones dinámicas (categorías, proveedores, etc.)
   const processedFormFields = useMemo(() => {
+    console.log('🔍 Processing form fields. productsData:', productsData);
+    
     return config.formFields.map(field => {
       // Opciones para categorías
       if (field.options === 'categories' && categoriesData?.categories) {
@@ -104,6 +106,16 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
           }))
         }
       }
+      
+      // ✅ FIX PRINCIPAL: Para campos order-items, pasar la lista completa de productos
+      if (field.type === 'order-items') {
+        console.log('✅ Processing order-items field. Products available:', productsData?.products?.length);
+        return {
+          ...field,
+          productsData: productsData?.products || []
+        }
+      }
+      
       // Opciones para pedidos
       if (field.options === 'order-items' && ordersData?.orders) {
         return {
@@ -148,6 +160,7 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
       return field
     })
   }, [config.formFields, categoriesData?.categories, subcategoriesData?.subcategories, collectionsData?.collections, suppliersData?.suppliers, customersData?.customers, rawMaterialsData?.rawMaterials, productsData?.products, ordersData?.orders, refundsData?.refunds, transactionsData?.transactions, employeesData?.employees, designElementsData?.designElements])
+  
   // Función para obtener el valor buscable de cada columna/item
   const getSearchableValue = (item, column) => {
     const value = item[column.key]
@@ -507,7 +520,6 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
           title={`Agregar ${config.title?.slice(0) || 'Elemento'}`} 
           fields={processedFormFields} 
           isLoading={isSubmitting}
-          productsData={productsData}
         />
       )}
       {/* Modal de Editar */}
@@ -520,7 +532,6 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
           fields={processedFormFields} 
           initialData={selectedItem} 
           isLoading={isSubmitting}
-          productsData={productsData}
         />
       )}
       {/* Modal de Confirmar Eliminación */}
