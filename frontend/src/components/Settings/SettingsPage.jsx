@@ -353,7 +353,7 @@ const handleDeleteProfilePic = async () => {
 
   const tabs = [
     { id: 'profile', label: t('profile') || 'Perfil', icon: User },
-    { id: 'security', label: t('security') || 'Seguridad', icon: Shield },
+    /* { id: 'security', label: t('security') || 'Seguridad', icon: Shield }, */
     { id: 'preferences', label: t('preferences') || 'Preferencias', icon: Palette }
   ]
 
@@ -513,76 +513,106 @@ const handleDeleteProfilePic = async () => {
               </button>
             </div>
           )}
-
-          {/* Tab: Seguridad */}
+          {/*
           {activeTab === 'security' && (
-            <div className="p-6">
-              <h2 className={`text-xl font-semibold mb-6 ${isDarkMode ? 'text-white' : 'text-[#3D1609]'}`}>
-                {t('security') || 'Seguridad'}
-              </h2>
+              <div className="p-6">
+                  
+                  <h2 className={`text-xl font-semibold mb-6 ${isDarkMode ? 'text-white' : 'text-[#3D1609]'}`}>
+                      {t('security') || 'Seguridad'}
+                  </h2>
 
-              {/* Aviso sobre cambio de contraseña */}
-              <div className={`border rounded-lg p-4 mb-6 ${isDarkMode ? 'bg-blue-900/30 border-blue-700' : 'bg-blue-50 border-blue-200'}`}>
-                <h3 className={`font-medium mb-2 ${isDarkMode ? 'text-blue-300' : 'text-blue-800'}`}>
-                  {t('changePassword') || 'Cambiar Contraseña'}
-                </h3>
-                <p className={`text-sm ${isDarkMode ? 'text-blue-400' : 'text-blue-700'}`}>
-                  {t('passwordRequirements') || 'Asegúrate de usar una contraseña segura con al menos 8 caracteres.'}
-                </p>
+                  <div className={`border rounded-lg p-4 mb-6 ${isDarkMode ? 'bg-blue-900/30 border-blue-700' : 'bg-blue-50 border-blue-200'}`}>
+                      <h3 className={`font-medium mb-2 ${isDarkMode ? 'text-blue-300' : 'text-blue-800'}`}>
+                          {t('changePassword') || 'Cambiar Contraseña'}
+                      </h3>
+                      <p className={`text-sm ${isDarkMode ? 'text-blue-400' : 'text-blue-700'}`}>
+                          {t('passwordRequirements') || 'Asegúrate de usar una contraseña segura con al menos 8 caracteres.'}
+                      </p>
+                  </div>
+
+                  <div className="space-y-4 mb-6">
+                      
+                      <div>
+                          <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-200' : 'text-[#3D1609]'}`}>
+                              {t('currentPassword') || 'Contraseña Actual'}
+                          </label>
+                          <div className="relative">
+                              <Shield className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`} />
+                              <input 
+                                  type={showPasswords.current ? 'text' : 'password'} 
+                                  value={passwordData.currentPassword} 
+                                  onChange={(e) => setPasswordData(prev => ({ ...prev, currentPassword: e.target.value }))} 
+                                  className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-[#A73249] focus:border-transparent ${isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'}`} 
+                                  placeholder={t('yourCurrentPassword') || 'Tu contraseña actual'}
+                              />
+                              <button 
+                                  type="button" 
+                                  onClick={() => setShowPasswords(prev => ({ ...prev, current: !prev.current }))} 
+                                  className={`absolute right-3 top-1/2 transform -translate-y-1/2 hover:text-gray-600 ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`}
+                              >
+                                  {showPasswords.current ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                              </button>
+                          </div>
+                      </div>
+
+                      <div>
+                          <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-200' : 'text-[#3D1609]'}`}>
+                              {t('newPassword') || 'Nueva Contraseña'}
+                          </label>
+                          <div className="relative">
+                              <Shield className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`} />
+                              <input 
+                                  type={showPasswords.new ? 'text' : 'password'} 
+                                  value={passwordData.newPassword} 
+                                  onChange={(e) => setPasswordData(prev => ({ ...prev, newPassword: e.target.value }))} 
+                                  className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-[#A73249] focus:border-transparent ${isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'}`} 
+                                  placeholder={t('newPasswordPlaceholder') || 'Nueva contraseña (mín. 8 caracteres)'}
+                              />
+                              <button 
+                                  type="button" 
+                                  onClick={() => setShowPasswords(prev => ({ ...prev, new: !prev.new }))} 
+                                  className={`absolute right-3 top-1/2 transform -translate-y-1/2 hover:text-gray-600 ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`}
+                              >
+                                  {showPasswords.new ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                              </button>
+                          </div>
+                      </div>
+
+                      <div>
+                          <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-200' : 'text-[#3D1609]'}`}>
+                              {t('confirmPassword') || 'Confirmar Nueva Contraseña'}
+                          </label>
+                          <div className="relative">
+                              <Shield className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`} />
+                              <input 
+                                  type={showPasswords.confirm ? 'text' : 'password'} 
+                                  value={passwordData.confirmPassword} 
+                                  onChange={(e) => setPasswordData(prev => ({ ...prev, confirmPassword: e.target.value }))} 
+                                  className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-[#A73249] focus:border-transparent ${isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'}`} 
+                                  placeholder={t('confirmPasswordPlaceholder') || 'Confirma tu nueva contraseña'}
+                              />
+                              <button 
+                                  type="button" 
+                                  onClick={() => setShowPasswords(prev => ({ ...prev, confirm: !prev.confirm }))} 
+                                  className={`absolute right-3 top-1/2 transform -translate-y-1/2 hover:text-gray-600 ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`}
+                              >
+                                  {showPasswords.confirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+
+                  <button 
+                      onClick={handlePasswordChange} 
+                      disabled={isLoading} 
+                      className="flex items-center space-x-2 bg-[#A73249] text-white px-6 py-3 rounded-lg hover:bg-[#8A2A3E] transition-colors disabled:opacity-50"
+                  >
+                      <Shield className="w-4 h-4" />
+                      <span>{isLoading ? (t('changing') || 'Cambiando...') : (t('changePassword') || 'Cambiar Contraseña')}</span>
+                  </button>
               </div>
-
-              {/* Formulario de cambio de contraseña */}
-              <div className="space-y-4 mb-6">
-                {/* Campo contraseña actual */}
-                <div>
-                  <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-200' : 'text-[#3D1609]'}`}>
-                    {t('currentPassword') || 'Contraseña Actual'}
-                  </label>
-                  <div className="relative">
-                    <Shield className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`} />
-                    <input type={showPasswords.current ? 'text' : 'password'} value={passwordData.currentPassword} onChange={(e) => setPasswordData(prev => ({ ...prev, currentPassword: e.target.value }))} className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-[#A73249] focus:border-transparent ${isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'}`} placeholder={t('yourCurrentPassword') || 'Tu contraseña actual'}/>
-                    <button type="button" onClick={() => setShowPasswords(prev => ({ ...prev, current: !prev.current }))} className={`absolute right-3 top-1/2 transform -translate-y-1/2 hover:text-gray-600 ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`}>
-                      {showPasswords.current ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                    </button>
-                  </div>
-                </div>
-
-                {/* Campo nueva contraseña */}
-                <div>
-                  <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-200' : 'text-[#3D1609]'}`}>
-                    {t('newPassword') || 'Nueva Contraseña'}
-                  </label>
-                  <div className="relative">
-                    <Shield className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`} />
-                    <input type={showPasswords.new ? 'text' : 'password'} value={passwordData.newPassword} onChange={(e) => setPasswordData(prev => ({ ...prev, newPassword: e.target.value }))} className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-[#A73249] focus:border-transparent ${isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'}`} placeholder={t('newPasswordPlaceholder') || 'Nueva contraseña (mín. 8 caracteres)'}/>
-                    <button type="button" onClick={() => setShowPasswords(prev => ({ ...prev, new: !prev.new }))} className={`absolute right-3 top-1/2 transform -translate-y-1/2 hover:text-gray-600 ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`}>
-                      {showPasswords.new ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                    </button>
-                  </div>
-                </div>
-
-                {/* Campo confirmar nueva contraseña */}
-                <div>
-                  <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-200' : 'text-[#3D1609]'}`}>
-                    {t('confirmPassword') || 'Confirmar Nueva Contraseña'}
-                  </label>
-                  <div className="relative">
-                    <Shield className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`} />
-                    <input type={showPasswords.confirm ? 'text' : 'password'} value={passwordData.confirmPassword} onChange={(e) => setPasswordData(prev => ({ ...prev, confirmPassword: e.target.value }))} className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-[#A73249] focus:border-transparent ${isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'}`} placeholder={t('confirmPasswordPlaceholder') || 'Confirma tu nueva contraseña'}/>
-                    <button type="button" onClick={() => setShowPasswords(prev => ({ ...prev, confirm: !prev.confirm }))} className={`absolute right-3 top-1/2 transform -translate-y-1/2 hover:text-gray-600 ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`}>
-                      {showPasswords.confirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Botón para cambiar contraseña */}
-              <button onClick={handlePasswordChange} disabled={isLoading} className="flex items-center space-x-2 bg-[#A73249] text-white px-6 py-3 rounded-lg hover:bg-[#8A2A3E] transition-colors disabled:opacity-50">
-                <Shield className="w-4 h-4" />
-                <span>{isLoading ? (t('changing') || 'Cambiando...') : (t('changePassword') || 'Cambiar Contraseña')}</span>
-              </button>
-            </div>
           )}
+        */}
 
           {/* Tab: Preferencias */}
           {activeTab === 'preferences' && (
