@@ -431,11 +431,8 @@ export const ordersConfig = {
     { name: 'mailingAddress', type: 'text', label: 'Dirección de Envío', required: true, placeholder: 'Ej: Calle 123, Ciudad, País' },
     { name: 'paymentMethod', type: 'select', label: 'Método de Pago', required: true,
       options: [
-        { value: 'efectivo', label: 'Efectivo' },
-        { value: 'tarjeta de crédito', label: 'Tarjeta de Crédito' },
-        { value: 'transferencia', label: 'Transferencia' },
-        { value: 'paypal', label: 'Paypal' },
-        { value: 'otro', label: 'Otro' }
+        { value: 'efectivo contra entrega', label: 'Efectivo' },
+        { value: 'transferencia bancaria', label: 'Transferencia' }
       ]
     },
     { name: 'items', type: 'order-items', label: 'Productos del Pedido', required: true },
@@ -501,10 +498,8 @@ export const refundsConfig = {
     { name: 'amount', type: 'number', label: 'Monto', required: true, placeholder: '0.00', min: 0.01, step: 0.01 },
     { name: 'refundMethod', type: 'select', label: 'Método de Reembolso', required: true,
       options: [
-        { value: 'tarjeta de crédito', label: 'Tarjeta de Crédito' },
-        { value: 'transferencia', label: 'Transferencia' },
-        { value: 'paypal', label: 'Paypal' },
-        { value: 'otro', label: 'Otro' }
+        { value: 'efectivo contra entrega', label: 'Efectivo' },
+        { value: 'transferencia bancaria', label: 'Transferencia' }
       ]
     }
   ]
@@ -550,11 +545,8 @@ export const transactionsConfig = {
     },
     { name: 'paymentMethod', type: 'select', label: 'Método de Pago', required: true,
       options: [
-        { value: 'efectivo', label: 'Efectivo' },
-        { value: 'tarjeta de crédito', label: 'Tarjeta de Crédito' },
-        { value: 'transferencia', label: 'Transferencia' },
-        { value: 'paypal', label: 'Paypal' },
-        { value: 'otro', label: 'Otro' }
+        { value: 'efectivo contra entrega', label: 'Efectivo' },
+        { value: 'transferencia bancaria', label: 'Transferencia' }
       ]
     }
   ]
