@@ -4,6 +4,7 @@ import DataTable from './DataTable'
 import FormModal from './Modals/FormModal'
 import ConfirmModal from './Modals/ConfirmModal'
 import DetailModal from './Modals/DetailModal'
+import ColumnToggleModal from './Modals/ColumnToggleModal'
 
 // Componente contenedor principal para la tabla y sus acciones/modales
 const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, isLoading = false, className = "", categoriesData, subcategoriesData, collectionsData, suppliersData, customersData, rawMaterialsData, productsData, ordersData, refundsData, transactionsData, employeesData, designElementsData}) => {
@@ -20,6 +21,61 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showDetailModal, setShowDetailModal] = useState(false)
   const [detailModalType, setDetailModalType] = useState('generic')
+  
+  // ✅ NUEVOS ESTADOS PARA MANEJO DE COLUMNAS
+  const [showColumnToggle, setShowColumnToggle] = useState(false)
+  const [visibleColumns, setVisibleColumns] = useState(() => {
+    // Inicializar columnas visibles basado en la configuración
+    const initialVisible = {}
+    config.columns.forEach(col => {
+      // Por defecto, mostrar columnas que no estén marcadas como hidden
+      initialVisible[col.key] = !col.hidden
+    })
+    return initialVisible
+  })
+
+  // ✅ FILTRAR COLUMNAS VISIBLES
+  const filteredColumns = useMemo(() => {
+    return config.columns.filter(col => visibleColumns[col.key])
+  }, [config.columns, visibleColumns])
+
+  // ✅ DETECTAR TAMAÑO DE PANTALLA PARA COLUMNAS RESPONSIVAS
+  const [screenSize, setScreenSize] = useState('desktop')
+  
+  useMemo(() => {
+    const updateScreenSize = () => {
+      const width = window.innerWidth
+      if (width < 768) {
+        setScreenSize('mobile')
+      } else if (width < 1024) {
+        setScreenSize('tablet')
+      } else {
+        setScreenSize('desktop')
+      }
+    }
+    
+    updateScreenSize()
+    window.addEventListener('resize', updateScreenSize)
+    return () => window.removeEventListener('resize', updateScreenSize)
+  }, [])
+
+  // ✅ COLUMNAS RESPONSIVAS AUTOMÁTICAS
+  const responsiveColumns = useMemo(() => {
+    const settings = {
+      mobile: { maxColumns: 3, priorities: [1] },
+      tablet: { maxColumns: 5, priorities: [1, 2] },
+      desktop: { maxColumns: 8, priorities: [1, 2, 3] }
+    }
+    
+    const currentSettings = settings[screenSize]
+    
+    return filteredColumns.filter(col => {
+      // Siempre mostrar columnas sin prioridad definida
+      if (!col.priority) return true
+      // Filtrar por prioridad según el tamaño de pantalla
+      return currentSettings.priorities.includes(col.priority)
+    }).slice(0, currentSettings.maxColumns)
+  }, [filteredColumns, screenSize])
 
   // Procesa los campos del formulario con opciones dinámicas (categorías, proveedores, etc.)
   const processedFormFields = useMemo(() => {
@@ -158,6 +214,7 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
       return field
     })
   }, [config.formFields, categoriesData?.categories, subcategoriesData?.subcategories, collectionsData?.collections, suppliersData?.suppliers, customersData?.customers, rawMaterialsData?.rawMaterials, productsData?.products, ordersData?.orders, refundsData?.refunds, transactionsData?.transactions, employeesData?.employees, designElementsData?.designElements])
+
   // Función para obtener el valor buscable de cada columna/item
   const getSearchableValue = (item, column) => {
     const value = item[column.key]
@@ -240,6 +297,7 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
     // Valor normal
     return value.toString().toLowerCase()
   }
+
   // Filtra y ordena los datos según búsqueda y ordenamiento
   const filteredAndSortedData = useMemo(() => {
     let filtered = data
@@ -248,7 +306,7 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
       const searchLower = searchValue.toLowerCase().trim()
       const searchTerms = searchLower.split(' ').filter(term => term.length > 0)
       filtered = data.filter(item => {
-        const searchableColumns = config.columns.filter(col => col.searchable !== false)
+        const searchableColumns = responsiveColumns.filter(col => col.searchable !== false)
         const searchableText = searchableColumns.map(col => 
           getSearchableValue(item, col)
         ).join(' ').toLowerCase()
@@ -288,32 +346,50 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
       })
     }
     return filtered
-  }, [data, searchValue, sortBy, sortOrder, config.columns])
+  }, [data, searchValue, sortBy, sortOrder, responsiveColumns])
+
   // Datos paginados
   const paginatedData = useMemo(() => {
     const startIndex = (currentPage - 1) * pageSize
     return filteredAndSortedData.slice(startIndex, startIndex + pageSize)
   }, [filteredAndSortedData, currentPage, pageSize])
+
   // Handlers para búsqueda, ordenamiento, paginación y acciones
   const handleSearch = (value) => {
     setSearchValue(value)
     setCurrentPage(1) // Reset a primera página
   }
+
   const handleSort = (columnKey, direction) => {
     setSortBy(columnKey)
     setSortOrder(direction)
   }
+
   const handlePageChange = (page) => {
     setCurrentPage(page)
   }
+
   const handlePageSizeChange = (size) => {
     setPageSize(size)
     setCurrentPage(1)
   }
+
   const handleAdd = () => {
     setSelectedItem(null)
     setShowAddModal(true)
   }
+
+  // ✅ NUEVO HANDLER PARA TOGGLE DE COLUMNAS
+  const handleColumnToggle = () => {
+    setShowColumnToggle(true)
+  }
+
+  // ✅ HANDLER PARA ACTUALIZAR COLUMNAS VISIBLES
+  const handleColumnVisibilityChange = (newVisibility) => {
+    setVisibleColumns(newVisibility)
+    setShowColumnToggle(false)
+  }
+
   const handleEdit = (item) => {
     // Procesa el item para extraer IDs de objetos populados
     const processedItem = { ...item }
@@ -384,10 +460,12 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
     setSelectedItem(processedItem)
     setShowEditModal(true)
   }
+
   const handleDelete = (item) => {
     setSelectedItem(item)
     setShowDeleteModal(true)
   }
+
   const handleView = (item) => {
     setSelectedItem(item)
     // Determina el tipo de modal de detalle según el título
@@ -419,6 +497,7 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
     setDetailModalType(modalType)
     setShowDetailModal(true)
   }
+
   // Handler para agregar
   const handleAddSubmit = async (formData) => {
     setIsSubmitting(true)
@@ -433,6 +512,7 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
       setIsSubmitting(false)
     }
   }
+
   // Handler para editar
   const handleEditSubmit = async (formData) => {
     setIsSubmitting(true)
@@ -447,6 +527,7 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
       setIsSubmitting(false)
     }
   }
+
   // Handler para confirmar eliminación
   const handleDeleteConfirm = async () => {
     setIsSubmitting(true)
@@ -461,6 +542,7 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
       setIsSubmitting(false)
     }
   }
+
   // Handler para exportar
   const handleExport = (format) => {
     if (onExport) {
@@ -469,6 +551,7 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
       console.log(`Exportando ${filteredAndSortedData.length} elementos en formato ${format}`)
     }
   }
+
   // Handler para refrescar la tabla
   const handleRefresh = () => {
     setSearchValue('')
@@ -477,6 +560,7 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
     setCurrentPage(1)
     window.location.reload()
   }
+
   return (
     <div className={`font-[Quicksand] ${className}`}>
       {/* Header con título y acciones */}
@@ -488,15 +572,19 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
         actions={config.actions} 
         onAdd={config.actions?.canAdd ? handleAdd : undefined} 
         onExport={config.actions?.canExport ? handleExport : undefined} 
-        onRefresh={handleRefresh} 
+        onRefresh={handleRefresh}
+        onColumnToggle={config.actions?.canToggleColumns ? handleColumnToggle : undefined}
         addButtonText={`Añadir ${config.title?.slice(0) || 'Elemento'}`} 
         addButtonIcon="add" 
         isLoading={isLoading}
+        visibleColumnsCount={responsiveColumns.length}
+        totalColumnsCount={config.columns.length}
       />
+
       {/* Tabla principal */}
       <DataTable 
         data={paginatedData} 
-        columns={config.columns} 
+        columns={responsiveColumns} 
         isLoading={isLoading} 
         pagination={{ page: currentPage, pageSize: pageSize, total: filteredAndSortedData.length }} 
         onPageChange={handlePageChange} 
@@ -508,6 +596,18 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
         sortBy={sortBy} 
         sortOrder={sortOrder}
       />
+
+      {/* Modal de Toggle de Columnas */}
+      {showColumnToggle && (
+        <ColumnToggleModal
+          isOpen={showColumnToggle}
+          onClose={() => setShowColumnToggle(false)}
+          columns={config.columns}
+          visibleColumns={visibleColumns}
+          onSave={handleColumnVisibilityChange}
+        />
+      )}
+
       {/* Modal de Agregar */}
       {showAddModal && (
         <FormModal 
@@ -520,6 +620,7 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
           productsData={productsData}
         />
       )}
+
       {/* Modal de Editar */}
       {showEditModal && selectedItem && (
         <FormModal 
@@ -533,6 +634,7 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
           productsData={productsData}
         />
       )}
+
       {/* Modal de Confirmar Eliminación */}
       {showDeleteModal && selectedItem && (
         <ConfirmModal 
@@ -547,6 +649,7 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
           isLoading={isSubmitting}
         />
       )}
+
       {/* Modal de Detalles */}
       {showDetailModal && selectedItem && (
         <DetailModal 
@@ -560,5 +663,5 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
     </div>
   )
 }
-// Exporta el componente para su uso en otras partes
+
 export default TableContainer

@@ -1,4 +1,5 @@
 import TableActions from './TableActions.jsx'
+
 // Componente para mostrar el encabezado de la tabla con título, subtítulo y barra de acciones
 const TableHeader = ({ 
   title,                // Título principal
@@ -6,11 +7,13 @@ const TableHeader = ({
   searchValue,          // Valor actual del campo de búsqueda
   onSearch,             // Callback para búsqueda
   actions = {},         // Configuración de acciones disponibles
-  onAdd, onExport, onFilter, onRefresh, // Callbacks para cada acción
+  onAdd, onExport, onFilter, onRefresh, onColumnToggle, // Callbacks para cada acción
   addButtonText,        // Texto personalizado para el botón de añadir
   addButtonIcon,        // Icono personalizado para el botón de añadir
   customActions = [],   // Acciones personalizadas
   isLoading = false,    // Estado de carga
+  visibleColumnsCount,  // Número de columnas visibles
+  totalColumnsCount,    // Número total de columnas
   className = ""        // Clases adicionales
 }) => {
   return (
@@ -32,6 +35,7 @@ const TableHeader = ({
           )}
         </div>
       )}
+      
       {/* Barra de acciones de la tabla */}
       <TableActions 
         actions={actions} 
@@ -39,15 +43,18 @@ const TableHeader = ({
         onExport={onExport} 
         onFilter={onFilter} 
         onRefresh={onRefresh} 
+        onColumnToggle={onColumnToggle}
         onSearch={onSearch} 
         searchValue={searchValue} 
         isLoading={isLoading} 
         addButtonText={addButtonText} 
         addButtonIcon={addButtonIcon} 
         customActions={customActions}
+        visibleColumnsCount={visibleColumnsCount}
+        totalColumnsCount={totalColumnsCount}
       />
     </div>
   )
 }
-// Exporta el componente para su uso en otras partes
+
 export default TableHeader
