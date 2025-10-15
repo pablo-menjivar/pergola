@@ -76,9 +76,8 @@ const DataTable = ({ data = [], columns = [], isLoading = false,
         </div>
       )
     }
-    // Manejo para tipos
-    if (column.key === 'type' && value && typeof value === 'string') {
-      // Buscar el label correspondiente al value en las opciones de la columna
+    // Mostrar label de opción para columnas tipo select o type
+    if ((column.type === 'select' || column.key === 'type') && value && typeof value === 'string') {
       if (Array.isArray(column.options)) {
         const found = column.options.find(opt => opt.value === value)
         return found ? found.label : value
