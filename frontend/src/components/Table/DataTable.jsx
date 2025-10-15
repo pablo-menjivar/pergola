@@ -80,7 +80,7 @@ const DataTable = ({ data = [], columns = [], isLoading = false,
     if (column.key === 'type' && value && typeof value === 'string') {
       // Mapeo de valores a etiquetas legibles
       const typeLabels = {
-        // Design Elements
+        // Elementos de diseño
         'base': 'Base',
         'decoration': 'Decoración',
         'clasp': 'Cierre',
@@ -116,6 +116,9 @@ const DataTable = ({ data = [], columns = [], isLoading = false,
         'completed': 'Completado',
         'true': 'Sí',
         'false': 'No',
+        // Método de pago y/o reembolso
+        'transferencia bancaria': 'Transferencia Bancaria',
+        'efectivo contra entrega': 'Efectivo contra entrega',
       }
       return <span className="text-sm text-[#3d1609]">{typeLabels[value] || value}</span>
     }
