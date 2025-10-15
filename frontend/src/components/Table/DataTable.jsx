@@ -240,9 +240,27 @@ const DataTable = ({data = [], columns = [], isLoading = false,
         }
         // Para campos normales que pueden contener objetos
         if (value && typeof value === 'object') {
-          // ✅ CLIENTE: Mostrar nombre completo
-          if ((column.key === 'customer') && value.name && value.lastName) {
-            return `${value.name} ${value.lastName}`
+          // ✅ CLIENTE: Mostrar nombre de usuario, correo y teléfono
+          if ((column.key === 'customer')) {
+            const parts = []
+            if (value.username) parts.push(value.username)
+            if (value.email) parts.push(value.email)
+            if (value.phoneNumber) parts.push(value.phoneNumber)
+            
+            if (parts.length > 0) {
+              return (
+                <div className="flex flex-col gap-0.5">
+                  {parts.map((part, idx) => (
+                    <span key={idx} className="text-xs">
+                      {part}
+                    </span>
+                  ))}
+                </div>
+              )
+            }
+            
+            // Fallback si no hay ninguno de los campos esperados
+            return value.name && value.lastName ? `${value.name} ${value.lastName}` : 'Cliente'
           }
           // ✅ PRODUCTO: Mostrar nombre y precio
           if ((column.key === 'product' || column.key === 'items') && value.name) {
