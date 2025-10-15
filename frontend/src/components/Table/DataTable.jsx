@@ -43,21 +43,30 @@ const DataTable = ({data = [], columns = [], isLoading = false,
     // ✅ MANEJO ESPECIAL PARA CUSTOMER ANTES DEL SWITCH
     if (column.key === 'customer' && value && typeof value === 'object') {
       return (
-        <div className="flex flex-col gap-1 py-0.5">
+        <div className="flex flex-col gap-1.5 py-1">
           {value.username && (
-            <span className="text-xs font-semibold text-[#3d1609]">
-              {value.username}
-            </span>
+            <div className="flex items-center gap-1.5">
+              <User className="w-3.5 h-3.5 text-blue-600" />
+              <span className="text-xs font-semibold text-[#3d1609]">
+                {value.username}
+              </span>
+            </div>
           )}
           {value.email && (
-            <span className="text-xs text-gray-600">
-              {value.email}
-            </span>
+            <div className="flex items-center gap-1.5">
+              <Mail className="w-3.5 h-3.5 text-gray-500" />
+              <span className="text-xs text-gray-600">
+                {value.email}
+              </span>
+            </div>
           )}
           {value.phoneNumber && (
-            <span className="text-xs text-[#A73249] font-medium">
-              {value.phoneNumber}
-            </span>
+            <div className="flex items-center gap-1.5">
+              <Smartphone className="w-3.5 h-3.5 text-[#A73249]" />
+              <span className="text-xs text-[#A73249] font-medium">
+                {value.phoneNumber}
+              </span>
+            </div>
           )}
           {!value.username && !value.email && !value.phoneNumber && (
             <span className="text-xs text-gray-400 italic">
@@ -267,7 +276,7 @@ const DataTable = ({data = [], columns = [], isLoading = false,
         }
         // Para campos normales que pueden contener objetos
         if (value && typeof value === 'object') {
-          // ✅ CLIENTE: Mostrar nombre de usuario, correo y teléfono
+          /* ✅ CLIENTE: Mostrar nombre de usuario, correo y teléfono
           if ((column.key === 'customer')) {
             const parts = []
             if (value.username) parts.push({ text: value.username, icon: User, color: 'text-blue-700' })
@@ -291,7 +300,7 @@ const DataTable = ({data = [], columns = [], isLoading = false,
             
             // Fallback si no hay ninguno de los campos esperados
             return value.name && value.lastName ? `${value.name} ${value.lastName}` : 'Cliente'
-          }
+          } */
           // ✅ PRODUCTO: Mostrar nombre y precio
           if ((column.key === 'product' || column.key === 'items') && value.name) {
             return value.price ? `${value.name} - $${value.price}` : value.name
