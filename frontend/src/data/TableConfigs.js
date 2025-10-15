@@ -99,7 +99,7 @@ export const categoriesConfig = {
     { key: 'name', label: 'Nombre', sortable: true, searchable: true },
     { key: 'description', label: 'Descripción', searchable: true },
     { key: 'image', label: 'Imagen', type: 'image' },
-    { key: 'isActive', label: 'Activa', sortable: true, type: 'badge' },
+    { key: 'isActive', label: 'Estado', sortable: true, type: 'status' }, // ✅ Cambiado
     { key: 'createdAt', label: 'Fecha de Creación', sortable: true, type: 'date' }
   ],
   actions: {
@@ -122,7 +122,7 @@ export const subcategoriesConfig = {
     { key: 'name', label: 'Nombre', sortable: true, searchable: true },
     { key: 'description', label: 'Descripción', searchable: true },
     { key: 'image', label: 'Imagen', type: 'image' },
-    { key: 'isActive', label: 'Activa', sortable: true, type: 'badge' },
+    { key: 'isActive', label: 'Estado', sortable: true, type: 'status' }, // ✅ Cambiado
     { key: 'createdAt', label: 'Fecha de Creación', sortable: true, type: 'date' }
   ],
   actions: {
@@ -145,7 +145,7 @@ export const collectionsConfig = {
     { key: 'name', label: 'Nombre', sortable: true, searchable: true },
     { key: 'description', label: 'Descripción', searchable: true },
     { key: 'image', label: 'Imagen', type: 'image' },
-    { key: 'isActive', label: 'Activa', sortable: true, type: 'badge' },
+    { key: 'isActive', label: 'Estado', sortable: true, type: 'status' }, // ✅ Cambiado
     { key: 'createdAt', label: 'Fecha de Creación', sortable: true, type: 'date' }
   ],
   actions: {
