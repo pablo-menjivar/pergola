@@ -1,6 +1,6 @@
 // Importa hooks y componentes necesarios
 import { useState } from 'react'
-import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Edit, Trash2, Eye } from 'lucide-react'
+import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Edit, Trash2, Eye, User, Mail, Smartphone } from 'lucide-react'
 import ActionButton from './Buttons/ActionButton'
 
 // Componente de tabla de datos reutilizable
@@ -243,17 +243,20 @@ const DataTable = ({data = [], columns = [], isLoading = false,
           // ✅ CLIENTE: Mostrar nombre de usuario, correo y teléfono
           if ((column.key === 'customer')) {
             const parts = []
-            if (value.username) parts.push(value.username)
-            if (value.email) parts.push(value.email)
-            if (value.phoneNumber) parts.push(value.phoneNumber)
+            if (value.username) parts.push({ text: value.username, icon: User, color: 'text-blue-700' })
+            if (value.email) parts.push({ text: value.email, icon: Mail, color: 'text-gray-600' })
+            if (value.phoneNumber) parts.push({ text: value.phoneNumber, icon: Smartphone, color: 'text-green-600' })
             
             if (parts.length > 0) {
               return (
-                <div className="flex flex-col gap-0.5">
+                <div className="flex flex-col gap-1 py-1">
                   {parts.map((part, idx) => (
-                    <span key={idx} className="text-xs">
-                      {part}
-                    </span>
+                    <div key={idx} className="flex items-center gap-1.5">
+                      <span className="text-xs">{part.icon}</span>
+                      <span className={`text-xs font-medium ${part.color}`}>
+                        {part.text}
+                      </span>
+                    </div>
                   ))}
                 </div>
               )
