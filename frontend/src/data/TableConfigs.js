@@ -1,32 +1,34 @@
-// Configuración para Clientes
+// Configuración optimizada para Clientes
 export const customersConfig = {
   title: "Clientes",
   columns: [
-    { key: 'name', label: 'Nombre', sortable: true, searchable: true },
-    { key: 'lastName', label: 'Apellido', sortable: true, searchable: true },
-    { key: 'username', label: 'Usuario', sortable: true, searchable: true },
-    { key: 'email', label: 'Correo Electrónico', sortable: true, searchable: true },
-    { key: 'phoneNumber', label: 'Teléfono', searchable: true },
-    { key: 'birthDate', label: 'Fecha de Nacimiento', sortable: true, type: 'date' },
-    { key: 'DUI', label: 'DUI', sortable: true, searchable: true },
-    { key: 'address', label: 'Dirección', searchable: true },
-    { key: 'isVerified', label: 'Verificado', sortable: true, type: 'boolean' },
-    { key: 'profilePic', label: 'Foto', type: 'image' },
-    { key: 'createdAt', label: 'Fecha de Registro', sortable: true, type: 'date' },
-    { key: 'preferredColors', label: 'Colores Preferidos', searchable: true },
-    { key: 'preferredMaterials', label: 'Materiales Preferidos', searchable: true },
-    { key: 'preferredJewelStyle', label: 'Estilo de Joya Preferido', searchable: true },
-    { key: 'purchaseOpportunity', label: 'Oportunidad de Compra', searchable: true },
-    { key: 'allergies', label: 'Alergias', searchable: true },
-    { key: 'jewelSize', label: 'Tamaño de Joya', sortable: true },
-    { key: 'budget', label: 'Presupuesto', sortable: true }
+    { key: 'name', label: 'Nombre', sortable: true, searchable: true, priority: 1 },
+    { key: 'lastName', label: 'Apellido', sortable: true, searchable: true, priority: 1 },
+    { key: 'email', label: 'Email', sortable: true, searchable: true, priority: 1 },
+    { key: 'phoneNumber', label: 'Teléfono', searchable: true, priority: 2 },
+    { key: 'isVerified', label: 'Verificado', sortable: true, type: 'boolean', priority: 2 },
+    { key: 'createdAt', label: 'Registro', sortable: true, type: 'date', priority: 3 },
+    // Campos ocultos por defecto (visibles en detalles)
+    { key: 'username', label: 'Usuario', sortable: true, searchable: true, hidden: true },
+    { key: 'birthDate', label: 'F. Nacimiento', sortable: true, type: 'date', hidden: true },
+    { key: 'DUI', label: 'DUI', sortable: true, searchable: true, hidden: true },
+    { key: 'address', label: 'Dirección', searchable: true, hidden: true },
+    { key: 'profilePic', label: 'Foto', type: 'image', hidden: true },
+    { key: 'preferredColors', label: 'Colores Pref.', searchable: true, hidden: true },
+    { key: 'preferredMaterials', label: 'Materiales Pref.', searchable: true, hidden: true },
+    { key: 'preferredJewelStyle', label: 'Estilo Pref.', searchable: true, hidden: true },
+    { key: 'purchaseOpportunity', label: 'Oportunidad', searchable: true, hidden: true },
+    { key: 'allergies', label: 'Alergias', searchable: true, hidden: true },
+    { key: 'jewelSize', label: 'Tamaño', sortable: true, hidden: true },
+    { key: 'budget', label: 'Presupuesto', sortable: true, hidden: true }
   ],
   actions: {
     canAdd: true,
     canEdit: true,
     canDelete: true,
     canExport: true,
-    canView: true
+    canView: true,
+    canToggleColumns: true // Nueva funcionalidad para mostrar/ocultar columnas
   },
   formFields: [
     { name: 'name', type: 'text', label: 'Nombre', required: true, placeholder: 'Ej: Juan' },
@@ -54,29 +56,31 @@ export const customersConfig = {
     { name: 'budget', type: 'text', label: 'Presupuesto', required: false, placeholder: 'Ej: $100' }
   ]
 }
-// Configuración para Empleados
+
+// Configuración optimizada para Empleados
 export const employeesConfig = {
   title: "Empleados",
   columns: [
-    { key: 'name', label: 'Nombre', sortable: true, searchable: true },
-    { key: 'lastName', label: 'Apellido', sortable: true, searchable: true },
-    { key: 'username', label: 'Usuario', sortable: true, searchable: true },
-    { key: 'email', label: 'Correo Electrónico', sortable: true, searchable: true },
-    { key: 'phoneNumber', label: 'Teléfono', searchable: true },
-    { key: 'birthDate', label: 'Fecha de Nacimiento', sortable: true, type: 'date' },
-    { key: 'DUI', label: 'DUI', sortable: true, searchable: true },
-    { key: 'userType', label: 'Tipo de Usuario', sortable: true },
-    { key: 'hireDate', label: 'Fecha de Contratación', sortable: true, type: 'date' },
-    { key: 'isVerified', label: 'Verificado', sortable: true, type: 'boolean' },
-    { key: 'profilePic', label: 'Foto', type: 'image' },
-    { key: 'createdAt', label: 'Fecha de Registro', sortable: true, type: 'date' }
+    { key: 'name', label: 'Nombre', sortable: true, searchable: true, priority: 1 },
+    { key: 'lastName', label: 'Apellido', sortable: true, searchable: true, priority: 1 },
+    { key: 'email', label: 'Email', sortable: true, searchable: true, priority: 1 },
+    { key: 'hireDate', label: 'F. Contrato', sortable: true, type: 'date', priority: 2 },
+    { key: 'isVerified', label: 'Verificado', sortable: true, type: 'boolean', priority: 2 },
+    // Campos ocultos por defecto
+    { key: 'username', label: 'Usuario', sortable: true, searchable: true, hidden: true },
+    { key: 'phoneNumber', label: 'Teléfono', searchable: true, hidden: true },
+    { key: 'birthDate', label: 'F. Nacimiento', sortable: true, type: 'date', hidden: true },
+    { key: 'DUI', label: 'DUI', sortable: true, searchable: true, hidden: true },
+    { key: 'profilePic', label: 'Foto', type: 'image', hidden: true },
+    { key: 'createdAt', label: 'Registro', sortable: true, type: 'date', hidden: true }
   ],
   actions: {
     canAdd: true,
     canEdit: true,
     canDelete: true,
     canExport: true,
-    canView: true
+    canView: true,
+    canToggleColumns: true
   },
   formFields: [
     { name: 'name', type: 'text', label: 'Nombre', required: true, placeholder: 'Ej: Juan' },
@@ -92,22 +96,25 @@ export const employeesConfig = {
     { name: 'isVerified', type: 'checkbox', label: 'Verificado' }
   ]
 }
-// Configuracion para Categorias
+
+// Configuración optimizada para Categorías
 export const categoriesConfig = {
   title: "Categorías",
   columns: [
-    { key: 'name', label: 'Nombre', sortable: true, searchable: true },
-    { key: 'description', label: 'Descripción', searchable: true },
-    { key: 'image', label: 'Imagen', type: 'image' },
-    { key: 'isActive', label: 'Estado', sortable: true, type: 'status' }, // ✅ Cambiado
-    { key: 'createdAt', label: 'Fecha de Creación', sortable: true, type: 'date' }
+    { key: 'name', label: 'Nombre', sortable: true, searchable: true, priority: 1 },
+    { key: 'description', label: 'Descripción', searchable: true, priority: 2, truncate: 50 },
+    { key: 'isActive', label: 'Estado', sortable: true, type: 'status', priority: 1 },
+    { key: 'createdAt', label: 'Creada', sortable: true, type: 'date', priority: 3 },
+    // Campos ocultos
+    { key: 'image', label: 'Imagen', type: 'image', hidden: true }
   ],
   actions: {
     canAdd: true,
     canEdit: true,
     canDelete: true,
     canExport: true,
-    canView: true
+    canView: true,
+    canToggleColumns: true
   },
   formFields: [
     { name: 'name', type: 'text', label: 'Nombre de la Categoría', required: true, placeholder: 'Ej: Diseños pre-establecidos' },
@@ -115,22 +122,25 @@ export const categoriesConfig = {
     { name: 'image', type: 'image', label: 'Imagen', accept: 'image/*', placeholder: 'Seleccionar imagen' }
   ]
 }
-// Configuracion para Subcategorías
+
+// Configuración optimizada para Subcategorías
 export const subcategoriesConfig = {
   title: "Subcategorías",
   columns: [
-    { key: 'name', label: 'Nombre', sortable: true, searchable: true },
-    { key: 'description', label: 'Descripción', searchable: true },
-    { key: 'image', label: 'Imagen', type: 'image' },
-    { key: 'isActive', label: 'Estado', sortable: true, type: 'status' }, // ✅ Cambiado
-    { key: 'createdAt', label: 'Fecha de Creación', sortable: true, type: 'date' }
+    { key: 'name', label: 'Nombre', sortable: true, searchable: true, priority: 1 },
+    { key: 'description', label: 'Descripción', searchable: true, priority: 2, truncate: 50 },
+    { key: 'isActive', label: 'Estado', sortable: true, type: 'status', priority: 1 },
+    { key: 'createdAt', label: 'Creada', sortable: true, type: 'date', priority: 3 },
+    // Campos ocultos
+    { key: 'image', label: 'Imagen', type: 'image', hidden: true }
   ],
   actions: {
     canAdd: true,
     canEdit: true,
     canDelete: true,
     canExport: true,
-    canView: true
+    canView: true,
+    canToggleColumns: true
   },
   formFields: [
     { name: 'name', type: 'text', label: 'Nombre de la Subcategoría', required: true, placeholder: 'Ej: Dijes' },
@@ -138,22 +148,25 @@ export const subcategoriesConfig = {
     { name: 'image', type: 'image', label: 'Imagen', accept: 'image/*', placeholder: 'Seleccionar imagen' }
   ]
 }
-// Configuracion para Colecciones
+
+// Configuración optimizada para Colecciones
 export const collectionsConfig = {
   title: "Colecciones",
   columns: [
-    { key: 'name', label: 'Nombre', sortable: true, searchable: true },
-    { key: 'description', label: 'Descripción', searchable: true },
-    { key: 'image', label: 'Imagen', type: 'image' },
-    { key: 'isActive', label: 'Estado', sortable: true, type: 'status' }, // ✅ Cambiado
-    { key: 'createdAt', label: 'Fecha de Creación', sortable: true, type: 'date' }
+    { key: 'name', label: 'Nombre', sortable: true, searchable: true, priority: 1 },
+    { key: 'description', label: 'Descripción', searchable: true, priority: 2, truncate: 50 },
+    { key: 'isActive', label: 'Estado', sortable: true, type: 'status', priority: 1 },
+    { key: 'createdAt', label: 'Creada', sortable: true, type: 'date', priority: 3 },
+    // Campos ocultos
+    { key: 'image', label: 'Imagen', type: 'image', hidden: true }
   ],
   actions: {
     canAdd: true,
     canEdit: true,
     canDelete: true,
     canExport: true,
-    canView: true
+    canView: true,
+    canToggleColumns: true
   },
   formFields: [
     { name: 'name', type: 'text', label: 'Nombre de la Colección', required: true, placeholder: 'Ej: Cristal Bohemio' },
@@ -161,23 +174,26 @@ export const collectionsConfig = {
     { name: 'image', type: 'image', label: 'Imagen', accept: 'image/*', placeholder: 'Seleccionar imagen' }
   ]
 }
-// Configuracion para Proveedores
+
+// Configuración optimizada para Proveedores
 export const suppliersConfig = {
   title: "Proveedores",
   columns: [
-    { key: 'name', label: 'Nombre', sortable: true, searchable: true },
-    { key: 'contactPerson', label: 'Persona de Contacto', sortable: true, searchable: true },
-    { key: 'phoneNumber', label: 'Teléfono', searchable: true },
-    { key: 'email', label: 'Email', sortable: true, searchable: true },
-    { key: 'address', label: 'Dirección', searchable: true },
-    { key: 'createdAt', label: 'Fecha de Registro', sortable: true, type: 'date' }
+    { key: 'name', label: 'Proveedor', sortable: true, searchable: true, priority: 1 },
+    { key: 'contactPerson', label: 'Contacto', sortable: true, searchable: true, priority: 1 },
+    { key: 'email', label: 'Email', sortable: true, searchable: true, priority: 2 },
+    { key: 'phoneNumber', label: 'Teléfono', searchable: true, priority: 2 },
+    { key: 'createdAt', label: 'Registro', sortable: true, type: 'date', priority: 3 },
+    // Campos ocultos
+    { key: 'address', label: 'Dirección', searchable: true, hidden: true }
   ],
   actions: {
     canAdd: true,
     canEdit: true,
     canDelete: true,
     canExport: true,
-    canView: true
+    canView: true,
+    canToggleColumns: true
   },
   formFields: [
     { name: 'name', type: 'text', label: 'Nombre del Proveedor', required: true, placeholder: 'Ej: Distcaribe' },
@@ -187,36 +203,39 @@ export const suppliersConfig = {
     { name: 'address', type: 'textarea', label: 'Dirección', required: true, placeholder: 'Dirección completa...', rows: 2 }
   ]
 }
-// Configuracion para Productos
+
+// Configuración optimizada para Productos
 export const productsConfig = {
   title: "Productos",
   columns: [
-    { key: 'codeProduct', label: 'Código', sortable: true, searchable: true },
-    { key: 'name', label: 'Nombre', sortable: true, searchable: true },
-    { key: 'description', label: 'Descripción', searchable: true },
-    { key: 'images', label: 'Imágenes', type: 'image-gallery' },
-    { key: 'stock', label: 'Stock', sortable: true, type: 'number' },
-    { key: 'price', label: 'Precio', sortable: true, type: 'currency' },
-    { key: 'productionCost', label: 'Costo Producción', sortable: true, type: 'currency' },
-    { key: 'discount', label: 'Descuento', sortable: true, type: 'percentage' },
-    { key: 'collection', label: 'Colección', sortable: true },
-    { key: 'category', label: 'Categoría', sortable: true },
-    { key: 'subcategory', label: 'Subcategoría', sortable: true },
-    { key: 'rawMaterialsUsed', label: 'Materiales', type: 'badge-list' },
-    { key: 'highlighted', label: 'Destacado', sortable: true, type: 'boolean' },
-    { key: 'correlative', label: 'Correlativo', sortable: true },
-    { key: 'movementType', label: 'Tipo Movimiento', sortable: true, type: 'badge' },
-    { key: 'status', label: 'Estado', sortable: true, type: 'badge' },
-    { key: 'applicableCosts', label: 'Costos Aplicables', searchable: true },
-    { key: 'hasDiscount', label: 'Tiene Descuento', sortable: true, type: 'boolean' },
-    { key: 'createdAt', label: 'Creado', sortable: true, type: 'date' }
+    { key: 'codeProduct', label: 'Código', sortable: true, searchable: true, priority: 1, width: 120 },
+    { key: 'name', label: 'Producto', sortable: true, searchable: true, priority: 1, width: 200 },
+    { key: 'price', label: 'Precio', sortable: true, type: 'currency', priority: 1, width: 100 },
+    { key: 'stock', label: 'Stock', sortable: true, type: 'number', priority: 1, width: 80 },
+    { key: 'status', label: 'Estado', sortable: true, type: 'badge', priority: 1, width: 100 },
+    { key: 'highlighted', label: 'Destacado', sortable: true, type: 'boolean', priority: 2, width: 90 },
+    // Campos ocultos por defecto
+    { key: 'description', label: 'Descripción', searchable: true, hidden: true },
+    { key: 'images', label: 'Imágenes', type: 'image-gallery', hidden: true },
+    { key: 'productionCost', label: 'Costo Prod.', sortable: true, type: 'currency', hidden: true },
+    { key: 'discount', label: 'Descuento', sortable: true, type: 'percentage', hidden: true },
+    { key: 'collection', label: 'Colección', sortable: true, hidden: true },
+    { key: 'category', label: 'Categoría', sortable: true, hidden: true },
+    { key: 'subcategory', label: 'Subcategoría', sortable: true, hidden: true },
+    { key: 'rawMaterialsUsed', label: 'Materiales', type: 'badge-list', hidden: true },
+    { key: 'correlative', label: 'Correlativo', sortable: true, hidden: true },
+    { key: 'movementType', label: 'Tipo Mov.', sortable: true, type: 'badge', hidden: true },
+    { key: 'applicableCosts', label: 'Costos Aplic.', searchable: true, hidden: true },
+    { key: 'hasDiscount', label: 'Con Descuento', sortable: true, type: 'boolean', hidden: true },
+    { key: 'createdAt', label: 'Creado', sortable: true, type: 'date', hidden: true }
   ],
   actions: {
     canAdd: true,
     canEdit: true,
     canDelete: true,
     canExport: true,
-    canView: true
+    canView: true,
+    canToggleColumns: true
   },
   formFields: [
     { name: 'name', type: 'text', label: 'Nombre del Producto', required: true, placeholder: 'Ej: Anillo de oro' },
@@ -253,37 +272,40 @@ export const productsConfig = {
     { name: 'hasDiscount', type: 'checkbox', label: 'Aplica Descuento' }
   ]
 }
-// Configuracion para Materias Primas
+
+// Configuración optimizada para Materias Primas
 export const rawMaterialsConfig = {
   title: "Materias Primas",
   columns: [
-    { key: 'correlative', label: 'Código', sortable: true, searchable: true },
-    { key: 'name', label: 'Nombre', sortable: true, searchable: true },
-    { key: 'description', label: 'Descripción', searchable: true },
-    { key: 'type', label: 'Tipo', sortable: true },
-    { key: 'color', label: 'Color', sortable: true },
-    { key: 'tone', label: 'Tono', sortable: true },
-    { key: 'toneType', label: 'Tipo Tono', sortable: true },
-    { key: 'texture', label: 'Textura', sortable: true },
-    { key: 'shape', label: 'Forma', sortable: true },
-    { key: 'dimension', label: 'Dimensión', sortable: true },
-    { key: 'provider', label: 'Proveedor', sortable: true },
-    { key: 'brand', label: 'Marca', sortable: true },
-    { key: 'presentation', label: 'Presentación', sortable: true },
-    { key: 'quantity', label: 'Cantidad', sortable: true, type: 'number' },
-    { key: 'piecesPerPresentation', label: 'Piezas x Pres.', sortable: true, type: 'number' },
-    { key: 'totalPieces', label: 'Total Piezas', sortable: true, type: 'number' },
-    { key: 'piecePrice', label: 'Precio Unitario', sortable: true, type: 'currency' },
-    { key: 'purchaseDate', label: 'Fecha Compra', sortable: true, type: 'date' },
-    { key: 'stock', label: 'Stock', sortable: true, type: 'number' },
-    { key: 'createdAt', label: 'Creado', sortable: true, type: 'date' }
+    { key: 'correlative', label: 'Código', sortable: true, searchable: true, priority: 1, width: 120 },
+    { key: 'name', label: 'Material', sortable: true, searchable: true, priority: 1, width: 180 },
+    { key: 'type', label: 'Tipo', sortable: true, priority: 1, width: 100 },
+    { key: 'piecePrice', label: 'Precio/U', sortable: true, type: 'currency', priority: 1, width: 100 },
+    { key: 'stock', label: 'Stock', sortable: true, type: 'number', priority: 1, width: 80 },
+    { key: 'provider', label: 'Proveedor', sortable: true, priority: 2, width: 150 },
+    // Campos ocultos por defecto
+    { key: 'description', label: 'Descripción', searchable: true, hidden: true },
+    { key: 'color', label: 'Color', sortable: true, hidden: true },
+    { key: 'tone', label: 'Tono', sortable: true, hidden: true },
+    { key: 'toneType', label: 'Tipo Tono', sortable: true, hidden: true },
+    { key: 'texture', label: 'Textura', sortable: true, hidden: true },
+    { key: 'shape', label: 'Forma', sortable: true, hidden: true },
+    { key: 'dimension', label: 'Dimensión', sortable: true, hidden: true },
+    { key: 'brand', label: 'Marca', sortable: true, hidden: true },
+    { key: 'presentation', label: 'Presentación', sortable: true, hidden: true },
+    { key: 'quantity', label: 'Cantidad', sortable: true, type: 'number', hidden: true },
+    { key: 'piecesPerPresentation', label: 'Piezas x Pres.', sortable: true, type: 'number', hidden: true },
+    { key: 'totalPieces', label: 'Total Piezas', sortable: true, type: 'number', hidden: true },
+    { key: 'purchaseDate', label: 'F. Compra', sortable: true, type: 'date', hidden: true },
+    { key: 'createdAt', label: 'Creado', sortable: true, type: 'date', hidden: true }
   ],
   actions: {
     canAdd: true,
     canEdit: true,
     canDelete: true,
     canExport: true,
-    canView: true
+    canView: true,
+    canToggleColumns: true
   },
   formFields: [
     { name: 'correlative', type: 'text', label: 'Código Correlativo', required: true, placeholder: 'Ej: MP-001' },
@@ -307,23 +329,26 @@ export const rawMaterialsConfig = {
     { name: 'stock', type: 'number', label: 'Stock Actual', required: true, placeholder: '0', min: 0 }
   ]
 }
-// Configuracion para Reseñas
+
+// Configuración optimizada para Reseñas
 export const reviewsConfig = {
   title: "Reseñas",
   columns: [
-    { key: 'rating', label: 'Calificación', sortable: true, type: 'number' },
-    { key: 'comment', label: 'Comentario', searchable: true },
-    { key: 'product', label: 'Producto', sortable: true },
-    { key: 'customer', label: 'Cliente', sortable: true },
-    { key: 'response', label: 'Respuesta', searchable: true },
-    { key: 'createdAt', label: 'Fecha', sortable: true, type: 'date' }
+    { key: 'rating', label: 'Calificación', sortable: true, type: 'rating', priority: 1, width: 120 },
+    { key: 'product', label: 'Producto', sortable: true, priority: 1, width: 180 },
+    { key: 'customer', label: 'Cliente', sortable: true, priority: 1, width: 150 },
+    { key: 'comment', label: 'Comentario', searchable: true, priority: 2, truncate: 60 },
+    { key: 'createdAt', label: 'Fecha', sortable: true, type: 'date', priority: 2, width: 120 },
+    // Campos ocultos
+    { key: 'response', label: 'Respuesta', searchable: true, hidden: true }
   ],
   actions: {
     canAdd: true,
     canEdit: true,
     canDelete: true,
     canExport: true,
-    canView: true
+    canView: true,
+    canToggleColumns: true
   },
   formFields: [
     { name: 'rating', type: 'number', label: 'Calificación (1-5)', required: true, min: 1, max: 5, step: 1, validate: { validator: Number.isInteger, message: "La calificación debe ser un número entero" } },
@@ -333,25 +358,28 @@ export const reviewsConfig = {
     { name: 'response', type: 'textarea', label: 'Respuesta', required: false, placeholder: 'Escribe una respuesta...', rows: 4, maxlength: 500 }
   ]
 }
-// Configuración corregida para diseños únicos
+
+// Configuración optimizada para Diseños únicos
 export const customDesignsConfig = {
   title: "Diseños únicos",
   columns: [
-    { key: 'codeRequest', label: 'Código de Solicitud', sortable: true, searchable: true },
-    { key: 'piece', label: 'Pieza', sortable: true, searchable: true },
-    { key: 'base', label: 'Base', sortable: true, searchable: true },
-    { key: 'baseLength', label: 'Longitud de Base', sortable: true, searchable: true },
-    { key: 'decoration', label: 'Decoración', sortable: true, searchable: true },
-    { key: 'clasp', label: 'Cierre', sortable: true, searchable: true },
-    { key: 'customerComments', label: 'Comentarios del Cliente', searchable: true },
-    { key: 'createdAt', label: 'Fecha', sortable: true, type: 'date' }
+    { key: 'codeRequest', label: 'Código', sortable: true, searchable: true, priority: 1, width: 120 },
+    { key: 'piece', label: 'Pieza', sortable: true, searchable: true, priority: 1, width: 100 },
+    { key: 'base', label: 'Base', sortable: true, searchable: true, priority: 1, width: 150 },
+    { key: 'baseLength', label: 'Longitud', sortable: true, searchable: true, priority: 2, width: 100 },
+    { key: 'createdAt', label: 'Solicitud', sortable: true, type: 'date', priority: 2, width: 120 },
+    // Campos ocultos
+    { key: 'decoration', label: 'Decoración', sortable: true, searchable: true, hidden: true },
+    { key: 'clasp', label: 'Cierre', sortable: true, searchable: true, hidden: true },
+    { key: 'customerComments', label: 'Comentarios', searchable: true, hidden: true }
   ],
   actions: {
     canAdd: true,
     canEdit: true,
     canDelete: true,
     canExport: true,
-    canView: true
+    canView: true,
+    canToggleColumns: true
   },
   formFields: [
     { name: 'codeRequest', type: 'text', label: 'Código de Solicitud', required: true, placeholder: 'Ej: D-001', minLength: 5 },
@@ -362,29 +390,31 @@ export const customDesignsConfig = {
         { value: 'Tobillera', label: 'Tobillera' }
       ]
     },
-    // Referencias a DesignElements
     { name: 'base', type: 'select', label: 'Base', required: true, options: 'designelements' },
-    { name: 'baseLength', type: 'text', label: 'Longitud de Base', required: true, placeholder: 'Ej: 18cm o 180mm', helperText: 'Formato: 1-3 dígitos seguidos de cm o mm (ej: 18cm, 180mm)', pattern: '^\\d{1,3}(cm|mm)$', patternMessage: 'La longitud debe tener formato: 123cm o 123mm' },
+    { name: 'baseLength', type: 'text', label: 'Longitud de Base', required: true, placeholder: 'Ej: 18cm o 180mm', helperText: 'Formato: 1-3 dígitos seguidos de cm o mm (ej: 18cm, 180mm)', pattern: '^\\d{1,3}(cm|mm)' , patternMessage: 'La longitud debe tener formato: 123cm o 123mm' },
     { name: 'decoration', type: 'select-multiple', label: 'Decoración', required: true, options: 'designelements' },
     { name: 'clasp', type: 'select', label: 'Cierre', required: true, options: 'designelements' },
     { name: 'customerComments', type: 'textarea', label: 'Comentarios del Cliente', required: true, placeholder: 'Comentarios adicionales del cliente...', rows: 3, maxLength: 300 }
   ]
 }
-// Configuración corregida para Elementos de Diseño
+
+// Configuración optimizada para Elementos de Diseño
 export const designElementsConfig = {
   title: "Elementos de Diseño",
   columns: [
-    { key: 'name', label: 'Nombre', sortable: true, searchable: true },
-    { key: 'type', label: 'Tipo', sortable: true, searchable: true },
-    { key: 'image', label: 'Imagen', type: 'image' },
-    { key: 'createdAt', label: 'Fecha de Creación', sortable: true, type: 'date' }
+    { key: 'name', label: 'Nombre', sortable: true, searchable: true, priority: 1, width: 200 },
+    { key: 'type', label: 'Tipo', sortable: true, searchable: true, priority: 1, width: 120 },
+    { key: 'createdAt', label: 'Creado', sortable: true, type: 'date', priority: 2, width: 120 },
+    // Campos ocultos
+    { key: 'image', label: 'Imagen', type: 'image', hidden: true }
   ],
   actions: {
     canAdd: true,
     canEdit: true,
     canDelete: true,
     canExport: true,
-    canView: true
+    canView: true,
+    canToggleColumns: true
   },
   formFields: [
     { name: 'name', type: 'text', label: 'Nombre', required: true, placeholder: 'Ej: Cadena de eslabones' },
@@ -398,30 +428,33 @@ export const designElementsConfig = {
     { name: 'image', type: 'image', label: 'Imagen', required: true, accept: 'image/*', placeholder: 'Seleccionar imagen' }
   ]
 }
-// Configuración para pedidos
+
+// Configuración optimizada para Pedidos
 export const ordersConfig = {
   title: "Pedidos",
   columns: [
-    { key: 'orderCode', label: 'Código de Pedido', sortable: true, searchable: true },
-    { key: 'customer', label: 'Cliente', sortable: true, searchable: true },
-    { key: 'receiver', label: 'Receptor', sortable: true, searchable: true },
-    { key: 'timetable', label: 'Horario', sortable: true, searchable: true },
-    { key: 'mailingAddress', label: 'Dirección de Envío', sortable: true, searchable: true },
-    { key: 'paymentMethod', label: 'Método de Pago', sortable: true, searchable: true },
-    { key: 'items', label: 'Items', type: 'badge-list' },
-    { key: 'subtotal', label: 'Subtotal', sortable: true, type: 'currency' },
-    { key: 'total', label: 'Total', sortable: true, type: 'currency' },
-    { key: 'status', label: 'Estado', sortable: true, type: 'badge' },
-    { key: 'paymentStatus', label: 'Estado de Pago', sortable: true, type: 'badge' },
-    { key: 'deliveryDate', label: 'Fecha de Entrega', sortable: true, type: 'date' },
-    { key: 'createdAt', label: 'Fecha de Creación', sortable: true, type: 'date' }
+    { key: 'orderCode', label: 'Código', sortable: true, searchable: true, priority: 1, width: 120 },
+    { key: 'customer', label: 'Cliente', sortable: true, searchable: true, priority: 1, width: 150 },
+    { key: 'total', label: 'Total', sortable: true, type: 'currency', priority: 1, width: 100 },
+    { key: 'status', label: 'Estado', sortable: true, type: 'badge', priority: 1, width: 110 },
+    { key: 'paymentStatus', label: 'Pago', sortable: true, type: 'badge', priority: 1, width: 100 },
+    { key: 'createdAt', label: 'Fecha', sortable: true, type: 'date', priority: 2, width: 120 },
+    // Campos ocultos
+    { key: 'receiver', label: 'Receptor', sortable: true, searchable: true, hidden: true },
+    { key: 'timetable', label: 'Horario', sortable: true, searchable: true, hidden: true },
+    { key: 'mailingAddress', label: 'Dirección', sortable: true, searchable: true, hidden: true },
+    { key: 'paymentMethod', label: 'Método Pago', sortable: true, searchable: true, hidden: true },
+    { key: 'items', label: 'Items', type: 'badge-list', hidden: true },
+    { key: 'subtotal', label: 'Subtotal', sortable: true, type: 'currency', hidden: true },
+    { key: 'deliveryDate', label: 'F. Entrega', sortable: true, type: 'date', hidden: true }
   ],
   actions: {
     canAdd: true,
     canEdit: true,
     canDelete: true,
     canExport: true,
-    canView: true
+    canView: true,
+    canToggleColumns: true
   },
   formFields: [
     { name: 'orderCode', type: 'text', label: 'Código de Pedido', required: true, placeholder: 'Ej: 001' },
@@ -458,27 +491,30 @@ export const ordersConfig = {
     { name: 'deliveryDate', type: 'date', label: 'Fecha de Entrega', required: true }
   ]
 }
-// Configuracion para reembolsos
+
+// Configuración optimizada para Reembolsos
 export const refundsConfig = {
   title: "Reembolsos",
   columns: [
-    { key: 'refundCode', label: 'Código de Reembolso', sortable: true, searchable: true },
-    { key: 'order', label: 'Pedido', sortable: true, searchable: true },
-    { key: 'customer', label: 'Cliente', sortable: true, searchable: true },
-    { key: 'requestDate', label: 'Fecha de Solicitud', sortable: true, type: 'date' },
-    { key: 'reason', label: 'Motivo', sortable: true, searchable: true },
-    { key: 'comments', label: 'Comentarios', searchable: true },
-    { key: 'items', label: 'Items', type: 'badge-list' },
-    { key: 'status', label: 'Estado', sortable: true, type: 'badge' },
-    { key: 'amount', label: 'Monto', sortable: true, type: 'currency' },
-    { key: 'refundMethod', label: 'Método de Reembolso', sortable: true, searchable: true }
+    { key: 'refundCode', label: 'Código', sortable: true, searchable: true, priority: 1, width: 120 },
+    { key: 'customer', label: 'Cliente', sortable: true, searchable: true, priority: 1, width: 150 },
+    { key: 'amount', label: 'Monto', sortable: true, type: 'currency', priority: 1, width: 100 },
+    { key: 'status', label: 'Estado', sortable: true, type: 'badge', priority: 1, width: 100 },
+    { key: 'requestDate', label: 'F. Solicitud', sortable: true, type: 'date', priority: 2, width: 120 },
+    // Campos ocultos
+    { key: 'order', label: 'Pedido', sortable: true, searchable: true, hidden: true },
+    { key: 'reason', label: 'Motivo', sortable: true, searchable: true, hidden: true },
+    { key: 'comments', label: 'Comentarios', searchable: true, hidden: true },
+    { key: 'items', label: 'Items', type: 'badge-list', hidden: true },
+    { key: 'refundMethod', label: 'Método', sortable: true, searchable: true, hidden: true }
   ],
   actions: {
     canAdd: true,
     canEdit: true,
     canDelete: true,
     canExport: true,
-    canView: true
+    canView: true,
+    canToggleColumns: true
   },
   formFields: [
     { name: 'refundCode', type: 'text', label: 'Código de Reembolso', required: true, placeholder: 'Ej: 001' },
@@ -504,25 +540,28 @@ export const refundsConfig = {
     }
   ]
 }
-// Configuracion para transacciones
+
+// Configuración optimizada para Transacciones
 export const transactionsConfig = {
   title: "Transacciones",
   columns: [
-    { key: 'transactionCode', label: 'Código de Transacción', sortable: true, searchable: true },
-    { key: 'order', label: 'Pedido', sortable: true, searchable: true },
-    { key: 'customer', label: 'Cliente', sortable: true, searchable: true },
-    { key: 'amount', label: 'Monto', sortable: true, type: 'currency' },
-    { key: 'type', label: 'Tipo', sortable: true, searchable: true },
-    { key: 'status', label: 'Estado', sortable: true, type: 'badge' },
-    { key: 'paymentMethod', label: 'Método de Pago', sortable: true, searchable: true },
-    { key: 'createdAt', label: 'Fecha de Creación', sortable: true, type: 'date' }
+    { key: 'transactionCode', label: 'Código', sortable: true, searchable: true, priority: 1, width: 130 },
+    { key: 'customer', label: 'Cliente', sortable: true, searchable: true, priority: 1, width: 150 },
+    { key: 'amount', label: 'Monto', sortable: true, type: 'currency', priority: 1, width: 100 },
+    { key: 'type', label: 'Tipo', sortable: true, searchable: true, priority: 1, width: 100 },
+    { key: 'status', label: 'Estado', sortable: true, type: 'badge', priority: 1, width: 100 },
+    { key: 'createdAt', label: 'Fecha', sortable: true, type: 'date', priority: 2, width: 120 },
+    // Campos ocultos
+    { key: 'order', label: 'Pedido', sortable: true, searchable: true, hidden: true },
+    { key: 'paymentMethod', label: 'Método Pago', sortable: true, searchable: true, hidden: true }
   ],
   actions: {
     canAdd: true,
     canEdit: true,
     canDelete: true,
     canExport: true,
-    canView: true
+    canView: true,
+    canToggleColumns: true
   },
   formFields: [
     { name: 'transactionCode', type: 'text', label: 'Código de Transacción', required: true, placeholder: 'Ej: 001' },
@@ -550,4 +589,24 @@ export const transactionsConfig = {
       ]
     }
   ]
+}
+
+// Configuración de visualización por defecto
+export const defaultTableSettings = {
+  // Número máximo de columnas visibles por defecto
+  maxVisibleColumns: 6,
+  
+  // Configuración de prioridades
+  priorityLevels: {
+    1: 'Siempre visible',
+    2: 'Visible en pantallas medianas+',
+    3: 'Visible en pantallas grandes+'
+  },
+  
+  // Configuración responsiva
+  responsive: {
+    mobile: { maxColumns: 3, priorities: [1] },
+    tablet: { maxColumns: 5, priorities: [1, 2] },
+    desktop: { maxColumns: 8, priorities: [1, 2, 3] }
+  }
 }
