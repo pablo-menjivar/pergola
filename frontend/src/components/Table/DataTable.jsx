@@ -122,6 +122,79 @@ const DataTable = ({ data = [], columns = [], isLoading = false,
       }
       return <span className="text-sm text-[#3d1609]">{typeLabels[value] || value}</span>
     }
+    // ✅ MANEJO PARA CAMPOS DE DESIGN ELEMENTS (base, decoration, clasp)
+    if (['base', 'clasp'].includes(column.key) && value) {
+      // Si es un objeto poblado
+      if (typeof value === 'object' && value.name) {
+        return (
+          <div className="flex items-center gap-2">
+            {value.image && (
+              <img 
+                src={value.image} 
+                alt={value.name} 
+                className="w-8 h-8 object-cover rounded border"
+                onError={(e) => { e.target.style.display = 'none' }}
+              />
+            )}
+            <div className="flex flex-col">
+              <span className="text-xs font-medium text-[#3d1609]">
+                {value.name}
+              </span>
+              {value.type && (
+                <span className="text-xs text-gray-500 capitalize">
+                  {value.type === 'base' ? 'Base' : value.type === 'clasp' ? 'Cierre' : value.type}
+                </span>
+              )}
+            </div>
+          </div>
+        )
+      }
+      // Si solo viene el ID (no está poblado)
+      return <span className="text-xs text-gray-400 italic">ID: {value}</span>
+    }
+
+    // ✅ MANEJO PARA DECORATION (es un array)
+    if (column.key === 'decoration' && Array.isArray(value)) {
+      if (value.length === 0) {
+        return <span className="text-gray-400 text-xs">Sin decoración</span>
+      }
+      
+      return (
+        <div className="flex flex-wrap gap-1">
+          {value.slice(0, 2).map((item, idx) => {
+            // Si está poblado
+            if (typeof item === 'object' && item.name) {
+              return (
+                <div key={idx} className="flex items-center gap-1 px-2 py-1 bg-purple-50 border border-purple-200 rounded">
+                  {item.image && (
+                    <img 
+                      src={item.image} 
+                      alt={item.name} 
+                      className="w-5 h-5 object-cover rounded"
+                      onError={(e) => { e.target.style.display = 'none' }}
+                    />
+                  )}
+                  <span className="text-xs text-purple-800 font-medium">
+                    {item.name}
+                  </span>
+                </div>
+              )
+            }
+            // Si solo es ID
+            return (
+              <span key={idx} className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">
+                ID: {item}
+              </span>
+            )
+          })}
+          {value.length > 2 && (
+            <span className="px-2 py-1 bg-gray-100 text-gray-800 rounded text-xs">
+              +{value.length - 2}
+            </span>
+          )}
+        </div>
+      )
+    }
     switch (column.type) {
       case 'badge':
         // Muestra badges de estado/color
