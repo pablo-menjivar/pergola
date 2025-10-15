@@ -76,35 +76,48 @@ const DataTable = ({ data = [], columns = [], isLoading = false,
         </div>
       )
     }
-    // Mostrar label de opción para columnas tipo select, select-multiple o type
-    if ((column.type === 'select' || column.type === 'select-multiple' || column.key === 'type') && value) {
-      if (Array.isArray(column.options)) {
-        // Si es un array de valores (select-multiple)
-        if (Array.isArray(value)) {
-          if (value.length === 0) return <span className="text-gray-400 text-xs">Sin elementos</span>;
-          return (
-            <div className="flex flex-wrap gap-1">
-              {value.slice(0, 3).map((val, idx) => {
-                const found = column.options.find(opt => opt.value === val)
-                return (
-                  <span key={idx} className="px-2 py-1 bg-pink-100 text-pink-800 rounded text-xs">
-                    {found ? found.label : val}
-                  </span>
-                )
-              })}
-              {value.length > 3 && (
-                <span className="px-2 py-1 bg-gray-100 text-gray-800 rounded text-xs">
-                  +{value.length - 3}
-                </span>
-              )}
-            </div>
-          )
-        } else if (typeof value === 'string') {
-          const found = column.options.find(opt => opt.value === value)
-          return found ? found.label : value
-        }
+    // ✅ MANEJO PARA CAMPOS CON OPTIONS (mostrar label en vez de value)
+    if (column.key === 'type' && value && typeof value === 'string') {
+      // Mapeo de valores a etiquetas legibles
+      const typeLabels = {
+        // Design Elements
+        'base': 'Base',
+        'decoration': 'Decoración',
+        'clasp': 'Cierre',
+        // Productos
+        'metal': 'Metal',
+        'piedra': 'Piedra',
+        'cuero': 'Cuero',
+        'cristal': 'Cristal',
+        'plástico': 'Plástico',
+        'otro-material': 'Otro material',
+        // Materias primas
+        'rollo': 'Rollo',
+        'lingote': 'Lingote',
+        'pieza': 'Pieza',
+        // Movimiento
+        'venta': 'Venta',
+        'exhibición': 'Exhibición',
+        'producción': 'Producción',
+        'otro': 'Otro',
+        // Estado
+        'disponible': 'Disponible',
+        'agotado': 'Agotado',
+        'en producción': 'En Producción',
+        'descontinuado': 'Descontinuado',
+        // Usuario
+        'admin': 'Administrador',
+        'employee': 'Empleado',
+        'customer': 'Cliente',
+        // Badge/otros
+        'active': 'Activo',
+        'inactive': 'Inactivo',
+        'pending': 'Pendiente',
+        'completed': 'Completado',
+        'true': 'Sí',
+        'false': 'No',
       }
-      return Array.isArray(value) ? value.join(', ') : value
+      return <span className="text-sm text-[#3d1609]">{typeLabels[value] || value}</span>
     }
     switch (column.type) {
       case 'badge':
