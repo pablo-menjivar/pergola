@@ -214,8 +214,8 @@ const DataTable = ({data = [], columns = [], isLoading = false,
                     displayText = obj.codeProduct
                   } else if (obj.correlative) {
                     displayText = obj.correlative
-                  } else if (obj.username) {
-                    displayText = obj.username
+                  } else if (obj.username && obj.phoneNumber) {
+                    displayText = `${obj.username} - ${obj.phoneNumber}`
                   } else if (obj.orderCode) {
                     displayText = obj.orderCode
                   } else {
