@@ -318,6 +318,7 @@ const DataTable = ({data = [], columns = [], isLoading = false,
           // ✅ FALLBACK: Usar propiedades útiles, NUNCA _id
           if (value.name) return value.name
           if (value.username) return value.username
+          if (value.phoneNumber) return value.phoneNumber
           if (value.orderCode) return value.orderCode
           if (value.codeProduct) return value.codeProduct
           if (value.description) return value.description
