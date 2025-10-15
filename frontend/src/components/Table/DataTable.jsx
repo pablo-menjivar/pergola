@@ -40,6 +40,33 @@ const DataTable = ({data = [], columns = [], isLoading = false,
         console.log('Item has itemId?', value[0]?.itemId);
       }
     }
+    // ✅ MANEJO ESPECIAL PARA CUSTOMER ANTES DEL SWITCH
+    if (column.key === 'customer' && value && typeof value === 'object') {
+      return (
+        <div className="flex flex-col gap-1 py-0.5">
+          {value.username && (
+            <span className="text-xs font-semibold text-[#3d1609]">
+              {value.username}
+            </span>
+          )}
+          {value.email && (
+            <span className="text-xs text-gray-600">
+              {value.email}
+            </span>
+          )}
+          {value.phoneNumber && (
+            <span className="text-xs text-[#A73249] font-medium">
+              {value.phoneNumber}
+            </span>
+          )}
+          {!value.username && !value.email && !value.phoneNumber && (
+            <span className="text-xs text-gray-400 italic">
+              {value.name && value.lastName ? `${value.name} ${value.lastName}` : 'Sin información'}
+            </span>
+          )}
+        </div>
+      )
+    }
     switch (column.type) {
       case 'badge':
         // Muestra badges de estado/color
