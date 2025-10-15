@@ -138,10 +138,20 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
       if (field.options === 'designelements' && designElementsData?.designElements) {
         return {
           ...field,
-          options: designElementsData.designElements.map(designElement => ({
-            value: designElement._id,
-            label: `${designElement.name} - ${designElement.type}`
-          }))
+          options: designElementsData.designElements.map(designElement => {
+            // Mapeo de tipos a labels legibles
+            const typeLabels = {
+              'base': 'Base',
+              'decoration': 'Decoración',
+              'clasp': 'Cierre'
+            }
+            const typeLabel = typeLabels[designElement.type] || designElement.type
+            
+            return {
+              value: designElement._id,
+              label: `${designElement.name} - ${typeLabel}`
+            }
+          })
         }
       }
       // Si no hay opciones dinámicas, retorna el campo tal cual
