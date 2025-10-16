@@ -7,11 +7,12 @@ const TableHeader = ({
   searchValue,          // Valor actual del campo de búsqueda
   onSearch,             // Callback para búsqueda
   actions = {},         // Configuración de acciones disponibles
-  onAdd, onExport, onFilter, onRefresh, onColumnToggle, // Callbacks para cada acción
+  onAdd, onExport, onFilter, onRefresh, onColumnToggle, onUpdate, // Callbacks para cada acción
   addButtonText,        // Texto personalizado para el botón de añadir
   addButtonIcon,        // Icono personalizado para el botón de añadir
   customActions = [],   // Acciones personalizadas
   isLoading = false,    // Estado de carga
+  isUpdating = false,   // Estado de actualización
   visibleColumnsCount,  // Número de columnas visibles
   totalColumnsCount,    // Número total de columnas
   className = ""        // Clases adicionales
@@ -44,9 +45,11 @@ const TableHeader = ({
         onFilter={onFilter} 
         onRefresh={onRefresh} 
         onColumnToggle={onColumnToggle}
+        onUpdate={onUpdate}
         onSearch={onSearch} 
         searchValue={searchValue} 
         isLoading={isLoading} 
+        isUpdating={isUpdating}
         addButtonText={addButtonText} 
         addButtonIcon={addButtonIcon} 
         customActions={customActions}

@@ -1,15 +1,15 @@
-import { Search, Filter, RefreshCw, Plus, Columns } from 'lucide-react'
+import { Search, Filter, RefreshCw, Plus, Columns, RotateCcw } from 'lucide-react'
 import ActionButton from './Buttons/ActionButton'
 import ExportButton from './Buttons/ExportButton'
 
-// Componente para mostrar las acciones de la tabla (buscar, filtrar, añadir, exportar, refrescar)
+// Componente para mostrar las acciones de la tabla (buscar, filtrar, añadir, exportar, refrescar, actualizar)
 const TableActions = ({
   // Configuración de acciones disponibles
-  actions = { canAdd: true, canExport: true, canFilter: true, canRefresh: true, canToggleColumns: true },
+  actions = { canAdd: true, canExport: true, canFilter: true, canRefresh: true, canToggleColumns: true, canUpdate: true },
   // Callbacks para cada acción
-  onAdd, onExport, onFilter, onRefresh, onSearch, onColumnToggle,
+  onAdd, onExport, onFilter, onRefresh, onSearch, onColumnToggle, onUpdate,
   // Estados de carga y búsqueda
-  isLoading = false, searchValue = "",
+  isLoading = false, isUpdating = false, searchValue = "",
   // Personalización de textos y título
   addButtonText = "Añadir", title = "",
   // Información de columnas
@@ -68,7 +68,7 @@ const TableActions = ({
               variant={action.variant || "ghost"} 
               icon={action.icon} 
               onClick={action.onClick} 
-              disabled={action.disabled || isLoading} 
+              disabled={action.disabled || isLoading || isUpdating} 
               className={action.className}
             >
               {action.label}
@@ -81,7 +81,7 @@ const TableActions = ({
               variant="ghost" 
               icon={Columns} 
               onClick={onColumnToggle} 
-              disabled={isLoading}
+              disabled={isLoading || isUpdating}
               title="Configurar columnas visibles"
             >
               <span className="hidden sm:inline">Columnas</span>
@@ -94,9 +94,24 @@ const TableActions = ({
               variant="ghost" 
               icon={Filter} 
               onClick={onFilter} 
-              disabled={isLoading}
+              disabled={isLoading || isUpdating}
             >
               <span className="hidden sm:inline">Filtrar</span>
+            </ActionButton>
+          )}
+
+          {/* Botón de actualizar */}
+          {actions.canUpdate && onUpdate && (
+            <ActionButton 
+              variant="ghost" 
+              icon={RotateCcw} 
+              onClick={onUpdate} 
+              disabled={isLoading} 
+              loading={isUpdating}
+              size="icon"
+              title="Sincronizar datos más recientes"
+            >
+              <span className="hidden sm:inline">Actualizar</span>
             </ActionButton>
           )}
 
@@ -106,15 +121,15 @@ const TableActions = ({
               variant="ghost" 
               icon={RefreshCw} 
               onClick={onRefresh} 
-              disabled={isLoading} 
+              disabled={isLoading || isUpdating} 
               size="icon"
-              title="Refrescar datos"
+              title="Refrescar tabla (reinicia filtros)"
             />
           )}
 
           {/* Botón de exportar */}
           {actions.canExport && onExport && (
-            <ExportButton onExport={onExport} disabled={isLoading}/>
+            <ExportButton onExport={onExport} disabled={isLoading || isUpdating}/>
           )}
 
           {/* Botón de añadir */}
@@ -123,7 +138,7 @@ const TableActions = ({
               variant="primary" 
               icon={Plus} 
               onClick={onAdd} 
-              disabled={isLoading}
+              disabled={isLoading || isUpdating}
             >
               {addButtonText}
             </ActionButton>

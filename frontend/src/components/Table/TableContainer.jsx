@@ -7,7 +7,7 @@ import DetailModal from './Modals/DetailModal'
 import ColumnToggleModal from './Modals/ColumnToggleModal'
 
 // Componente contenedor principal para la tabla y sus acciones/modales
-const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, isLoading = false, className = "", categoriesData, subcategoriesData, collectionsData, suppliersData, customersData, rawMaterialsData, productsData, ordersData, refundsData, transactionsData, employeesData, designElementsData}) => {
+const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onUpdate, onExport, isLoading = false, isUpdating = false, className = "", categoriesData, subcategoriesData, collectionsData, suppliersData, customersData, rawMaterialsData, productsData, ordersData, refundsData, transactionsData, employeesData, designElementsData}) => {
   // Estados para búsqueda, ordenamiento, paginación y modales
   const [searchValue, setSearchValue] = useState("")
   const [sortBy, setSortBy] = useState(null)
@@ -390,6 +390,19 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
     setShowColumnToggle(false)
   }
 
+  const handleUpdate = async () => {
+    if (onUpdate) {
+      try {
+        await onUpdate()
+        // Opcional: mostrar mensaje de éxito
+        console.log('Datos actualizados correctamente')
+      } catch (error) {
+        console.error('Error al actualizar datos:', error)
+        // Opcional: mostrar mensaje de error
+      }
+    }
+  }
+
   const handleEdit = (item) => {
     // Procesa el item para extraer IDs de objetos populados
     const processedItem = { ...item }
@@ -572,6 +585,7 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onExport, i
         actions={config.actions} 
         onAdd={config.actions?.canAdd ? handleAdd : undefined} 
         onExport={config.actions?.canExport ? handleExport : undefined} 
+        onUpdate={config.actions?.canUpdate ? handleUpdate : undefined}
         onRefresh={handleRefresh}
         onColumnToggle={config.actions?.canToggleColumns ? handleColumnToggle : undefined}
         addButtonText={`Añadir ${config.title?.slice(0) || 'Elemento'}`} 

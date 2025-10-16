@@ -26,6 +26,7 @@ export const customersConfig = {
     canAdd: true,
     canEdit: true,
     canDelete: true,
+    canUpdate: true,
     canExport: true,
     canView: true,
     canToggleColumns: true // Nueva funcionalidad para mostrar/ocultar columnas
@@ -78,6 +79,7 @@ export const employeesConfig = {
     canAdd: true,
     canEdit: true,
     canDelete: true,
+    canUpdate: true,
     canExport: true,
     canView: true,
     canToggleColumns: true
@@ -112,6 +114,7 @@ export const categoriesConfig = {
     canAdd: true,
     canEdit: true,
     canDelete: true,
+    canUpdate: true,
     canExport: true,
     canView: true,
     canToggleColumns: true
@@ -138,6 +141,7 @@ export const subcategoriesConfig = {
     canAdd: true,
     canEdit: true,
     canDelete: true,
+    canUpdate: true,
     canExport: true,
     canView: true,
     canToggleColumns: true
@@ -164,6 +168,7 @@ export const collectionsConfig = {
     canAdd: true,
     canEdit: true,
     canDelete: true,
+    canUpdate: true,
     canExport: true,
     canView: true,
     canToggleColumns: true
@@ -191,6 +196,7 @@ export const suppliersConfig = {
     canAdd: true,
     canEdit: true,
     canDelete: true,
+    canUpdate: true,
     canExport: true,
     canView: true,
     canToggleColumns: true
@@ -233,6 +239,7 @@ export const productsConfig = {
     canAdd: true,
     canEdit: true,
     canDelete: true,
+    canUpdate: true,
     canExport: true,
     canView: true,
     canToggleColumns: true
@@ -303,6 +310,7 @@ export const rawMaterialsConfig = {
     canAdd: true,
     canEdit: true,
     canDelete: true,
+    canUpdate: true,
     canExport: true,
     canView: true,
     canToggleColumns: true
@@ -346,6 +354,7 @@ export const reviewsConfig = {
     canAdd: true,
     canEdit: true,
     canDelete: true,
+    canUpdate: true,
     canExport: true,
     canView: true,
     canToggleColumns: true
@@ -377,6 +386,7 @@ export const customDesignsConfig = {
     canAdd: true,
     canEdit: true,
     canDelete: true,
+    canUpdate: true,
     canExport: true,
     canView: true,
     canToggleColumns: true
@@ -412,6 +422,7 @@ export const designElementsConfig = {
     canAdd: true,
     canEdit: true,
     canDelete: true,
+    canUpdate: true,
     canExport: true,
     canView: true,
     canToggleColumns: true
@@ -452,6 +463,7 @@ export const ordersConfig = {
     canAdd: true,
     canEdit: true,
     canDelete: true,
+    canUpdate: true,
     canExport: true,
     canView: true,
     canToggleColumns: true
@@ -512,6 +524,7 @@ export const refundsConfig = {
     canAdd: true,
     canEdit: true,
     canDelete: true,
+    canUpdate: true,
     canExport: true,
     canView: true,
     canToggleColumns: true
@@ -559,6 +572,7 @@ export const transactionsConfig = {
     canAdd: true,
     canEdit: true,
     canDelete: true,
+    canUpdate: true,
     canExport: true,
     canView: true,
     canToggleColumns: true
