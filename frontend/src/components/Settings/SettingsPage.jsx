@@ -354,7 +354,7 @@ const handleDeleteProfilePic = async () => {
   const tabs = [
     { id: 'profile', label: t('profile') || 'Perfil', icon: User },
     /* { id: 'security', label: t('security') || 'Seguridad', icon: Shield }, */
-    { id: 'preferences', label: t('preferences') || 'Preferencias', icon: Palette }
+    /* { id: 'preferences', label: t('preferences') || 'Preferencias', icon: Palette } */
   ]
 
   return (
@@ -507,7 +507,7 @@ const handleDeleteProfilePic = async () => {
                     ? (t('saving') || 'Guardando...') 
                     : hasChanges 
                       ? (t('saveChanges') || 'Guardar Cambios')
-                      : (t('noChanges') || 'Sin Cambios')
+                      : (t('noChanges') === 'noChanges' ? 'Sin Cambios' : t('noChanges'))
                   }
                 </span>
               </button>
