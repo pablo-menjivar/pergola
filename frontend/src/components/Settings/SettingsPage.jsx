@@ -366,7 +366,7 @@ const handleDeleteProfilePic = async () => {
             ⚙️ {t('settings') || 'Configuración'}
           </h1>
           <p className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>
-            {t('personalizeProfile') || 'Personaliza tu perfil y preferencias'}
+            {t('personalizeProfile') || 'Personaliza la información de tu perfil'}
           </p>
         </div>
 
@@ -612,9 +612,9 @@ const handleDeleteProfilePic = async () => {
                   </button>
               </div>
           )}
-        */}
+          */}
 
-          {/* Tab: Preferencias */}
+          {/* 
           {activeTab === 'preferences' && (
             <div className="p-6">
               <h2 className={`text-xl font-semibold mb-6 ${isDarkMode ? 'text-white' : 'text-[#3D1609]'}`}>
@@ -622,7 +622,6 @@ const handleDeleteProfilePic = async () => {
               </h2>
 
               <div className="space-y-6">
-                {/* Preferencia de tema */}
                 <div className={`flex items-center justify-between p-4 border rounded-lg ${isDarkMode ? 'border-gray-600 bg-gray-700' : 'border-gray-200'}`}>
                   <div className="flex items-center space-x-3">
                     {isDarkMode ?
@@ -634,13 +633,11 @@ const handleDeleteProfilePic = async () => {
                       <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-500'}`}>{t('themeDescription') || 'Claro u oscuro'}</p>
                     </div>
                   </div>
-                  {/* Switch de tema */}
                   <button onClick={toggleDarkMode} className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${ isDarkMode ? 'bg-[#A73249]' : 'bg-gray-300' }`}>
                     <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${ isDarkMode ? 'translate-x-6' : 'translate-x-1' }`}/>
                   </button>
                 </div>
 
-                {/* Preferencia de idioma */}
                 <div className={`flex items-center justify-between p-4 border rounded-lg ${isDarkMode ? 'border-gray-600 bg-gray-700' : 'border-gray-200'}`}>
                   <div className="flex items-center space-x-3">
                     <Palette className="w-5 h-5 text-purple-500" />
@@ -655,7 +652,6 @@ const handleDeleteProfilePic = async () => {
                   </select>
                 </div>
 
-                {/* Preferencia de notificaciones por email */}
                 <div className={`flex items-center justify-between p-4 border rounded-lg ${isDarkMode ? 'border-gray-600 bg-gray-700' : 'border-gray-200'}`}>
                   <div className="flex items-center space-x-3">
                     <Mail className="w-5 h-5 text-green-500" />
@@ -669,13 +665,11 @@ const handleDeleteProfilePic = async () => {
                       </p>
                     </div>
                   </div>
-                  {/* Switch de notificaciones email */}
                   <button onClick={toggleEmailNotifications} disabled={emailLoading} className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${ emailNotifications ? 'bg-[#A73249]' : 'bg-gray-300' } ${emailLoading ? 'opacity-50 cursor-not-allowed' : ''}`}>
                     <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${ emailNotifications ? 'translate-x-6' : 'translate-x-1' }`}/>
                   </button>
                 </div>
 
-                {/* Preferencia de notificaciones del navegador */}
                 <div className={`flex items-center justify-between p-4 border rounded-lg ${isDarkMode ? 'border-gray-600 bg-gray-700' : 'border-gray-200'}`}>
                   <div className="flex items-center space-x-3">
                     <Bell className="w-5 h-5 text-blue-500" />
@@ -691,7 +685,6 @@ const handleDeleteProfilePic = async () => {
                       </p>
                     </div>
                   </div>
-                  {/* Botón para activar notificaciones navegador */}
                   <button onClick={browserNotifications === 'granted' ? showTestNotification : handleBrowserNotifications} className={`px-4 py-2 text-white text-sm rounded-lg transition-colors ${ browserNotifications === 'granted' ? 'bg-[#A73249] hover:bg-[#8A2A3E]' : 'bg-[#A73249] hover:bg-[#8A2A3E]' }`}>
                     {browserNotifications === 'granted' ? 
                       (t('testNotification') || 'Probar') :
@@ -700,7 +693,6 @@ const handleDeleteProfilePic = async () => {
                   </button>
                 </div>
 
-                {/* Información de sesión del usuario */}
                 <div className={`p-4 rounded-lg border-l-4 border-l-[#A73249] ${isDarkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
                   <h4 className={`font-medium mb-2 ${isDarkMode ? 'text-white' : 'text-[#3D1609]'}`}>👤 Información de Sesión</h4>
                   <div className={`text-sm space-y-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
@@ -713,7 +705,6 @@ const handleDeleteProfilePic = async () => {
                 </div>
               </div>
 
-              {/* Tips y estado actual */}
               <div className={`mt-8 p-4 border rounded-lg ${ isDarkMode ? 'bg-green-900/30 border-green-700' : 'bg-green-50 border-green-200' }`}>
                 <p className={`text-sm ${ isDarkMode ? 'text-green-300' : 'text-green-700'}`}>
                   💡 <strong>{t('tips') || 'Tips'}:</strong>
@@ -726,7 +717,7 @@ const handleDeleteProfilePic = async () => {
                 </ul>
               </div>
             </div>
-          )}
+          )} Tab: Preferencias */}
         </div>
       </div>
     </div>
