@@ -257,8 +257,8 @@ const FormModal = ({isOpen, onClose, onSubmit, title, fields, initialData = {}, 
       case 'order-items':
         console.log('🔍 FormModal - Rendering order-items field:', {
           fieldName: field.name,
-          productsData: field.productsData,
-          productsCount: field.productsData?.length
+          productsData: productsData?.products,
+          productsCount: productsData?.products?.length
         });
         return (
           <OrderItemsField
@@ -275,7 +275,7 @@ const FormModal = ({isOpen, onClose, onSubmit, title, fields, initialData = {}, 
               // Actualizar los items
               setValue(field.name, newItems);
             }}
-            products={field.productsData || []}
+            products={productsData?.products || []}
             disabled={isLoading}
           />
         );
