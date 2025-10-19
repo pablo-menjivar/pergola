@@ -480,7 +480,7 @@ export const ordersConfig = {
         { value: 'transferencia bancaria', label: 'Transferencia' }
       ]
     },
-    { name: 'items', type: 'order-items', label: 'Productos del Pedido', required: true },
+    { name: 'items', type: 'order-items', label: 'Productos del Pedido', required: true, fullWidth: true, useProductsData: true },
     { name: 'subtotal', type: 'number', label: 'Subtotal', required: true, placeholder: '0.00', min: 0.01, step: 0.01 },
     { name: 'total', type: 'number', label: 'Total', required: true, placeholder: '0.00', min: 0.01, step: 0.01 },
     { name: 'status', type: 'select', label: 'Estado', required: true,
