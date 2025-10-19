@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast"
 
 // Hook para manejar datos de diseños únicos
 const useDataCustomDesigns = () => {
-  const API = "https://pergola-production.up.railway.app/api/customdesigns"
+  const API = "https://pergola.onrender.com/api/customdesigns"
   const [customdesigns, setCustomDesigns] = useState([]) // estado de diseños
   const [designelements, setDesignElements] = useState([]) // estado con elementos de diseño
   const [loading, setLoading] = useState(true) // estado de carga
@@ -35,7 +35,7 @@ const useDataCustomDesigns = () => {
   // Cargar elementos de diseño desde el servidor
   const fetchDesignElements = async () => {
     try {
-      const response = await fetch("https://pergola-production.up.railway.app/api/designelements", {
+      const response = await fetch("https://pergola.onrender.com/api/designelements", {
         credentials: "include"
       });
       if (!response.ok) {

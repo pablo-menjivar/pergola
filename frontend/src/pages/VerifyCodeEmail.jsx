@@ -27,7 +27,7 @@ const VerifyCodeEmail = () => {
     console.log('Cookies disponibles:', document.cookie)
     setIsLoading(true)
     try {
-      const response = await fetch(`https://pergola-production.up.railway.app/api/signup/verifyCode`, {
+      const response = await fetch(`https://pergola.onrender.com/api/signup/verifyCode`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

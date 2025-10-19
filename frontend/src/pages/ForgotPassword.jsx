@@ -29,7 +29,7 @@ const ForgotPassword = () => {
     setIsLoading(true)
     try {
       // Realiza la petición para solicitar el código de recuperación
-      const response = await fetch('https://pergola-production.up.railway.app/api/recoveryPassword/requestCode', {
+      const response = await fetch('https://pergola.onrender.com/api/recoveryPassword/requestCode', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

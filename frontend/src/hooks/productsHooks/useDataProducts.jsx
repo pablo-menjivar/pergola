@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast"
 
 // Hook para manejar productos y sus datos relacionados
 const useDataProducts = () => {
-  const API = "https://pergola-production.up.railway.app/api/products"
+  const API = "https://pergola.onrender.com/api/products"
   const [products, setProducts] = useState([]) // Lista de productos
   const [categories, setCategories] = useState([]) // Lista de categorías
   const [subcategories, setSubategories] = useState([]) // Lista de subcategorías
@@ -41,7 +41,7 @@ const useDataProducts = () => {
   // Cargar colecciones
   const fetchCollections = async () => {
     try {
-      const response = await fetch("https://pergola-production.up.railway.app/api/collections", {
+      const response = await fetch("https://pergola.onrender.com/api/collections", {
         credentials: "include"
       })
       if (!response.ok) {
@@ -57,7 +57,7 @@ const useDataProducts = () => {
   // Cargar categorías
   const fetchCategories = async () => {
     try {
-      const response = await fetch("https://pergola-production.up.railway.app/api/categories", {
+      const response = await fetch("https://pergola.onrender.com/api/categories", {
         credentials: "include"
       })
       if (!response.ok) {
@@ -73,7 +73,7 @@ const useDataProducts = () => {
   // Cargar subcategorías
   const fetchSubcategories = async () => {
     try {
-      const response = await fetch("https://pergola-production.up.railway.app/api/subcategories", {
+      const response = await fetch("https://pergola.onrender.com/api/subcategories", {
         credentials: "include"
       })
       if (!response.ok) {
@@ -89,7 +89,7 @@ const useDataProducts = () => {
   // Cargar materias primas
   const fetchRawMaterials = async () => {
     try {
-      const response = await fetch("https://pergola-production.up.railway.app/api/rawmaterials", {
+      const response = await fetch("https://pergola.onrender.com/api/rawmaterials", {
         credentials: "include"
       })
       if (!response.ok) {

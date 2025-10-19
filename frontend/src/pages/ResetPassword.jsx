@@ -61,7 +61,7 @@ const ResetPassword = () => {
     setIsLoading(true)
     try {
       // Petición para cambiar la contraseña
-      const response = await fetch('https://pergola-production.up.railway.app/api/recoveryPassword/changePassword', {
+      const response = await fetch('https://pergola.onrender.com/api/recoveryPassword/changePassword', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
