@@ -57,12 +57,12 @@ const Dashboard = () => {
     
     try {
       const endpoints = [
-        'https://pergola-production.up.railway.app/api/products',
-        'https://pergola-production.up.railway.app/api/orders',
-        'https://pergola-production.up.railway.app/api/customers',
-        'https://pergola-production.up.railway.app/api/reviews',
-        'https://pergola-production.up.railway.app/api/transactions',
-        'https://pergola-production.up.railway.app/api/collections'
+        'https://pergola.onrender.com/api/products',
+        'https://pergola.onrender.com/api/orders',
+        'https://pergola.onrender.com/api/customers',
+        'https://pergola.onrender.com/api/reviews',
+        'https://pergola.onrender.com/api/transactions',
+        'https://pergola.onrender.com/api/collections'
       ]
 
       const responses = await Promise.allSettled(
