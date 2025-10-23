@@ -34,7 +34,7 @@ const MainPage = () => {
     refunds: false,
     transactions: false
   })
-  // Usar el hook condicional - TODOS los hooks se ejecutan siempre
+  /* Usar el hook condicional - TODOS los hooks se ejecutan siempre 
   const {
     suppliersData,
     categoriesData,
@@ -50,7 +50,7 @@ const MainPage = () => {
     refundsData,
     transactionsData,
     designElementsData
-  } = useConditionalData()
+  } = useConditionalData() */
   
   const handleLogout = async () => {
     await logout()
