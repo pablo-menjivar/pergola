@@ -13,7 +13,9 @@ import { useConditionalData } from '../hooks/mainHook/useConditionalData.js'
 import { suppliersConfig, categoriesConfig, subcategoriesConfig, collectionsConfig, productsConfig, rawMaterialsConfig, reviewsConfig, customDesignsConfig, ordersConfig, refundsConfig, transactionsConfig, designElementsConfig, employeesConfig, customersConfig} from '../data/TableConfigs.js'
 
 const MainPage = () => {
+  console.log("🔍 MainPage iniciando...")
   const { user, logout, API } = useAuth()
+  console.log("🔍 Auth cargado:", user?.userType)
   const [currentView, setCurrentView] = useState('dashboard')
   // Estados para controlar las actualizaciones por sección
   const [updatingStates, setUpdatingStates] = useState({

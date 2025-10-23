@@ -17,7 +17,9 @@ import useDataDesignElements from '../designElementsHooks/useDataDesignElements'
 // Hook principal para obtener datos condicionales según permisos del usuario
 export const useConditionalData = () => {
   const { user } = useAuth()
-  // TODOS los hooks se ejecutan SIEMPRE (cumple reglas de React)
+  
+  // ✅ TODOS los hooks se ejecutan SIEMPRE (cumple reglas de React)
+  // No ejecutamos ningún hook condicionalmente
   const allSuppliersData = useDataSuppliers()
   const allCategoriesData = useDataCategories()
   const allSubcategoriesData = useDataSubcategories()
@@ -32,54 +34,98 @@ export const useConditionalData = () => {
   const allRefundsData = useDataRefunds()
   const allTransactionsData = useDataTransactions()
   const allDesignElementsData = useDataDesignElements()
+  
   // Función para verificar si el usuario tiene acceso a una sección
   const canAccess = (section) => {
     if (!user?.userType) return false
     
     // Permisos por tipo de usuario
     const permissions = {
-      'admin': [ 'dashboard', 'search', 'products', 'customdesigns', 'designelements', 'rawmaterials', 'employees', 'categories','subcategories', 'collections', 'customers', 'orders', 'reviews', 'refunds', 'transactions', 'suppliers', 'settings' ],
-      'employee': [ 'dashboard', 'search', 'products', 'customdesigns', 'designelements', 'rawmaterials', 'categories','subcategories', 'collections', 'reviews', 'suppliers', 'settings' ],
+      'admin': [ 
+        'dashboard', 'search', 'products', 'customdesigns', 'designelements', 
+        'rawmaterials', 'employees', 'categories','subcategories', 'collections', 
+        'customers', 'orders', 'reviews', 'refunds', 'transactions', 'suppliers', 'settings' 
+      ],
+      'employee': [ 
+        'dashboard', 'search', 'products', 'customdesigns', 'designelements', 
+        'rawmaterials', 'categories','subcategories', 'collections', 'reviews', 
+        'suppliers', 'settings' 
+      ],
     }
     return permissions[user.userType]?.includes(section) || false
   }
-  // Objeto vacío para cuando no hay acceso
-  const emptyData = { 
+  
+  // ✅ Objeto seguro para cuando no hay acceso - SIN FUNCIONES REACTIVAS
+  const createEmptyData = () => ({
     data: [], 
     loading: false, 
-    fetch: () => {},
+    fetch: async () => {
+      console.log('Sin permisos para esta sección')
+      return Promise.resolve()
+    },
+    createHandlers: () => ({
+      data: [],
+      loading: false,
+      onAdd: async () => Promise.resolve(),
+      onEdit: async () => Promise.resolve(),
+      onDelete: async () => Promise.resolve()
+    }),
     // Propiedades específicas según el tipo de data
     suppliers: [],
     categories: [],
     subcategories: [],
     collections: [],
     products: [],
-    rawmaterials: [],
+    rawMaterials: [],
     reviews: [],
-    customdesigns: [],
-    designelements: [],
+    customDesigns: [],
+    designElements: [],
     customers: [],
     employees: [],
     orders: [],
     refunds: [],
     transactions: []
+  })
+  
+  // ✅ Wrapper seguro para evitar problemas con hooks
+  const safeWrapData = (hasAccess, data) => {
+    if (!hasAccess) {
+      return createEmptyData()
+    }
+    
+    // Asegurar que data siempre tenga las propiedades esperadas
+    return {
+      ...data,
+      fetch: data.fetch || (async () => {
+        console.warn('Función fetch no disponible para este hook')
+        return Promise.resolve()
+      }),
+      createHandlers: data.createHandlers || (() => ({
+        data: data.data || [],
+        loading: data.loading || false,
+        onAdd: async () => Promise.resolve(),
+        onEdit: async () => Promise.resolve(),
+        onDelete: async () => Promise.resolve()
+      }))
+    }
   }
-  // Retorna los datos según permisos
+  
+  // ✅ Retorna los datos según permisos - SIN CONDICIONALES EN HOOKS
   return {
-    suppliersData: canAccess('suppliers') ? allSuppliersData : emptyData,
-    categoriesData: canAccess('categories') ? allCategoriesData : emptyData,
-    subcategoriesData: canAccess('subcategories') ? allSubcategoriesData : emptyData,
-    collectionsData: canAccess('collections') ? allCollectionsData : emptyData,
-    productsData: canAccess('products') ? allProductsData : emptyData,
-    rawMaterialsData: canAccess('rawmaterials') ? allRawMaterialsData : emptyData,
-    reviewsData: canAccess('reviews') ? allReviewsData : emptyData,
-    customDesignsData: canAccess('customdesigns') ? allCustomDesignsData : emptyData,
-    customersData: canAccess('customers') ? allCustomersData: emptyData,
-    employeesData: canAccess('employees') ? allEmployeesData: emptyData,
-    ordersData: canAccess('orders') ? allOrdersData: emptyData,
-    refundsData: canAccess('refunds') ? allRefundsData: emptyData,
-    transactionsData: canAccess('transactions') ? allTransactionsData: emptyData,
-    designElementsData: canAccess('designelements') ? allDesignElementsData: emptyData,
-    canAccess // expone la función para uso
+    suppliersData: safeWrapData(canAccess('suppliers'), allSuppliersData),
+    categoriesData: safeWrapData(canAccess('categories'), allCategoriesData),
+    subcategoriesData: safeWrapData(canAccess('subcategories'), allSubcategoriesData),
+    collectionsData: safeWrapData(canAccess('collections'), allCollectionsData),
+    productsData: safeWrapData(canAccess('products'), allProductsData),
+    rawMaterialsData: safeWrapData(canAccess('rawmaterials'), allRawMaterialsData),
+    reviewsData: safeWrapData(canAccess('reviews'), allReviewsData),
+    customDesignsData: safeWrapData(canAccess('customdesigns'), allCustomDesignsData),
+    customersData: safeWrapData(canAccess('customers'), allCustomersData),
+    employeesData: safeWrapData(canAccess('employees'), allEmployeesData),
+    ordersData: safeWrapData(canAccess('orders'), allOrdersData),
+    refundsData: safeWrapData(canAccess('refunds'), allRefundsData),
+    transactionsData: safeWrapData(canAccess('transactions'), allTransactionsData),
+    designElementsData: safeWrapData(canAccess('designelements'), allDesignElementsData),
+    canAccess // expone la función para uso externo
   }
 }
