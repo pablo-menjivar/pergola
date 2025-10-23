@@ -113,7 +113,6 @@ const DetailModal = ({ isOpen, onClose, data, title = "Detalles", type = "generi
       codeProduct: Hash,
       orderCode: Hash,
       refundCode: Receipt,
-      transactionCode: Receipt,
       codeRequest: Hash,
       
       // Elementos de diseño
@@ -349,20 +348,6 @@ const DetailModal = ({ isOpen, onClose, data, title = "Detalles", type = "generi
           ]
         }
 
-      case 'transactions':
-        return {
-          fields: [
-            { key: 'transactionCode', label: 'Código de Transacción', type: 'text' },
-            { key: 'order', label: 'Pedido', type: 'reference' },
-            { key: 'customer', label: 'Cliente', type: 'customer' },
-            { key: 'amount', label: 'Monto', type: 'currency' },
-            { key: 'type', label: 'Tipo', type: 'badge' },
-            { key: 'status', label: 'Estado', type: 'badge' },
-            { key: 'paymentMethod', label: 'Método de Pago', type: 'text' },
-            { key: 'createdAt', label: 'Fecha de Creación', type: 'date' }
-          ]
-        }
-
       default:
         // Si no hay tipo específico, muestra todos los campos como texto
         return {
@@ -440,15 +425,6 @@ const DetailModal = ({ isOpen, onClose, data, title = "Detalles", type = "generi
           'rechazado': 'bg-red-100 text-red-800 border-red-200',
           'procesado': 'bg-blue-100 text-blue-800 border-blue-200',
           
-          // Estados de transacción
-          'completado': 'bg-green-100 text-green-800 border-green-200',
-          'revertido': 'bg-orange-100 text-orange-800 border-orange-200',
-          
-          // Tipos de transacción
-          'pago': 'bg-green-100 text-green-800 border-green-200',
-          'reembolso': 'bg-orange-100 text-orange-800 border-orange-200',
-          'ajuste': 'bg-blue-100 text-blue-800 border-blue-200',
-          
           // Tipos de diseño
           'pulsera': 'bg-pink-100 text-pink-800 border-pink-200',
           'cadena': 'bg-yellow-100 text-yellow-800 border-yellow-200',
@@ -475,7 +451,7 @@ const DetailModal = ({ isOpen, onClose, data, title = "Detalles", type = "generi
 
       case 'reference':
         if (typeof value === 'object' && value) {
-          const displayName = value.name || value.contactPerson || value.orderCode || value.refundCode || value.transactionCode || value.code || value._id?.slice(-6) || 'Sin nombre'
+          const displayName = value.name || value.contactPerson || value.orderCode || value.refundCode || value.code || value._id?.slice(-6) || 'Sin nombre'
           return (
             <div className="bg-[#E8E1D8] px-3 py-2 rounded-lg border">
               <div className="font-medium text-[#3D1609]">{displayName}</div>

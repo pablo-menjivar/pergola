@@ -27,8 +27,7 @@ const GlobalSearch = () => {
     rawMaterialsData,
     customDesignsData,
     designElementsData,
-    refundsData,
-    transactionsData,
+    refundsData
   } = useConditionalData()
 
   // Función de permisos estática
@@ -36,7 +35,7 @@ const GlobalSearch = () => {
     if (!user?.userType) return () => false
     
     const permissions = {
-      'admin': [ 'dashboard', 'search', 'products', 'customdesigns', 'designelements', 'rawmaterials', 'employees', 'categories','subcategories', 'collections', 'customers', 'orders', 'reviews', 'refunds', 'transactions', 'suppliers', 'settings' ],
+      'admin': [ 'dashboard', 'search', 'products', 'customdesigns', 'designelements', 'rawmaterials', 'employees', 'categories','subcategories', 'collections', 'customers', 'orders', 'reviews', 'refunds', 'suppliers', 'settings' ],
       'employee': [ 'dashboard', 'search', 'products', 'customdesigns', 'designelements', 'rawmaterials', 'categories','subcategories', 'collections', 'reviews', 'suppliers', 'settings' ],
     }
     const userPermissions = permissions[user.userType] || []
@@ -154,14 +153,6 @@ const GlobalSearch = () => {
         count: refundsData?.refunds?.length || 0
       })
     }
-    if (hasPermission('transactions')) {
-      categories.push({ 
-        id: 'transactions',
-        label: 'Transacciones',
-        icon: ArrowLeftRight,
-        count: transactionsData?.transactions?.length || 0
-      })
-    }
     
     // Calcular total para "Todo"
     const totalCount = categories.slice(1).reduce((sum, cat) => sum + cat.count, 0)
@@ -183,7 +174,6 @@ const GlobalSearch = () => {
     customDesignsData?.customdesigns?.length,
     designElementsData?.designelements?.length,
     refundsData?.refunds?.length,
-    transactionsData?.transactions?.length,
   ])
 
   // CORREGIDO: useEffect con control de debounce y cleanup
@@ -395,31 +385,6 @@ const GlobalSearch = () => {
           })
         }
 
-        // Buscar en transacciones
-        if ((selectedCategory === 'all' || selectedCategory === 'transactions') && hasPermission('transactions')) {
-          transactionsData?.transactions?.forEach(transaction => {
-            if (!transaction?._id) return
-            
-            const transactionCode = transaction.transactionCode?.toLowerCase() || ''
-            const amount = transaction.amount?.toString().toLowerCase() || ''
-            const type = transaction.type?.toLowerCase() || ''
-            const transactionId = transaction._id?.toLowerCase() || ''
-            
-            if (transactionCode.includes(searchLower) || amount.includes(searchLower) || 
-                type.includes(searchLower) || transactionId.includes(searchLower)) {
-              foundResults.push({
-                id: transaction._id,
-                type: 'transactions',
-                typeName: 'Transacción',
-                title: `Transacción #${transaction.transactionCode}`,
-                subtitle: `Monto: ${transaction.amount}`,
-                description: `Tipo: ${transaction.type}`,
-                data: transaction
-              })
-            }
-          })
-        }
-
         console.log('🎯 Resultados encontrados:', foundResults.length)
         setResults(foundResults)
         
@@ -452,7 +417,6 @@ const GlobalSearch = () => {
     customDesignsData?.customdesigns,
     designElementsData?.designelements,
     refundsData?.refunds,
-    transactionsData?.transactions,
   ])
 
   const clearSearch = () => {

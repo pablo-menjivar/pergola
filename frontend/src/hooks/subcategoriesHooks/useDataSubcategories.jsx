@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { toast } from "react-hot-toast"
 
 // Hook para manejar datos de subcategorías
@@ -7,38 +7,77 @@ const useDataSubcategories = () => {
   const [subcategories, setSubcategories] = useState([]) // estado con subcategorías
   const [loading, setLoading] = useState(true) // estado de carga
 
-  // Trae las subcategorías del backend
-  const fetchSubcategories = async () => {
+  // ✅ USAR useCallback para evitar re-creaciones innecesarias
+  const fetchSubcategories = useCallback(async () => {
     try {
+      setLoading(true)
       const response = await fetch(API, { credentials: "include" })
-      // Si el usuario no tiene permisos, vacía datos y termina
-      if (response.status === 403) { // sin permisos
+      
+      if (response.status === 403) {
         console.log("⚠️ Sin permisos para subcategorías")
         setSubcategories([])
         setLoading(false)
         return
       }
-      // Si hay error en la respuesta, lanza excepción
+      
       if (!response.ok) throw new Error("Hubo un error al obtener las subcategorías")
-      // Si todo bien, guarda los datos
+      
       const data = await response.json()
       setSubcategories(data)
-      setLoading(false)
     } catch (error) {
       console.error("Error al obtener subcategorías:", error)
-      // Solo muestra toast si no es error de permisos
       if (!error.message.includes("403")) toast.error("Error al cargar subcategorías")
+      setSubcategories([])
+    } finally {
       setLoading(false)
     }
-  }
+  }, [API])
 
-  // Ejecuta la carga inicial al montar el componente
+  // ✅ useEffect CON DEPENDENCIAS CONTROLADAS
   useEffect(() => {
-    fetchSubcategories() // carga inicial al montar
-  }, [])
+    let mounted = true
+    
+    const loadData = async () => {
+      if (mounted) {
+        await fetchSubcategories()
+      }
+    }
 
-  // Handlers para CRUD
-  const createHandlers = (API) => ({
+    loadData()
+    
+    return () => {
+      mounted = false
+    }
+  }, [fetchSubcategories])
+
+  // ✅ Función fetch unificada
+  const fetch = useCallback(async () => {
+    try {
+      await fetchSubcategories()
+    } catch (error) {
+      console.error("Error en fetch unificado:", error)
+    }
+  }, [fetchSubcategories])
+
+  // ✅ Borra subcategoría por ID con useCallback
+  const deleteSubcategory = useCallback(async (id) => {
+    try {
+      const response = await fetch(`${API}/${id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include"
+      })
+      if (!response.ok) throw new Error("Hubo un error al eliminar la subcategoría")
+      toast.success('Subcategoría eliminada exitosamente')
+      fetchSubcategories()
+    } catch (error) {
+      console.error("Error al eliminar subcategoría:", error)
+      toast.error("Error al eliminar subcategoría")
+    }
+  }, [API, fetchSubcategories])
+
+  // ✅ Handlers protegidos contra errores
+  const createHandlers = useCallback((API) => ({
     data: subcategories,
     loading,
     // Handler para agregar subcategoría
@@ -46,7 +85,7 @@ const useDataSubcategories = () => {
       try {
         let body
         let headers = { credentials: "include" }
-        // Usa FormData si hay imagen
+        
         if (data.image && data.image instanceof File) {
           const formData = new FormData()
           Object.keys(data).forEach(key => formData.append(key, data[key]))
@@ -55,16 +94,19 @@ const useDataSubcategories = () => {
           headers["Content-Type"] = "application/json"
           body = JSON.stringify(data)
         }
+        
         const response = await fetch(`${API}/subcategories`, {
           method: "POST",
-          headers, // No forzado
+          headers,
           credentials: "include",
           body
         })
+        
         if (!response.ok) {
           const errorData = await response.json()
           throw new Error(errorData.message || "Error al registrar subcategoría")
         }
+        
         toast.success('Subcategoría registrada exitosamente')
         fetchSubcategories()
       } catch (error) {
@@ -78,7 +120,7 @@ const useDataSubcategories = () => {
       try {
         let body
         let headers = { credentials: "include" }
-        // Igual: usa FormData si hay imagen
+        
         if (data.image && data.image instanceof File) {
           const formData = new FormData()
           Object.keys(data).forEach(key => formData.append(key, data[key]))
@@ -87,16 +129,19 @@ const useDataSubcategories = () => {
           headers["Content-Type"] = "application/json"
           body = JSON.stringify(data)
         }
+        
         const response = await fetch(`${API}/subcategories/${id}`, {
           method: "PUT",
-          headers: headers, // No forzado
+          headers: headers,
           credentials: "include",
           body
         })
+        
         if (!response.ok) {
           const errorData = await response.json()
           throw new Error(errorData.message || "Error al actualizar subcategoría")
         }
+        
         toast.success('Subcategoría actualizada exitosamente')
         fetchSubcategories()
       } catch (error) {
@@ -105,31 +150,13 @@ const useDataSubcategories = () => {
         throw error
       }
     },
-    // Handler para eliminar subcategoría
-    onDelete: deleteSubcategory // usa la función de borrar
-  })
+    onDelete: deleteSubcategory
+  }), [subcategories, loading, fetchSubcategories, deleteSubcategory])
 
-  // Borra subcategoría por ID
-  const deleteSubcategory = async (id) => {
-    try {
-      const response = await fetch(`${API}/${id}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include"
-      })
-      if (!response.ok) throw new Error("Hubo un error al eliminar la subcategoría")
-      toast.success('Subcategoría eliminada exitosamente')
-      fetchSubcategories() // recarga lista
-    } catch (error) {
-      console.error("Error al eliminar subcategoría:", error)
-      toast.error("Error al eliminar subcategoría")
-    }
-  }
-
-  // Retorna estados y funciones
   return {
     subcategories,
     loading,
+    fetch,
     deleteSubcategory,
     fetchSubcategories,
     createHandlers

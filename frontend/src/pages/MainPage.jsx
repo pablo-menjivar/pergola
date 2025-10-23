@@ -10,7 +10,7 @@ import { handleExport } from '../utils/exportUtils.js'
 import GlobalSearch from '../components/Search/GlobalSearch'
 import { useConditionalData } from '../hooks/mainHook/useConditionalData.js'
 // Importar configuraciones de tablas
-import { suppliersConfig, categoriesConfig, subcategoriesConfig, collectionsConfig, productsConfig, rawMaterialsConfig, reviewsConfig, customDesignsConfig, ordersConfig, refundsConfig, transactionsConfig, designElementsConfig, employeesConfig, customersConfig} from '../data/TableConfigs.js'
+import { suppliersConfig, categoriesConfig, subcategoriesConfig, collectionsConfig, productsConfig, rawMaterialsConfig, reviewsConfig, customDesignsConfig, ordersConfig, refundsConfig, designElementsConfig, employeesConfig, customersConfig} from '../data/TableConfigs.js'
 
 const MainPage = () => {
   console.log("🔍 MainPage iniciando...")
@@ -31,10 +31,9 @@ const MainPage = () => {
     customers: false,
     employees: false,
     orders: false,
-    refunds: false,
-    transactions: false
+    refunds: false
   })
-  /* Usar el hook condicional - TODOS los hooks se ejecutan siempre 
+  // Usar el hook condicional - TODOS los hooks se ejecutan siempre
   const {
     suppliersData,
     categoriesData,
@@ -48,9 +47,8 @@ const MainPage = () => {
     customDesignsData,
     ordersData,
     refundsData,
-    transactionsData,
     designElementsData
-  } = useConditionalData() */
+  } = useConditionalData()
   
   const handleLogout = async () => {
     await logout()
@@ -97,8 +95,7 @@ const MainPage = () => {
     customers: () => handleSectionUpdate('Clientes', customersData),
     employees: () => handleSectionUpdate('Empleados', employeesData),
     orders: () => handleSectionUpdate('Pedidos', ordersData),
-    refunds: () => handleSectionUpdate('Reembolsos', refundsData),
-    transactions: () => handleSectionUpdate('Transacciones', transactionsData)
+    refunds: () => handleSectionUpdate('Reembolsos', refundsData)
   }
   // Funcion handleExport
   const handleDataExport = (format, data, sectionName) => {
@@ -124,7 +121,7 @@ const MainPage = () => {
     if (!user?.userType) return false
     // Verificar si el usuario tiene permiso para la vista actual
     const permissions = {
-      'admin': [ 'dashboard', 'search', 'products', 'customdesigns', 'designelements', 'rawmaterials', 'employees', 'categories','subcategories', 'collections', 'customers', 'orders', 'reviews', 'refunds', 'transactions', 'suppliers', 'settings' ],
+      'admin': [ 'dashboard', 'search', 'products', 'customdesigns', 'designelements', 'rawmaterials', 'employees', 'categories','subcategories', 'collections', 'customers', 'orders', 'reviews', 'refunds', 'suppliers', 'settings' ],
       'employee': [ 'dashboard', 'search', 'products', 'customdesigns', 'designelements', 'rawmaterials', 'categories','subcategories', 'collections', 'reviews', 'suppliers', 'settings' ],
     }
     const userPermissions = permissions[user.userType] || []
@@ -254,14 +251,6 @@ const MainPage = () => {
           <div className="p-6 bg-white min-h-screen">
             <div className="max-w-7xl mx-auto">
               <TableContainer config={refundsConfig} {...refundsData.createHandlers(API)} onExport={handleDataExport} ordersData={{orders: refundsData.orders || []}} productsData={{products: refundsData.products || []}} customersData={{customers: refundsData.customers || []}} onUpdate={updateHandlers.refunds} isUpdating={updatingStates.refunds}/>
-            </div>
-          </div>
-        )
-      case 'transactions':
-        return (
-          <div className="p-6 bg-white min-h-screen">
-            <div className="max-w-7xl mx-auto">
-              <TableContainer config={transactionsConfig} {...transactionsData.createHandlers(API)} onExport={handleDataExport} ordersData={{orders: transactionsData.orders || []}} customersData={{customers: refundsData.customers || []}} onUpdate={updateHandlers.transactions} isUpdating={updatingStates.transactions}/>
             </div>
           </div>
         )

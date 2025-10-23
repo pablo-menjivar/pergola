@@ -7,7 +7,7 @@ import DetailModal from './Modals/DetailModal'
 import ColumnToggleModal from './Modals/ColumnToggleModal'
 
 // Componente contenedor principal para la tabla y sus acciones/modales
-const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onUpdate, onExport, isLoading = false, isUpdating = false, className = "", categoriesData, subcategoriesData, collectionsData, suppliersData, customersData, rawMaterialsData, productsData, ordersData, refundsData, transactionsData, employeesData, designElementsData}) => {
+const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onUpdate, onExport, isLoading = false, isUpdating = false, className = "", categoriesData, subcategoriesData, collectionsData, suppliersData, customersData, rawMaterialsData, productsData, ordersData, refundsData, employeesData, designElementsData}) => {
   // Estados para búsqueda, ordenamiento, paginación y modales
   const [searchValue, setSearchValue] = useState("")
   const [sortBy, setSortBy] = useState(null)
@@ -180,16 +180,6 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onUpdate, o
           }))
         }
       }
-      // Opciones para transacciones
-      if (field.options === 'transactions' && transactionsData?.transactions) {
-        return {
-          ...field,
-          options: transactionsData.transactions.map(transaction => ({
-            value: transaction._id,
-            label: `${transaction.name} ${transaction.description}`
-          }))
-        }
-      }
       // Opciones para elementos de diseño
       if (field.options === 'designelements' && designElementsData?.designElements) {
         return {
@@ -213,7 +203,7 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onUpdate, o
       // Si no hay opciones dinámicas, retorna el campo tal cual
       return field
     })
-  }, [config.formFields, categoriesData?.categories, subcategoriesData?.subcategories, collectionsData?.collections, suppliersData?.suppliers, customersData?.customers, rawMaterialsData?.rawMaterials, productsData?.products, ordersData?.orders, refundsData?.refunds, transactionsData?.transactions, employeesData?.employees, designElementsData?.designElements])
+  }, [config.formFields, categoriesData?.categories, subcategoriesData?.subcategories, collectionsData?.collections, suppliersData?.suppliers, customersData?.customers, rawMaterialsData?.rawMaterials, productsData?.products, ordersData?.orders, refundsData?.refunds, employeesData?.employees, designElementsData?.designElements])
 
   // Función para obtener el valor buscable de cada columna/item
   const getSearchableValue = (item, column) => {
@@ -261,9 +251,6 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onUpdate, o
         return `${value.name || ''} ${value.description || ''} ${value.correlative || ''}`.toLowerCase()
       }
       if (column.key === 'refunds') {
-        return `${value.name || ''} ${value.description || ''} ${value.correlative || ''}`.toLowerCase()
-      }
-      if (column.key === 'transactions') {
         return `${value.name || ''} ${value.description || ''} ${value.correlative || ''}`.toLowerCase()
       }
       if (column.key === 'designelements') {
@@ -498,7 +485,6 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onUpdate, o
         'empleados': 'employees',
         'pedidos': 'orders',
         'reembolsos': 'refunds',
-        'transacciones': 'transactions',
         'elementosdediseño': 'designelements' // Sin tilde - CORREGIDO
       }
       modalType = typeMapping[normalizedTitle] || normalizedTitle

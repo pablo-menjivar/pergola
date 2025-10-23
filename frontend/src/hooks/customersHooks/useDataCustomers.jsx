@@ -1,44 +1,93 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { toast } from "react-hot-toast"
 
-// Hook para manejar datos de cliente
+// Hook para manejar clientes
 const useDataCustomers = () => {
   const API = "https://pergola.onrender.com/api/customers"
-  const [customers, setCustomers] = useState([]) // clientes
-  const [loading, setLoading] = useState(true) // estado de carga
+  const [customers, setCustomers] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  // Obtiene los cliente desde el backend
-  const fetchCustomers = async () => {
+  // ✅ USAR useCallback para evitar re-creaciones innecesarias
+  const fetchCustomers = useCallback(async () => {
     try {
-      const response = await fetch(API, { credentials: "include" })
-      // Si el usuario no tiene permisos, vacía datos y termina
-      if (response.status === 403) { // sin permisos
-        console.log("⚠️ Sin permisos para cliente")
+      setLoading(true)
+      const response = await fetch(API, {
+        credentials: "include"
+      })
+      
+      if (response.status === 403) {
+        console.log("⚠️ Sin permisos para clientes - usuario no autorizado")
         setCustomers([])
         setLoading(false)
         return
       }
-      // Si hay error en la respuesta, lanza excepción
-      if (!response.ok) throw new Error("Hubo un error al obtener los clientes")
-      // Si todo bien, guarda los datos
+      
+      if (!response.ok) {
+        throw new Error("Hubo un error al obtener los clientes")
+      }
+      
       const data = await response.json()
       setCustomers(data)
-      setLoading(false)
     } catch (error) {
-      console.error("Error al obtener cliente:", error)
-      // Solo muestra toast si no es error de permisos
-      if (!error.message.includes("403")) toast.error("Error al cargar cliente")
+      console.error("Error al obtener clientes:", error)
+      if (!error.message.includes("403") && !error.message.includes("sin permisos")) {
+        toast.error("Error al cargar clientes")
+      }
+      setCustomers([])
+    } finally {
       setLoading(false)
     }
-  }
+  }, [API])
 
-  // Ejecuta la carga inicial al montar el componente
+  // ✅ useEffect CON DEPENDENCIAS CONTROLADAS
   useEffect(() => {
-    fetchCustomers() // carga al montar
-  }, [])
+    let mounted = true
+    
+    const loadData = async () => {
+      if (mounted) {
+        await fetchCustomers()
+      }
+    }
 
-  // Genera handlers para CRUD
-  const createHandlers = (API) => ({
+    loadData()
+    
+    return () => {
+      mounted = false
+    }
+  }, [fetchCustomers])
+
+  // ✅ Función fetch unificada
+  const fetch = useCallback(async () => {
+    try {
+      await fetchCustomers()
+    } catch (error) {
+      console.error("Error en fetch unificado:", error)
+    }
+  }, [fetchCustomers])
+
+  // ✅ Eliminar cliente por ID con useCallback
+  const deleteCustomer = useCallback(async (id) => {
+    try {
+      const response = await fetch(`${API}/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include"
+      })
+      if (!response.ok) {
+        throw new Error("Hubo un error al eliminar el cliente")
+      }
+      toast.success('Cliente eliminado exitosamente')
+      fetchCustomers()
+    } catch (error) {
+      console.error("Error al eliminar cliente:", error)
+      toast.error("Error al eliminar cliente")
+    }
+  }, [API, fetchCustomers])
+
+  // ✅ Handlers protegidos contra errores
+  const createHandlers = useCallback((API) => ({
     data: customers,
     loading,
     // Handler para agregar cliente
@@ -59,16 +108,16 @@ const useDataCustomers = () => {
         }
         const response = await fetch(`${API}/customers`, {
           method: "POST",
-          headers, // No forzado
+          headers: { "Content-Type": "application/json" },
           credentials: "include",
-          body
+          body: JSON.stringify(data)
         })
         if (!response.ok) {
           const errorData = await response.json()
           throw new Error(errorData.message || "Error al registrar cliente")
         }
         toast.success('Cliente registrado exitosamente')
-        fetchCustomers() 
+        fetchCustomers()
       } catch (error) {
         console.error("Error:", error)
         toast.error(error.message || "Error al registrar cliente")
@@ -94,48 +143,30 @@ const useDataCustomers = () => {
         
         const response = await fetch(`${API}/customers/${id}`, {
           method: "PUT",
-          headers: headers,
+          headers: { "Content-Type": "application/json" },
           credentials: "include",
-          body
-        })        
+          body: JSON.stringify(data)
+        })
         if (!response.ok) {
           const errorData = await response.json()
           throw new Error(errorData.message || "Error al actualizar cliente")
-        }     
+        }
         toast.success('Cliente actualizado exitosamente')
-        fetchCustomers() 
+        fetchCustomers()
       } catch (error) {
         console.error("Error:", error)
         toast.error(error.message || "Error al actualizar cliente")
         throw error
       }
-    }, 
-    // Handler para eliminar cliente
-    onDelete: deleteCustomers // usa la función de borrar
-  })
+    },
+    onDelete: deleteCustomer
+  }), [customers, loading, fetchCustomers, deleteCustomer])
 
-  // Borra cliente por ID
-  const deleteCustomers = async (id) => {
-    try {
-      const response = await fetch(`${API}/${id}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include"
-      })
-      if (!response.ok) throw new Error("Hubo un error al eliminar el cliente")
-      toast.success('Cliente eliminado exitosamente')
-      fetchCustomers()
-    } catch (error) {
-      console.error("Error al eliminar cliente:", error)
-      toast.error("Error al eliminar cliente")
-    }
-  }
-
-  // Retorna estados y funciones
   return {
     customers,
     loading,
-    deleteCustomers,
+    fetch,
+    deleteCustomer,
     fetchCustomers,
     createHandlers
   }

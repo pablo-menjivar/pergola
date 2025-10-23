@@ -553,58 +553,6 @@ export const refundsConfig = {
     }
   ]
 }
-
-// Configuración optimizada para Transacciones
-export const transactionsConfig = {
-  title: "Transacciones",
-  columns: [
-    { key: 'transactionCode', label: 'Código', sortable: true, searchable: true, priority: 1, width: 130 },
-    { key: 'customer', label: 'Cliente', sortable: true, searchable: true, priority: 1, width: 150 },
-    { key: 'amount', label: 'Monto', sortable: true, type: 'currency', priority: 1, width: 100 },
-    { key: 'type', label: 'Tipo', sortable: true, searchable: true, priority: 1, width: 100 },
-    { key: 'status', label: 'Estado', sortable: true, type: 'badge', priority: 1, width: 100 },
-    { key: 'createdAt', label: 'Fecha', sortable: true, type: 'date', priority: 2, width: 120 },
-    // Campos ocultos
-    { key: 'order', label: 'Pedido', sortable: true, searchable: true, hidden: true },
-    { key: 'paymentMethod', label: 'Método Pago', sortable: true, searchable: true, hidden: true }
-  ],
-  actions: {
-    canAdd: true,
-    canEdit: true,
-    canDelete: true,
-    canUpdate: true,
-    canExport: true,
-    canView: true,
-    canToggleColumns: true
-  },
-  formFields: [
-    { name: 'transactionCode', type: 'text', label: 'Código de Transacción', required: true, placeholder: 'Ej: 001' },
-    { name: 'order', type: 'select', label: 'Pedido', required: true, options: 'orders' },
-    { name: 'customer', type: 'select', label: 'Cliente', required: true, options: 'customers' },
-    { name: 'amount', type: 'number', label: 'Monto', required: true, placeholder: '0.00', min: 0.01, step: 0.01 },
-    { name: 'type', type: 'select', label: 'Tipo', required: true,
-      options: [
-        { value: 'pago', label: 'Pago' },
-        { value: 'reembolso', label: 'Reembolso' },
-        { value: 'ajuste', label: 'Ajuste' }
-      ]
-    },
-    { name: 'status', type: 'select', label: 'Estado', required: true,
-      options: [
-        { value: 'pendiente', label: 'Pendiente' },
-        { value: 'completado', label: 'Completado' },
-        { value: 'cancelado', label: 'Cancelado' }
-      ]
-    },
-    { name: 'paymentMethod', type: 'select', label: 'Método de Pago', required: true,
-      options: [
-        { value: 'efectivo contra entrega', label: 'Efectivo' },
-        { value: 'transferencia bancaria', label: 'Transferencia' }
-      ]
-    }
-  ]
-}
-
 // Configuración de visualización por defecto
 export const defaultTableSettings = {
   // Número máximo de columnas visibles por defecto

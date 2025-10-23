@@ -1,47 +1,96 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { toast } from "react-hot-toast"
 
-// Hook para manejar datos de empleados
+// Hook para manejar empleados
 const useDataEmployees = () => {
   const API = "https://pergola.onrender.com/api/employees"
-  const [employees, setEmployees] = useState([]) // empleados
-  const [loading, setLoading] = useState(true) // estado de carga
+  const [employees, setEmployees] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  // Obtiene los empleados desde el backend
-  const fetchEmployees = async () => {
+  // ✅ USAR useCallback para evitar re-creaciones innecesarias
+  const fetchEmployees = useCallback(async () => {
     try {
-      const response = await fetch(API, { credentials: "include" })
-      // Si el usuario no tiene permisos, vacía datos y termina
-      if (response.status === 403) { // sin permisos
-        console.log("⚠️ Sin permisos para empleados")
+      setLoading(true)
+      const response = await fetch(API, {
+        credentials: "include"
+      })
+      
+      if (response.status === 403) {
+        console.log("⚠️ Sin permisos para empleados - usuario no autorizado")
         setEmployees([])
         setLoading(false)
         return
       }
-      // Si hay error en la respuesta, lanza excepción
-      if (!response.ok) throw new Error("Hubo un error al obtener los empleados")
-      // Si todo bien, guarda los datos
+      
+      if (!response.ok) {
+        throw new Error("Hubo un error al obtener los empleados")
+      }
+      
       const data = await response.json()
       setEmployees(data)
-      setLoading(false)
     } catch (error) {
       console.error("Error al obtener empleados:", error)
-      // Solo muestra toast si no es error de permisos
-      if (!error.message.includes("403")) toast.error("Error al cargar empleados")
+      if (!error.message.includes("403") && !error.message.includes("sin permisos")) {
+        toast.error("Error al cargar empleados")
+      }
+      setEmployees([])
+    } finally {
       setLoading(false)
     }
-  }
+  }, [API])
 
-  // Ejecuta la carga inicial al montar el componente
+  // ✅ useEffect CON DEPENDENCIAS CONTROLADAS
   useEffect(() => {
-    fetchEmployees() // carga al montar
-  }, [])
+    let mounted = true
+    
+    const loadData = async () => {
+      if (mounted) {
+        await fetchEmployees()
+      }
+    }
 
-  // Genera handlers para CRUD
-  const createHandlers = (API) => ({
+    loadData()
+    
+    return () => {
+      mounted = false
+    }
+  }, [fetchEmployees])
+
+  // ✅ Función fetch unificada
+  const fetch = useCallback(async () => {
+    try {
+      await fetchEmployees()
+    } catch (error) {
+      console.error("Error en fetch unificado:", error)
+    }
+  }, [fetchEmployees])
+
+  // ✅ Eliminar cliente por ID con useCallback
+  const deleteEmployee = useCallback(async (id) => {
+    try {
+      const response = await fetch(`${API}/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include"
+      })
+      if (!response.ok) {
+        throw new Error("Hubo un error al eliminar el empleado")
+      }
+      toast.success('Empleado eliminado exitosamente')
+      fetchEmployees()
+    } catch (error) {
+      console.error("Error al eliminar empleado:", error)
+      toast.error("Error al eliminar empleado")
+    }
+  }, [API, fetchEmployees])
+
+  // ✅ Handlers protegidos contra errores
+  const createHandlers = useCallback((API) => ({
     data: employees,
     loading,
-    // Handler para agregar empleados
+    // Handler para agregar cliente
     onAdd: async (data) => {
       try {
         let body
@@ -59,24 +108,23 @@ const useDataEmployees = () => {
         }
         const response = await fetch(`${API}/employees`, {
           method: "POST",
-          headers, // No forzado
+          headers: { "Content-Type": "application/json" },
           credentials: "include",
-          body
+          body: JSON.stringify(data)
         })
-        console.log("📨 Respuesta recibida - Status:", response.status);
         if (!response.ok) {
           const errorData = await response.json()
-          throw new Error(errorData.message || "Error al registrar empleados")
+          throw new Error(errorData.message || "Error al registrar empleado")
         }
         toast.success('Empleado registrado exitosamente')
-        fetchEmployees() 
+        fetchEmployees()
       } catch (error) {
-        console.error("💥 Error en onAdd:", error);
+        console.error("Error:", error)
         toast.error(error.message || "Error al registrar empleado")
         throw error
       }
     },
-    // Handler para editar empleado
+    // Handler para editar cliente
     onEdit: async (id, data) => {
       try {
         let body
@@ -84,53 +132,40 @@ const useDataEmployees = () => {
         // Usa FormData si hay imagen
         if (data.profilePic && data.profilePic instanceof File) {
           const formData = new FormData()
-          Object.keys(data).forEach(key => formData.append(key, data[key]))
+          Object.keys(data).forEach(key => {
+            formData.append(key, data[key])
+          })
           body = formData
         } else {
           headers["Content-Type"] = "application/json"
           body = JSON.stringify(data)
         }
+        
         const response = await fetch(`${API}/employees/${id}`, {
           method: "PUT",
-          headers: headers, // No forzado
+          headers: { "Content-Type": "application/json" },
           credentials: "include",
-          body
+          body: JSON.stringify(data)
         })
         if (!response.ok) {
           const errorData = await response.json()
           throw new Error(errorData.message || "Error al actualizar empleado")
         }
         toast.success('Empleado actualizado exitosamente')
-        fetchEmployees() 
+        fetchEmployees()
       } catch (error) {
         console.error("Error:", error)
         toast.error(error.message || "Error al actualizar empleado")
         throw error
       }
-    }, 
-    // Handler para eliminar empleado
-    onDelete: deleteEmployee // usa la función de borrar
-  })
-  // Borra empleado por ID
-  const deleteEmployee = async (id) => {
-    try {
-      const response = await fetch(`${API}/${id}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include"
-      })
-      if (!response.ok) throw new Error("Hubo un error al eliminar el empleado")
-      toast.success('Empleado eliminado exitosamente')
-      fetchEmployees()
-    } catch (error) {
-      console.error("Error al eliminar empleado:", error)
-      toast.error("Error al eliminar empleado")
-    }
-  }
-  // Retorna estados y funciones
+    },
+    onDelete: deleteEmployee
+  }), [employees, loading, fetchEmployees, deleteEmployee])
+
   return {
     employees,
     loading,
+    fetch,
     deleteEmployee,
     fetchEmployees,
     createHandlers

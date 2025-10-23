@@ -1,44 +1,93 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { toast } from "react-hot-toast"
 
-// Hook para manejar datos de colecciones
+// Hook para manejar colecciones
 const useDataCollections = () => {
   const API = "https://pergola.onrender.com/api/collections"
   const [collections, setCollections] = useState([]) // estado con colecciones
   const [loading, setLoading] = useState(true) // estado de carga
 
-  // Trae las colecciones del backend
-  const fetchCollections = async () => {
+  // ✅ USAR useCallback para evitar re-creaciones innecesarias
+  const fetchCollections = useCallback(async () => {
     try {
-      const response = await fetch(API, { credentials: "include" })
-      // Si el usuario no tiene permisos, muestra mensaje y vacía datos
-      if (response.status === 403) { // sin permisos
-        console.log("⚠️ Sin permisos para colecciones")
+      setLoading(true)
+      const response = await fetch(API, {
+        credentials: "include"
+      })
+      
+      if (response.status === 403) {
+        console.log("⚠️ Sin permisos para colecciones - usuario no autorizado")
         setCollections([])
         setLoading(false)
         return
       }
-      // Si hay error en la respuesta, lanza excepción
-      if (!response.ok) throw new Error("Hubo un error al obtener las colecciones")
-      // Si todo bien, guarda los datos
+      
+      if (!response.ok) {
+        throw new Error("Hubo un error al obtener las colecciones")
+      }
+      
       const data = await response.json()
       setCollections(data)
-      setLoading(false)
     } catch (error) {
       console.error("Error al obtener colecciones:", error)
-      // Solo muestra toast si no es error de permisos
-      if (!error.message.includes("403")) toast.error("Error al cargar colecciones")
+      if (!error.message.includes("403") && !error.message.includes("sin permisos")) {
+        toast.error("Error al cargar colecciones")
+      }
+      setCollections([])
+    } finally {
       setLoading(false)
     }
-  }
+  }, [API])
 
-  // Ejecuta la carga inicial al montar el componente
+  // ✅ useEffect CON DEPENDENCIAS CONTROLADAS
   useEffect(() => {
-    fetchCollections() // carga inicial al montar
-  }, [])
+    let mounted = true
+    
+    const loadData = async () => {
+      if (mounted) {
+        await fetchCollections()
+      }
+    }
 
-  // Handlers para CRUD (agregar, editar, eliminar)
-  const createHandlers = (API) => ({
+    loadData()
+    
+    return () => {
+      mounted = false
+    }
+  }, [fetchCollections])
+
+  // ✅ Función fetch unificada
+  const fetch = useCallback(async () => {
+    try {
+      await fetchCollections()
+    } catch (error) {
+      console.error("Error en fetch unificado:", error)
+    }
+  }, [fetchCollections])
+
+  // ✅ Eliminar colección por ID con useCallback
+  const deleteCollection = useCallback(async (id) => {
+    try {
+      const response = await fetch(`${API}/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include"
+      })
+      if (!response.ok) {
+        throw new Error("Hubo un error al eliminar la colección")
+      }
+      toast.success('Colección eliminada exitosamente')
+      fetchCollections()
+    } catch (error) {
+      console.error("Error al eliminar colección:", error)
+      toast.error("Error al eliminar colección")
+    }
+  }, [API, fetchCollections])
+
+  // ✅ Handlers protegidos contra errores
+  const createHandlers = useCallback((API) => ({
     data: collections,
     loading,
     // Handler para agregar colección
@@ -46,7 +95,7 @@ const useDataCollections = () => {
       try {
         let body
         let headers = { credentials: "include" }
-        // Usa FormData si hay imagen
+        
         if (data.image && data.image instanceof File) {
           const formData = new FormData()
           Object.keys(data).forEach(key => formData.append(key, data[key]))
@@ -62,10 +111,12 @@ const useDataCollections = () => {
           credentials: "include",
           body
         })
+        
         if (!response.ok) {
           const errorData = await response.json()
           throw new Error(errorData.message || "Error al registrar colección")
         }
+        
         toast.success('Colección registrada exitosamente')
         fetchCollections()
       } catch (error) {
@@ -79,7 +130,7 @@ const useDataCollections = () => {
       try {
         let body
         let headers = { credentials: "include" }
-        // Igual: usa FormData si hay imagen
+        
         if (data.image && data.image instanceof File) {
           const formData = new FormData()
           Object.keys(data).forEach(key => formData.append(key, data[key]))
@@ -88,17 +139,19 @@ const useDataCollections = () => {
           headers["Content-Type"] = "application/json"
           body = JSON.stringify(data)
         }
-        // Realiza la petición PUT
+        
         const response = await fetch(`${API}/collections/${id}`, {
           method: "PUT",
-          headers: headers, // No forzado
+          headers,
           credentials: "include",
           body
         })
+        
         if (!response.ok) {
           const errorData = await response.json()
           throw new Error(errorData.message || "Error al actualizar colección")
         }
+        
         toast.success('Colección actualizada exitosamente')
         fetchCollections()
       } catch (error) {
@@ -107,34 +160,17 @@ const useDataCollections = () => {
         throw error
       }
     },
-    // Handler para eliminar colección
-    onDelete: deleteCollection // usa la función de borrar
-  })
+    onDelete: deleteCollection
+  }), [collections, loading, fetchCollections, deleteCollection])
 
-  // Borra colección por ID
-  const deleteCollection = async (id) => {
-    try {
-      const response = await fetch(`${API}/${id}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include"
-      })
-      if (!response.ok) throw new Error("Hubo un error al eliminar la colección")
-      toast.success('Colección eliminada exitosamente')
-      fetchCollections() // recarga lista
-    } catch (error) {
-      console.error("Error al eliminar colección:", error)
-      toast.error("Error al eliminar colección")
-    }
-  }
-  // Retorna estados y funciones para usar en componentes
   return {
     collections,
     loading,
+    fetch,
     deleteCollection,
     fetchCollections,
     createHandlers
   }
 }
-// Exporta el hook para su uso en otros componentes
+
 export default useDataCollections

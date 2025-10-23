@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { toast } from "react-hot-toast"
 
 // Hook personalizado para manejar datos de categorías
@@ -8,42 +8,81 @@ const useDataCategories = () => {
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
 
-  // Función para obtener las categorías desde la API
-  const fetchCategories = async () => {
+  // ✅ USAR useCallback para evitar re-creaciones innecesarias
+    const fetchCategories = useCallback(async () => {
+      try {
+        setLoading(true) // ✅ Mover setLoading al inicio
+        const response = await fetch(API, { credentials: "include" })
+        
+        if (response.status === 403) {
+          console.log("⚠️ Sin permisos para categorías")
+          setCategories([])
+          setLoading(false)
+          return
+        }
+        
+        if (!response.ok) throw new Error("Hubo un error al obtener las categorías")
+        
+        const data = await response.json()
+        setCategories(data)
+      } catch (error) {
+        console.error("Error al obtener categorías:", error)
+        if (!error.message.includes("403")) {
+          toast.error("Error al cargar categorías")
+        }
+        setCategories([]) // ✅ Asegurar que siempre sea un array
+      } finally {
+        setLoading(false) // ✅ Usar finally para asegurar que loading se desactive
+      }
+    }, [API]) // ✅ Dependencias explícitas
+
+  // ✅ useEffect CON DEPENDENCIAS CONTROLADAS
+  useEffect(() => {
+    let mounted = true // ✅ Flag para evitar updates en componentes desmontados
+    
+    const loadData = async () => {
+      if (mounted) {
+        await fetchCategories()
+      }
+    }
+
+    loadData()
+    
+    return () => {
+      mounted = false // ✅ Cleanup
+    }
+  }, [fetchCategories]) // ✅ Dependencias del useCallback
+
+  // ✅ Función fetch unificada con protección contra errores
+  const fetch = useCallback(async () => {
     try {
-      const response = await fetch(API, {
+      await Promise.all([
+        fetchCategories(),
+      ])
+    } catch (error) {
+      console.error("Error en fetch unificado:", error)
+    }
+  }, [fetchCategories])
+
+  // ✅ Borra categoría por ID con useCallback
+  const deleteCategory = useCallback(async (id) => {
+    try {
+      const response = await fetch(`${API}/${id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
         credentials: "include"
       })
-      // Si la respuesta es 403, usuario no autorizado
-      if (response.status === 403) {
-        console.log("⚠️ Sin permisos para categorías - usuario no autorizado")
-        setCategories([])
-        setLoading(false)
-        return
-      }
-      if (!response.ok) {
-        throw new Error("Hubo un error al obtener las categorías")
-      }
-      const data = await response.json()
-      setCategories(data)
-      setLoading(false)
+      if (!response.ok) throw new Error("Hubo un error al eliminar la subcategoría")
+      toast.success('Subcategoría eliminada exitosamente')
+      fetchCategories()
     } catch (error) {
-      console.error("Error al obtener categorías:", error)
-      // Solo muestra toast si no es error de permisos
-      if (!error.message.includes("403") && !error.message.includes("sin permisos")) {
-        toast.error("Error al cargar categorías")
-      }
-      setLoading(false)
+      console.error("Error al eliminar subcategoría:", error)
+      toast.error("Error al eliminar subcategoría")
     }
-  }
-
-  // Obtiene las categorías al montar el componente
-  useEffect(() => {
-    fetchCategories()
-  }, [])
+  }, [API, fetchCategories])
 
   // Crea los handlers para agregar, editar y eliminar categorías
-  const createHandlers = (API) => ({
+  const createHandlers = useCallback((API) => ({
     data: categories,
     loading,
     // Handler para agregar categoría
@@ -118,34 +157,13 @@ const useDataCategories = () => {
     },
     // Handler para eliminar categoría
     onDelete: deleteCategory
-  })
-
-  // Función para eliminar una categoría
-  const deleteCategory = async (id) => {
-    try {
-      const response = await fetch(`${API}/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        credentials: "include"
-      })
-      if (!response.ok) {
-        throw new Error("Hubo un error al eliminar la categoría")
-      }
-      toast.success('Categoría eliminada exitosamente')
-      fetchCategories()
-    } catch (error) {
-      console.error("Error al eliminar categoría:", error)
-      toast.error("Error al eliminar categoría")
-    }
-  }
+  }), [categories, loading, fetchCategories])
 
   // Retorna los datos y handlers para usar en componentes
   return {
     categories,
     loading,
-    deleteCategory,
+    fetch,
     fetchCategories,
     createHandlers
   }

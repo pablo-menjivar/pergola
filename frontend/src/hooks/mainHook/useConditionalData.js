@@ -11,7 +11,6 @@ import useDataCustomers from '../customersHooks/useDataCustomers'
 import useDataEmployees from '../employeesHooks/useDataEmployees'
 import useDataOrders from '../ordersHooks/useDataOrders'
 import useDataRefunds from '../refundsHooks/useDataRefunds'
-import useDataTransactions from '../transactionsHooks/useDataTransactions'
 import useDataDesignElements from '../designElementsHooks/useDataDesignElements'
 
 // Hook principal para obtener datos condicionales según permisos del usuario
@@ -32,7 +31,6 @@ export const useConditionalData = () => {
   const allEmployeesData = useDataEmployees()
   const allOrdersData = useDataOrders()
   const allRefundsData = useDataRefunds()
-  const allTransactionsData = useDataTransactions()
   const allDesignElementsData = useDataDesignElements()
   
   // Función para verificar si el usuario tiene acceso a una sección
@@ -44,7 +42,7 @@ export const useConditionalData = () => {
       'admin': [ 
         'dashboard', 'search', 'products', 'customdesigns', 'designelements', 
         'rawmaterials', 'employees', 'categories','subcategories', 'collections', 
-        'customers', 'orders', 'reviews', 'refunds', 'transactions', 'suppliers', 'settings' 
+        'customers', 'orders', 'reviews', 'refunds', 'suppliers', 'settings' 
       ],
       'employee': [ 
         'dashboard', 'search', 'products', 'customdesigns', 'designelements', 
@@ -83,8 +81,7 @@ export const useConditionalData = () => {
     customers: [],
     employees: [],
     orders: [],
-    refunds: [],
-    transactions: []
+    refunds: []
   })
   
   // ✅ Wrapper seguro para evitar problemas con hooks
@@ -124,7 +121,6 @@ export const useConditionalData = () => {
     employeesData: safeWrapData(canAccess('employees'), allEmployeesData),
     ordersData: safeWrapData(canAccess('orders'), allOrdersData),
     refundsData: safeWrapData(canAccess('refunds'), allRefundsData),
-    transactionsData: safeWrapData(canAccess('transactions'), allTransactionsData),
     designElementsData: safeWrapData(canAccess('designelements'), allDesignElementsData),
     canAccess // expone la función para uso externo
   }

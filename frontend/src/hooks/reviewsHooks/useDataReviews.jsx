@@ -1,45 +1,50 @@
-import { useEffect, useState } from "react"
+// useDataReviews.jsx
+import { useEffect, useState, useCallback } from "react"
 import { toast } from "react-hot-toast"
+
 // Hook personalizado para manejar reseñas, clientes y productos
 const useDataReviews = () => {
   const API = "https://pergola.onrender.com/api/reviews"
-  const [reviews, setReviews] = useState([]) // Lista de reseñas
-  const [customers, setCustomers] = useState([]) // Lista de clientes
-  const [products, setProducts] = useState([]) // Lista de productos
-  const [loading, setLoading] = useState(true) // Estado de carga
+  const [reviews, setReviews] = useState([])
+  const [customers, setCustomers] = useState([])
+  const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  // Obtener reseñas desde el servidor
-  const fetchReviews = async () => {
+  // ✅ USAR useCallback para evitar re-creaciones innecesarias
+  const fetchReviews = useCallback(async () => {
     try {
+      setLoading(true)
       const response = await fetch(API, {
-        credentials: "include" // Incluye cookies de sesión
+        credentials: "include"
       })
-      // Si el usuario no tiene permisos, vacía datos y termina
+      
       if (response.status === 403) {
         console.log("⚠️ Sin permisos para reseñas - usuario no autorizado")
         setReviews([])
         setLoading(false)
         return
       }
-      // Si hay error en la respuesta, lanza excepción
+      
       if (!response.ok) {
         throw new Error("Hubo un error al obtener las reseñas")
       }
-      // Si todo bien, guarda los datos
+      
       const data = await response.json()
       setReviews(data)
-      setLoading(false)
     } catch (error) {
       console.error("Error al obtener reseñas:", error)
       // Solo muestra toast si no es error de permisos
       if (!error.message.includes("403") && !error.message.includes("sin permisos")) {
         toast.error("Error al cargar reseñas") // Muestra error si no es por permisos
       }
+      setReviews([])
+    } finally {
       setLoading(false)
     }
-  }
-  // Obtener clientes desde el servidor
-  const fetchCustomers = async () => {
+  }, [API])
+
+  // ✅ USAR useCallback
+  const fetchCustomers = useCallback(async () => {
     try {
       const response = await fetch("https://pergola.onrender.com/api/customers", {
         credentials: "include"
@@ -51,10 +56,12 @@ const useDataReviews = () => {
       setCustomers(data)
     } catch (error) {
       console.error("Error al obtener clientes:", error)
+      setCustomers([])
     }
-  }
-  // Obtener productos desde el servidor
-  const fetchProducts = async () => {
+  }, [])
+
+  // ✅ USAR useCallback
+  const fetchProducts = useCallback(async () => {
     try {
       const response = await fetch("https://pergola.onrender.com/api/products", {
         credentials: "include"
@@ -66,19 +73,69 @@ const useDataReviews = () => {
       setProducts(data)
     } catch (error) {
       console.error("Error al obtener productos:", error)
+      setProducts([])
     }
-  }
-  // Llama a las funciones cuando el componente se monta
-  useEffect(() => {
-    fetchReviews()
-    fetchCustomers()
-    fetchProducts()
   }, [])
-  // Funciones para agregar, editar y borrar reseñas
-  const createHandlers = (API) => ({
-    data: reviews, // Devuelve las reseñas
-    loading, // Devuelve el estado de carga
-    // Agrega una nueva reseña
+
+  // ✅ useEffect CON DEPENDENCIAS CONTROLADAS
+  useEffect(() => {
+    let mounted = true
+    
+    const loadData = async () => {
+      if (mounted) {
+        await Promise.all([
+          fetchReviews(),
+          fetchCustomers(),
+          fetchProducts()
+        ])
+      }
+    }
+
+    loadData()
+    
+    return () => {
+      mounted = false
+    }
+  }, [fetchReviews, fetchCustomers, fetchProducts])
+
+  // ✅ Función fetch unificada
+  const fetch = useCallback(async () => {
+    try {
+      await Promise.all([
+        fetchReviews(),
+        fetchCustomers(),
+        fetchProducts()
+      ])
+    } catch (error) {
+      console.error("Error en fetch unificado:", error)
+    }
+  }, [fetchReviews, fetchCustomers, fetchProducts])
+
+  // ✅ Borra una reseña por su ID con useCallback
+  const deleteReview = useCallback(async (id) => {
+    try {
+      const response = await fetch(`${API}/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include"
+      })
+      if (!response.ok) {
+        throw new Error("Hubo un error al eliminar la reseña")
+      }
+      toast.success('Reseña eliminada exitosamente')
+      fetchReviews()
+    } catch (error) {
+      console.error("Error al eliminar reseña:", error)
+      toast.error("Error al eliminar reseña")
+    }
+  }, [API, fetchReviews])
+
+  // ✅ Handlers protegidos contra errores
+  const createHandlers = useCallback((API) => ({
+    data: reviews,
+    loading,
     onAdd: async (data) => {
       try {
         const response = await fetch(`${API}/reviews`, {
@@ -120,36 +177,15 @@ const useDataReviews = () => {
         throw error
       }
     },
+    onDelete: deleteReview
+  }), [reviews, loading, fetchReviews, deleteReview])
 
-    onDelete: deleteReview // Usa la función para borrar reseñas
-  })
-
-  // Borra una reseña por su ID
-  const deleteReview = async (id) => {
-    try {
-      const response = await fetch(`${API}/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        credentials: "include"
-      })
-      if (!response.ok) {
-        throw new Error("Hubo un error al eliminar la reseña")
-      }
-      toast.success('Reseña eliminada exitosamente')
-      fetchReviews()
-    } catch (error) {
-      console.error("Error al eliminar reseña:", error)
-      toast.error("Error al eliminar reseña")
-    }
-  }
-  // Devuelve funciones y datos para usar en el componente
   return {
     reviews,
     customers,
     products,
     loading,
+    fetch,
     deleteReview,
     fetchReviews,
     fetchCustomers,

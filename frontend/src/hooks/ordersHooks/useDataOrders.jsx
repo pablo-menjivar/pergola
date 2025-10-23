@@ -1,90 +1,139 @@
-import { useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
+import { useEffect, useState, useCallback } from "react"
+import { toast } from "react-hot-toast"
 
 // Hook para manejar pedidos y sus datos relacionados
 const useDataOrders = () => {
-  const API = "https://pergola.onrender.com/api/orders";
-  const [orders, setOrders] = useState([]); // Lista de pedidos
-  const [customers, setCustomers] = useState([]); // Lista de clientes
-  const [products, setProducts] = useState([]); // Lista de productos
-  const [loading, setLoading] = useState(true); // Estado de carga
-  
-  // Cargar pedidos desde el servidor
-  const fetchOrders = async () => {
+  const API = "https://pergola.onrender.com/api/orders"
+  const [orders, setOrders] = useState([])
+  const [customers, setCustomers] = useState([])
+  const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  // ✅ USAR useCallback para evitar re-creaciones innecesarias
+  const fetchOrders = useCallback(async () => {
     try {
+      setLoading(true)
       const response = await fetch(API, {
         credentials: "include"
-      });
+      })
+      
       if (response.status === 403) {
-        console.log("⚠️ Sin permisos para pedidos - usuario no autorizado");
-        setOrders([]);
-        setLoading(false);
-        return;
+        console.log("⚠️ Sin permisos para pedidos - usuario no autorizado")
+        setOrders([])
+        setLoading(false)
+        return
       }
+      
       if (!response.ok) {
-        throw new Error("Hubo un error al obtener los pedidos");
+        throw new Error("Hubo un error al obtener los pedidos")
       }
-      const data = await response.json();
-      setOrders(data);
-      setLoading(false);
+      
+      const data = await response.json()
+      setOrders(data)
     } catch (error) {
-      console.error("Error al obtener pedidos:", error);
+      console.error("Error al obtener pedidos:", error)
       if (!error.message.includes("403") && !error.message.includes("sin permisos")) {
-        toast.error("Error al cargar pedidos");
+        toast.error("Error al cargar pedidos")
       }
-      setLoading(false);
+      setOrders([])
+    } finally {
+      setLoading(false)
     }
-  };
-  
-  // Cargar clientes desde el servidor
-  const fetchCustomers = async () => {
+  }, [API])
+
+  // ✅ USAR useCallback
+  const fetchCustomers = useCallback(async () => {
     try {
       const response = await fetch("https://pergola.onrender.com/api/customers", {
         credentials: "include"
-      });
+      })
       if (!response.ok) {
-        throw new Error("Error al obtener clientes");
+        throw new Error("Error al obtener clientes")
       }
-      const data = await response.json();
-      console.log('✅ Clientes cargados:', data.length);
-      setCustomers(data);
+      const data = await response.json()
+      setCustomers(data)
     } catch (error) {
-      console.error("Error al obtener clientes:", error);
+      console.error("Error al obtener clientes:", error)
+      setCustomers([])
     }
-  };
-  
-  // Cargar productos desde el servidor
-  const fetchProducts = async () => {
+  }, [])
+
+  // ✅ USAR useCallback
+  const fetchProducts = useCallback(async () => {
     try {
       const response = await fetch("https://pergola.onrender.com/api/products", {
         credentials: "include"
-      });
+      })
       if (!response.ok) {
-        throw new Error("Error al obtener productos");
+        throw new Error("Error al obtener productos")
       }
-      const data = await response.json();
-      console.log('✅ Productos cargados:', data.length);
-      console.log('📦 Primer producto:', data[0]);
-      setProducts(data);
+      const data = await response.json()
+      setProducts(data)
     } catch (error) {
-      console.error("Error al obtener productos:", error);
+      console.error("Error al obtener productos:", error)
+      setProducts([])
     }
-  };
-  
-  // Cargar todos los datos relacionados al montar el componente
+  }, [])
+
+  // ✅ useEffect CON DEPENDENCIAS CONTROLADAS
   useEffect(() => {
-    console.log('🔄 useDataOrders - Iniciando carga de datos...');
-    fetchOrders();
-    fetchCustomers();
-    fetchProducts();
-  }, []);
-  
-  // Handlers para CRUD de pedidos
-  const createHandlers = (API) => ({
-    data: orders, // Devuelve los pedidos
-    loading, // Devuelve si está cargando
+    let mounted = true
     
-    // Agregar pedido
+    const loadData = async () => {
+      if (mounted) {
+        await Promise.all([
+          fetchOrders(),
+          fetchCustomers(),
+          fetchProducts()
+        ])
+      }
+    }
+
+    loadData()
+    
+    return () => {
+      mounted = false
+    }
+  }, [fetchOrders, fetchCustomers, fetchProducts])
+
+  // ✅ Función fetch unificada
+  const fetch = useCallback(async () => {
+    try {
+      await Promise.all([
+        fetchOrders(),
+        fetchCustomers(),
+        fetchProducts()
+      ])
+    } catch (error) {
+      console.error("Error en fetch unificado:", error)
+    }
+  }, [fetchOrders, fetchCustomers, fetchProducts])
+
+  // ✅ Eliminar pedido por ID con useCallback
+  const deleteOrder = useCallback(async (id) => {
+    try {
+      const response = await fetch(`${API}/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include"
+      })
+      if (!response.ok) {
+        throw new Error("Hubo un error al eliminar el pedido")
+      }
+      toast.success('Pedido eliminado exitosamente')
+      fetchOrders()
+    } catch (error) {
+      console.error("Error al eliminar pedido:", error)
+      toast.error("Error al eliminar pedido")
+    }
+  }, [API, fetchOrders])
+
+  // ✅ Handlers protegidos contra errores
+  const createHandlers = useCallback((API) => ({
+    data: orders,
+    loading,
     onAdd: async (data) => {
       try {
         console.log('🔵🔵🔵 [FRONTEND] Iniciando creación de pedido 🔵🔵🔵');
@@ -154,15 +203,11 @@ const useDataOrders = () => {
         toast.success('Pedido registrado exitosamente');
         fetchOrders();
       } catch (error) {
-        console.log('❌❌❌ ERROR EN onAdd (FRONTEND) ❌❌❌');
-        console.log('Error completo:', error);
-        console.log('Mensaje:', error.message);
-        console.log('Stack:', error.stack);
-        toast.error(error.message || "Error al registrar pedido");
-        throw error;
+        console.error("Error:", error)
+        toast.error(error.message || "Error al registrar pedido")
+        throw error
       }
     },
-    
     // Editar pedido
     onEdit: async (id, data) => {
       try {
@@ -242,45 +287,22 @@ const useDataOrders = () => {
         throw error;
       }
     },
-    
-    // Eliminar pedido
-    onDelete: deleteOrder // Usa la función para borrar pedido
-  });
-  
-  // Eliminar pedido por ID
-  const deleteOrder = async (id) => {
-    try {
-      const response = await fetch(`${API}/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        credentials: "include"
-      });
-      if (!response.ok) {
-        throw new Error("Hubo un error al eliminar el pedido");
-      }
-      toast.success('Pedido eliminado exitosamente');
-      fetchOrders();
-    } catch (error) {
-      console.error("Error al eliminar pedido:", error);
-      toast.error("Error al eliminar pedido");
-    }
-  };
-  
-  // Devuelve los datos y funciones listas para usar en componentes
+    onDelete: deleteOrder
+  }), [orders, loading, fetchOrders, deleteOrder])
+
   return {
     orders,
     customers,
     products,
     loading,
+    fetch,
+    deleteOrder,
     fetchOrders,
     fetchCustomers,
     fetchProducts,
-    deleteOrder,
     createHandlers
-  };
-};
+  }
+}
 
 // Exporta el hook para su uso en otros componentes
 export default useDataOrders;

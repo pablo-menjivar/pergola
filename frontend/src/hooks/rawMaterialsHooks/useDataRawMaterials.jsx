@@ -1,16 +1,17 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { toast } from "react-hot-toast"
 
 // Hook personalizado para manejar materias primas y sus proveedores
 const useDataRawMaterials = () => {
-  const API = "https://pergola.onrender.com/api/rawmaterials" // URL base de la API
-  const [rawMaterials, setRawMaterials] = useState([]) // Lista de materias primas
-  const [suppliers, setSuppliers] = useState([]) // Lista de proveedores
-  const [loading, setLoading] = useState(true) // Estado de carga
+  const API = "https://pergola.onrender.com/api/rawmaterials"
+  const [rawMaterials, setRawMaterials] = useState([])
+  const [suppliers, setSuppliers] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  // Obtener materias primas desde la API
-  const fetchRawMaterials = async () => {
+  // ✅ USAR useCallback para evitar re-creaciones innecesarias
+  const fetchRawMaterials = useCallback(async () => {
     try {
+      setLoading(true)
       const response = await fetch(`${API}`, {
         credentials: "include"
       })
@@ -31,19 +32,20 @@ const useDataRawMaterials = () => {
       // Guarda los datos obtenidos
       const data = await response.json()
       setRawMaterials(data)
-      setLoading(false)
     } catch (error) {
       console.error("Error al obtener materias primas:", error)
       // Mostrar toast solo si no es un error por falta de permisos
       if (!error.message.includes("403") && !error.message.includes("sin permisos")) {
         toast.error("Error al cargar materias primas")
       }
+      setRawMaterials([])
+    } finally {
       setLoading(false)
     }
-  }
+  }, [API])
 
-  // Obtener proveedores desde la API
-  const fetchSuppliers = async () => {
+  // ✅ USAR useCallback
+  const fetchSuppliers = useCallback(async () => {
     try {
       const response = await fetch("https://pergola.onrender.com/api/suppliers", {
         credentials: "include"
@@ -57,17 +59,44 @@ const useDataRawMaterials = () => {
       setSuppliers(data)
     } catch (error) {
       console.error("Error al obtener proveedores:", error)
+      setSuppliers([])
     }
-  }
-
-  // Ejecutar ambas funciones al cargar el componente
-  useEffect(() => {
-    fetchRawMaterials()
-    fetchSuppliers()
   }, [])
 
-  // Eliminar una materia prima por ID
-  const deleteRawMaterial = async (id) => {
+  // ✅ useEffect CON DEPENDENCIAS CONTROLADAS
+  useEffect(() => {
+    let mounted = true
+    
+    const loadData = async () => {
+      if (mounted) {
+        await Promise.all([
+          fetchRawMaterials(),
+          fetchSuppliers()
+        ])
+      }
+    }
+
+    loadData()
+    
+    return () => {
+      mounted = false
+    }
+  }, [fetchRawMaterials, fetchSuppliers])
+
+  // ✅ Función fetch unificada
+  const fetch = useCallback(async () => {
+    try {
+      await Promise.all([
+        fetchRawMaterials(),
+        fetchSuppliers()
+      ])
+    } catch (error) {
+      console.error("Error en fetch unificado:", error)
+    }
+  }, [fetchRawMaterials, fetchSuppliers])
+
+  // ✅ Eliminar una materia prima por ID con useCallback
+  const deleteRawMaterial = useCallback(async (id) => {
     try {
       const response = await fetch(`${API}/${id}`, {
         method: "DELETE",
@@ -86,10 +115,10 @@ const useDataRawMaterials = () => {
       console.error("Error al eliminar materia prima:", error)
       toast.error("Error al eliminar materia prima")
     }
-  }
+  }, [API, fetchRawMaterials])
 
-  // Función que retorna los manejadores CRUD para materias primas
-  const createHandlers = (API) => ({
+  // ✅ Handlers protegidos contra errores
+  const createHandlers = useCallback((API) => ({
     data: rawMaterials,
     loading,
 
@@ -114,21 +143,20 @@ const useDataRawMaterials = () => {
         throw error
       }
     },
-
     // Editar materia prima existente
     onEdit: async (id, data) => {
       try {
         const response = await fetch(`${API}/rawmaterials/${id}`, {
-          method: "POST",
+          method: "PUT",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
           body: JSON.stringify(data)
         })
         if (!response.ok) {
           const errorData = await response.json()
-          throw new Error(errorData.message || "Error al registrar materia prima")
+          throw new Error(errorData.message || "Error al actualizar materia prima")
         }
-        toast.success('Materia prima registrada exitosamente')
+        toast.success('Materia prima actualizada exitosamente')
         fetchRawMaterials()
       } catch (error) {
         console.error("Error:", error)
@@ -136,16 +164,15 @@ const useDataRawMaterials = () => {
         throw error
       }
     },
-
     // Eliminar materia prima
     onDelete: deleteRawMaterial
-  })
+  }), [rawMaterials, loading, fetchRawMaterials, deleteRawMaterial])
 
-  // Devolver datos y funciones necesarias al componente que use este hook
   return {
     rawMaterials,
     suppliers,
     loading,
+    fetch,
     fetchRawMaterials,
     fetchSuppliers,
     deleteRawMaterial,
@@ -154,4 +181,3 @@ const useDataRawMaterials = () => {
 }
 
 export default useDataRawMaterials
-
