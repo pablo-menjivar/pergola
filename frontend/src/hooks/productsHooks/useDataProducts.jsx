@@ -1,9 +1,10 @@
 import { useEffect, useState, useCallback } from "react"
 import { toast } from "react-hot-toast"
 
-// Hook para manejar productos y sus datos relacionados
+// Hook personalizado para manejar datos de productos
 const useDataProducts = () => {
   const API = "https://pergola.onrender.com/api/products"
+  // Estado para almacenar producto, categoría, subcategoría, colección, materia prima, proveedor y estado de carga
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
   const [subcategories, setSubategories] = useState([])
@@ -11,16 +12,15 @@ const useDataProducts = () => {
   const [rawmaterials, setRawMaterials] = useState([])
   const [loading, setLoading] = useState(true)
 
-  // ✅ USAR useCallback para evitar re-creaciones innecesarias
   const fetchProducts = useCallback(async () => {
     try {
       setLoading(true)
-      const response = await fetch(API, {
+      const response = await window.fetch(API, {
         credentials: "include"
       })
       
       if (response.status === 403) {
-        console.log("⚠️ Sin permisos para productos - usuario no autorizado")
+        console.log("Sin permisos para productos")
         setProducts([])
         setLoading(false)
         return
@@ -41,12 +41,11 @@ const useDataProducts = () => {
     } finally {
       setLoading(false)
     }
-  }, [API])
+  }, [])
 
-  // ✅ USAR useCallback
   const fetchCollections = useCallback(async () => {
     try {
-      const response = await fetch("https://pergola.onrender.com/api/collections", {
+      const response = await window.fetch("https://pergola.onrender.com/api/collections", {
         credentials: "include"
       })
       if (!response.ok) {
@@ -60,10 +59,9 @@ const useDataProducts = () => {
     }
   }, [])
 
-  // ✅ USAR useCallback
   const fetchCategories = useCallback(async () => {
     try {
-      const response = await fetch("https://pergola.onrender.com/api/categories", {
+      const response = await window.fetch("https://pergola.onrender.com/api/categories", {
         credentials: "include"
       })
       if (!response.ok) {
@@ -77,10 +75,9 @@ const useDataProducts = () => {
     }
   }, [])
 
-  // ✅ USAR useCallback
   const fetchSubcategories = useCallback(async () => {
     try {
-      const response = await fetch("https://pergola.onrender.com/api/subcategories", {
+      const response = await window.fetch("https://pergola.onrender.com/api/subcategories", {
         credentials: "include"
       })
       if (!response.ok) {
@@ -94,10 +91,9 @@ const useDataProducts = () => {
     }
   }, [])
 
-  // ✅ USAR useCallback
   const fetchRawMaterials = useCallback(async () => {
     try {
-      const response = await fetch("https://pergola.onrender.com/api/rawmaterials", {
+      const response = await window.fetch("https://pergola.onrender.com/api/rawmaterials", {
         credentials: "include"
       })
       if (!response.ok) {
@@ -111,7 +107,6 @@ const useDataProducts = () => {
     }
   }, [])
 
-  // ✅ useEffect CON DEPENDENCIAS CONTROLADAS
   useEffect(() => {
     let mounted = true
     
@@ -132,10 +127,10 @@ const useDataProducts = () => {
     return () => {
       mounted = false
     }
-  }, [fetchProducts, fetchCategories, fetchSubcategories, fetchCollections, fetchRawMaterials])
+  }, [])
 
-  // ✅ Función fetch unificada
-  const fetch = useCallback(async () => {
+  // Función fetch unificada con protección contra errores
+  const refreshData = useCallback(async () => {
     try {
       await Promise.all([
         fetchProducts(),
@@ -149,31 +144,11 @@ const useDataProducts = () => {
     }
   }, [fetchProducts, fetchCategories, fetchSubcategories, fetchCollections, fetchRawMaterials])
 
-  // ✅ Eliminar producto por ID con useCallback
-  const deleteProduct = useCallback(async (id) => {
-    try {
-      const response = await fetch(`${API}/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        credentials: "include"
-      })
-      if (!response.ok) {
-        throw new Error("Hubo un error al eliminar el producto")
-      }
-      toast.success('Producto eliminado exitosamente')
-      fetchProducts()
-    } catch (error) {
-      console.error("Error al eliminar producto:", error)
-      toast.error("Error al eliminar producto")
-    }
-  }, [API, fetchProducts])
-
-  // ✅ Handlers protegidos contra errores
+  // Crea los handlers para agregar, editar y eliminar productos
   const createHandlers = useCallback((API) => ({
     data: products,
     loading,
+    // Handler para agregar producto
     onAdd: async (data) => {
       try {
         let body
@@ -219,7 +194,7 @@ const useDataProducts = () => {
         throw error
       }
     },
-    // Editar producto
+    // Handler para editar producto
     onEdit: async (id, data) => {
       try {
         let body
@@ -265,8 +240,26 @@ const useDataProducts = () => {
         throw error
       }
     },
-    onDelete: deleteProduct
-  }), [products, loading, fetchProducts, deleteProduct])
+    // Handler para eliminar producto
+    onDelete: async (id) => {
+      try {
+        const response = await window.fetch(`${API}/products/${id}`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include"
+        })
+        
+        if (!response.ok) throw new Error("Hubo un error al eliminar los productos")
+        
+        toast.success('Producto eliminado exitosamente')
+        await fetchProducts()
+      } catch (error) {
+        console.error("Error al eliminar producto:", error)
+        toast.error("Error al eliminar producto")
+        throw error
+      }
+    }
+  }), [products, loading, fetchProducts])
 
   return {
     products,
@@ -275,8 +268,7 @@ const useDataProducts = () => {
     collections,
     rawmaterials,
     loading,
-    fetch,
-    deleteProduct,
+    fetch: refreshData,
     fetchProducts,
     fetchCategories,
     fetchSubcategories,
@@ -285,5 +277,5 @@ const useDataProducts = () => {
     createHandlers
   }
 }
-
+// Exporta el hook para su uso en otros componentes
 export default useDataProducts

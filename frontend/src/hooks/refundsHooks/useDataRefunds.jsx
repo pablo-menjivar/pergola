@@ -1,101 +1,97 @@
-import { useEffect, useState, useCallback } from "react";
-import { toast } from "react-hot-toast";
+import { useEffect, useState, useCallback } from "react"
+import { toast } from "react-hot-toast"
 
-// Hook para manejar reembolsos y sus datos relacionados
+// Hook personalizado para manejar datos de reembolsos
 const useDataRefunds = () => {
-  const API = "https://pergola.onrender.com/api/refunds";
-  const [refunds, setRefunds] = useState([]);
-  const [orders, setOrders] = useState([]);
-  const [customers, setCustomers] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const API = "https://pergola.onrender.com/api/refunds"
+  // Estado para almacenar reembolsos, clientes, pedidos, productos y estado de carga
+  const [refunds, setRefunds] = useState([])
+  const [customers, setCustomers] = useState([])
+  const [orders, setOrders] = useState([])
+  const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  // ✅ USAR useCallback para evitar re-creaciones innecesarias
   const fetchRefunds = useCallback(async () => {
     try {
-      setLoading(true);
-      const response = await fetch(API, {
+      setLoading(true)
+      const response = await window.fetch(API, {
         credentials: "include"
-      });
+      })
       
       if (response.status === 403) {
-        console.log("⚠️ Sin permisos para reembolsos - usuario no autorizado");
-        setRefunds([]);
-        setLoading(false);
-        return;
+        console.log("Sin permisos para reembolsos")
+        setRefunds([])
+        setLoading(false)
+        return
       }
       
       if (!response.ok) {
-        throw new Error("Hubo un error al obtener los reembolsos");
+        throw new Error("Hubo un error al obtener los reembolsos")
       }
       
-      const data = await response.json();
-      setRefunds(data);
+      const data = await response.json()
+      setRefunds(data)
     } catch (error) {
-      console.error("Error al obtener reembolsos:", error);
+      console.error("Error al obtener reembolsos:", error)
       if (!error.message.includes("403") && !error.message.includes("sin permisos")) {
-        toast.error("Error al cargar reembolsos");
+        toast.error("Error al cargar reembolsos")
       }
-      setRefunds([]);
+      setRefunds([])
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  }, [API]);
+  }, [])
 
-  // ✅ USAR useCallback
   const fetchCustomers = useCallback(async () => {
     try {
-      const response = await fetch("https://pergola.onrender.com/api/customers", {
+      const response = await window.fetch("https://pergola.onrender.com/api/customers", {
         credentials: "include"
-      });
+      })
       if (!response.ok) {
-        throw new Error("Error al obtener clientes");
+        throw new Error("Error al obtener los clientes")
       }
-      const data = await response.json();
-      setCustomers(data);
+      const data = await response.json()
+      setCustomers(data)
     } catch (error) {
-      console.error("Error al obtener clientes:", error);
-      setCustomers([]);
+      console.error("Error al obtener clientes:", error)
+      setCustomers([])
     }
-  }, []);
+  }, [])
 
-  // ✅ USAR useCallback
   const fetchOrders = useCallback(async () => {
     try {
-      const response = await fetch("https://pergola.onrender.com/api/orders", {
+      const response = await window.fetch("https://pergola.onrender.com/api/orders", {
         credentials: "include"
-      });
+      })
       if (!response.ok) {
-        throw new Error("Error al obtener pedidos");
+        throw new Error("Error al obtener los pedidos")
       }
-      const data = await response.json();
-      setOrders(data);
+      const data = await response.json()
+      setOrders(data)
     } catch (error) {
-      console.error("Error al obtener pedidos:", error);
-      setOrders([]);
+      console.error("Error al obtener pedidos:", error)
+      setOrders([])
     }
-  }, []);
+  }, [])
 
-  // ✅ USAR useCallback
   const fetchProducts = useCallback(async () => {
     try {
-      const response = await fetch("https://pergola.onrender.com/api/products", {
+      const response = await window.fetch("https://pergola.onrender.com/api/products", {
         credentials: "include"
-      });
+      })
       if (!response.ok) {
-        throw new Error("Error al obtener productos");
+        throw new Error("Error al obtener productos")
       }
-      const data = await response.json();
-      setProducts(data);
+      const data = await response.json()
+      setProducts(data)
     } catch (error) {
-      console.error("Error al obtener productos:", error);
-      setProducts([]);
+      console.error("Error al obtener productos:", error)
+      setProducts([])
     }
-  }, []);
+  }, [])
 
-  // ✅ useEffect CON DEPENDENCIAS CONTROLADAS
   useEffect(() => {
-    let mounted = true;
+    let mounted = true
     
     const loadData = async () => {
       if (mounted) {
@@ -104,103 +100,101 @@ const useDataRefunds = () => {
           fetchCustomers(),
           fetchOrders(),
           fetchProducts()
-        ]);
+        ])
       }
-    };
+    }
 
-    loadData();
+    loadData()
     
     return () => {
-      mounted = false;
+      mounted = false
     }
-  }, [fetchRefunds, fetchCustomers, fetchOrders, fetchProducts]);
+  }, [])
 
-  // ✅ Función fetch unificada
-  const fetch = useCallback(async () => {
+  // Función fetch unificada con protección contra errores
+  const refreshData = useCallback(async () => {
     try {
       await Promise.all([
         fetchRefunds(),
         fetchCustomers(),
         fetchOrders(),
         fetchProducts()
-      ]);
+      ])
     } catch (error) {
-      console.error("Error en fetch unificado:", error);
+      console.error("Error en fetch unificado:", error)
     }
-  }, [fetchRefunds, fetchCustomers, fetchOrders, fetchProducts]);
+  }, [fetchRefunds, fetchCustomers, fetchOrders, fetchProducts])
 
-  // ✅ Eliminar reembolso por ID con useCallback
-  const deleteRefund = useCallback(async (id) => {
-    try {
-      const response = await fetch(`${API}/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        credentials: "include"
-      });
-      if (!response.ok) {
-        throw new Error("Hubo un error al eliminar el reembolso");
-      }
-      toast.success('Reembolso eliminado exitosamente');
-      fetchRefunds();
-    } catch (error) {
-      console.error("Error al eliminar reembolso:", error);
-      toast.error("Error al eliminar reembolso");
-    }
-  }, [API, fetchRefunds]);
-
-  // ✅ Handlers protegidos contra errores
+  // Crea los handlers para agregar, editar y eliminar reembolsos
   const createHandlers = useCallback((API) => ({
     data: refunds,
     loading,
+    // Handler para agregar reembolso
     onAdd: async (data) => {
       try {
-        const headers = { "Content-Type": "application/json" };
-        const body = JSON.stringify(data);
         const response = await fetch(`${API}/refunds`, {
           method: "POST",
-          headers,
+          headers: { "Content-Type": "application/json" },
           credentials: "include",
-          body
-        });
+          body: JSON.stringify(data)
+        })
+        
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Error al registrar reembolso");
+          const errorData = await response.json()
+          throw new Error(errorData.message || "Error al registrar reembolso")
         }
-        toast.success('Reembolso registrado exitosamente');
-        fetchRefunds();
+        
+        toast.success('Reembolso registrado exitosamente')
+        fetchRefunds()
       } catch (error) {
-        console.error("Error:", error);
-        toast.error(error.message || "Error al registrar reembolso");
-        throw error;
+        console.error("Error:", error)
+        toast.error(error.message || "Error al registrar reembolso")
+        throw error
       }
     },
-    // Editar reembolso
+    // Handler para editar reembolso
     onEdit: async (id, data) => {
       try {
-        const headers = { "Content-Type": "application/json" };
-        const body = JSON.stringify(data);
         const response = await fetch(`${API}/refunds/${id}`, {
           method: "PUT",
-          headers,
+          headers: { "Content-Type": "application/json" },
           credentials: "include",
-          body
-        });
+          body: JSON.stringify(data)
+        })
+        
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Error al actualizar reembolso");
+          const errorData = await response.json()
+          throw new Error(errorData.message || "Error al actualizar reembolso")
         }
-        toast.success('Reembolso actualizado exitosamente');
-        fetchRefunds();
+        
+        toast.success('Reembolso actualizado exitosamente')
+        fetchRefunds()
       } catch (error) {
-        console.error("Error:", error);
-        toast.error(error.message || "Error al actualizar reembolso");
-        throw error;
+        console.error("Error:", error)
+        toast.error(error.message || "Error al actualizar reembolso")
+        throw error
       }
     },
-    onDelete: deleteRefund
-  }), [refunds, loading, fetchRefunds, deleteRefund]);
+    // Handler para eliminar reembolso
+    onDelete: async (id) => {
+      try {
+        const response = await window.fetch(`${API}/refunds/${id}`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include"
+        })
+        
+        if (!response.ok) throw new Error("Hubo un error al eliminar el reembolso")
+        
+        toast.success('Reembolso eliminado exitosamente')
+        await fetchRefunds()
+      } catch (error) {
+        console.error("Error al eliminar reembolso:", error)
+        toast.error("Error al eliminar reembolso")
+        throw error
+      }
+    }
+  }), [refunds, loading, fetchRefunds])
 
   return {
     refunds,
@@ -208,14 +202,13 @@ const useDataRefunds = () => {
     orders,
     products,
     loading,
-    fetch,
+    fetch: refreshData,
     fetchRefunds,
     fetchCustomers,
     fetchOrders,
     fetchProducts,
-    deleteRefund,
     createHandlers
-  };
-};
-// Exporta el hook para su uso en otros componentes
-export default useDataRefunds;
+  }
+}
+// Exporto el hook para su uso en otros componentes
+export default useDataRefunds

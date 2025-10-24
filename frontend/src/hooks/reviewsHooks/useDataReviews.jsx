@@ -1,25 +1,24 @@
-// useDataReviews.jsx
 import { useEffect, useState, useCallback } from "react"
 import { toast } from "react-hot-toast"
 
-// Hook personalizado para manejar reseñas, clientes y productos
+// Hook personalizado para manejar datos de reseñas
 const useDataReviews = () => {
   const API = "https://pergola.onrender.com/api/reviews"
+  // Estado para almacenar reseñas, clientes, productos y estado de carga
   const [reviews, setReviews] = useState([])
   const [customers, setCustomers] = useState([])
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
 
-  // ✅ USAR useCallback para evitar re-creaciones innecesarias
   const fetchReviews = useCallback(async () => {
     try {
       setLoading(true)
-      const response = await fetch(API, {
+      const response = await window.fetch(API, {
         credentials: "include"
       })
       
       if (response.status === 403) {
-        console.log("⚠️ Sin permisos para reseñas - usuario no autorizado")
+        console.log("Sin permisos para reseñas")
         setReviews([])
         setLoading(false)
         return
@@ -33,24 +32,22 @@ const useDataReviews = () => {
       setReviews(data)
     } catch (error) {
       console.error("Error al obtener reseñas:", error)
-      // Solo muestra toast si no es error de permisos
       if (!error.message.includes("403") && !error.message.includes("sin permisos")) {
-        toast.error("Error al cargar reseñas") // Muestra error si no es por permisos
+        toast.error("Error al cargar reseñas")
       }
       setReviews([])
     } finally {
       setLoading(false)
     }
-  }, [API])
+  }, [])
 
-  // ✅ USAR useCallback
   const fetchCustomers = useCallback(async () => {
     try {
-      const response = await fetch("https://pergola.onrender.com/api/customers", {
+      const response = await window.fetch("https://pergola.onrender.com/api/customers", {
         credentials: "include"
       })
       if (!response.ok) {
-        throw new Error("Error al obtener clientes")
+        throw new Error("Error al obtener los clientes")
       }
       const data = await response.json()
       setCustomers(data)
@@ -60,10 +57,9 @@ const useDataReviews = () => {
     }
   }, [])
 
-  // ✅ USAR useCallback
   const fetchProducts = useCallback(async () => {
     try {
-      const response = await fetch("https://pergola.onrender.com/api/products", {
+      const response = await window.fetch("https://pergola.onrender.com/api/products", {
         credentials: "include"
       })
       if (!response.ok) {
@@ -77,7 +73,6 @@ const useDataReviews = () => {
     }
   }, [])
 
-  // ✅ useEffect CON DEPENDENCIAS CONTROLADAS
   useEffect(() => {
     let mounted = true
     
@@ -96,10 +91,10 @@ const useDataReviews = () => {
     return () => {
       mounted = false
     }
-  }, [fetchReviews, fetchCustomers, fetchProducts])
+  }, [])
 
-  // ✅ Función fetch unificada
-  const fetch = useCallback(async () => {
+  // Función fetch unificada con protección contra errores
+  const refreshData = useCallback(async () => {
     try {
       await Promise.all([
         fetchReviews(),
@@ -111,31 +106,11 @@ const useDataReviews = () => {
     }
   }, [fetchReviews, fetchCustomers, fetchProducts])
 
-  // ✅ Borra una reseña por su ID con useCallback
-  const deleteReview = useCallback(async (id) => {
-    try {
-      const response = await fetch(`${API}/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        credentials: "include"
-      })
-      if (!response.ok) {
-        throw new Error("Hubo un error al eliminar la reseña")
-      }
-      toast.success('Reseña eliminada exitosamente')
-      fetchReviews()
-    } catch (error) {
-      console.error("Error al eliminar reseña:", error)
-      toast.error("Error al eliminar reseña")
-    }
-  }, [API, fetchReviews])
-
-  // ✅ Handlers protegidos contra errores
+  // Crea los handlers para agregar, editar y eliminar reseñas
   const createHandlers = useCallback((API) => ({
     data: reviews,
     loading,
+    // Handler para agregar reseña
     onAdd: async (data) => {
       try {
         const response = await fetch(`${API}/reviews`, {
@@ -144,10 +119,12 @@ const useDataReviews = () => {
           credentials: "include",
           body: JSON.stringify(data)
         })
+        
         if (!response.ok) {
           const errorData = await response.json()
           throw new Error(errorData.message || "Error al registrar reseña")
         }
+        
         toast.success('Reseña registrada exitosamente')
         fetchReviews()
       } catch (error) {
@@ -156,7 +133,7 @@ const useDataReviews = () => {
         throw error
       }
     },
-    // Edita una reseña existente
+    // Handler para editar reseña
     onEdit: async (id, data) => {
       try {
         const response = await fetch(`${API}/reviews/${id}`, {
@@ -165,10 +142,12 @@ const useDataReviews = () => {
           credentials: "include",
           body: JSON.stringify(data)
         })
+        
         if (!response.ok) {
           const errorData = await response.json()
           throw new Error(errorData.message || "Error al actualizar reseña")
         }
+        
         toast.success('Reseña actualizada exitosamente')
         fetchReviews()
       } catch (error) {
@@ -177,20 +156,38 @@ const useDataReviews = () => {
         throw error
       }
     },
-    onDelete: deleteReview
-  }), [reviews, loading, fetchReviews, deleteReview])
+    // Handler para eliminar reseña
+    onDelete: async (id) => {
+      try {
+        const response = await window.fetch(`${API}/reviews/${id}`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include"
+        })
+        
+        if (!response.ok) throw new Error("Hubo un error al eliminar la reseña")
+        
+        toast.success('Reseña eliminada exitosamente')
+        await fetchReviews()
+      } catch (error) {
+        console.error("Error al eliminar reseña:", error)
+        toast.error("Error al eliminar reseña")
+        throw error
+      }
+    }
+  }), [reviews, loading, fetchReviews])
 
   return {
     reviews,
     customers,
     products,
     loading,
-    fetch,
-    deleteReview,
+    fetch: refreshData,
     fetchReviews,
     fetchCustomers,
     fetchProducts,
     createHandlers
   }
 }
+// Exporta el hook para su uso en otros componentes
 export default useDataReviews
