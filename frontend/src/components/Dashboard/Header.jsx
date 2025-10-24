@@ -44,8 +44,6 @@ const Header = () => {
       </div>
       {/* Lado derecho - Usuario autenticado */}
       <div className="flex items-center space-x-4">
-        {/* Separador vertical */}
-        <div className="w-px h-8 bg-[#3D1609]/20"></div>
         {/* Perfil de usuario */}
         <div className="flex items-center space-x-3">
           <div className="text-right">
