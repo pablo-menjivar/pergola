@@ -59,7 +59,7 @@ const PergolaOnboarding = () => {
               <Crown size={80} className="mx-auto" style={{ color: '#A73249' }} />
             </div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-[Quicksand] font-bold mb-3 lg:mb-4" style={{ color: '#3D1609' }}>
-              Bienvenida a Pérgola
+              Bienvenido/a a Pérgola
             </h2>
             <h3 className="text-lg sm:text-xl lg:text-2xl font-[Quicksand] font-medium mb-6 lg:mb-8" style={{ color: '#A73249' }}>
               Tu joyería de confianza
