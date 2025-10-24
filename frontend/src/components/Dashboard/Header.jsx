@@ -42,16 +42,8 @@ const Header = () => {
           ¡Aquí están las estadísticas del inventario de la tienda en línea!
         </p>
       </div>
-      {/* Lado derecho - Notificaciones y perfil */}
+      {/* Lado derecho - Usuario autenticado */}
       <div className="flex items-center space-x-4">
-        {/* Notificaciones */}
-        <div className="relative">
-          <button className="p-3 rounded-full hover:bg-[#3D1609]/10 transition-colors duration-200 relative group">
-            <Bell className="w-6 h-6 text-[#3D1609] group-hover:text-[#3D1609]/80" />
-            {/* Badge de notificación */}
-            <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-medium animate-pulse">2</span>
-          </button>
-        </div>
         {/* Separador vertical */}
         <div className="w-px h-8 bg-[#3D1609]/20"></div>
         {/* Perfil de usuario */}
