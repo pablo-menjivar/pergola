@@ -457,7 +457,7 @@ export const ordersConfig = {
     { key: 'paymentMethod', label: 'Método Pago', sortable: true, searchable: true, hidden: true },
     { key: 'items', label: 'Items', type: 'badge-list', hidden: true },
     { key: 'subtotal', label: 'Subtotal', sortable: true, type: 'currency', hidden: true },
-    { key: 'deliveryDate', label: 'F. Entrega', sortable: true, type: 'date', hidden: true }
+    { key: 'receiptDate', label: 'F. Recepción', sortable: true, type: 'date', hidden: true }
   ],
   actions: {
     canAdd: true,
@@ -500,7 +500,7 @@ export const ordersConfig = {
         { value: 'fallido', label: 'Fallido' }
       ]
     },
-    { name: 'deliveryDate', type: 'date', label: 'Fecha de Entrega', required: true }
+    { name: 'receiptDate', type: 'date', label: 'Fecha de Recepción', required: true }
   ]
 }
 

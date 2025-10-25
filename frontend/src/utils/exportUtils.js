@@ -43,7 +43,7 @@ const isDateKey = (key) => {
   // Claves específicas que son fechas
   const dateKeys = [
     'createdat', 'updatedat', 'date', 'birthdate', 'hiredate', 
-    'purchasedate', 'requestdate', 'deliverydate'
+    'purchasedate', 'requestdate', 'receiptDate'
   ]
   
   // Verificar si es una clave de fecha específica
@@ -225,7 +225,7 @@ export const exportToExcel = (data, filename = 'datos') => {
     paymentMethod: 'Método de Pago',
     subtotal: 'Subtotal',
     paymentStatus: 'Estado de Pago',
-    deliveryDate: 'Fecha de Entrega',
+    receiptDate: 'Fecha de Entrega',
     // Reviews
     response: 'Respuesta',
     // Custom Designs

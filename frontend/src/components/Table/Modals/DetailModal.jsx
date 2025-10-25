@@ -39,7 +39,7 @@ const DetailModal = ({ isOpen, onClose, data, title = "Detalles", type = "generi
       updatedAt: Calendar,
       purchaseDate: Calendar,
       requestDate: Calendar,
-      deliveryDate: Calendar,
+      receiptDate: Calendar,
       birthDate: Cake,
       hireDate: Calendar,
       timetable: Clock,
@@ -327,7 +327,7 @@ const DetailModal = ({ isOpen, onClose, data, title = "Detalles", type = "generi
             { key: 'total', label: 'Total', type: 'currency' },
             { key: 'status', label: 'Estado', type: 'badge' },
             { key: 'paymentStatus', label: 'Estado de Pago', type: 'badge' },
-            { key: 'deliveryDate', label: 'Fecha de Entrega', type: 'date' },
+            { key: 'receiptDate', label: 'Fecha de Recepción', type: 'date' },
             { key: 'createdAt', label: 'Fecha de Creación', type: 'date' }
           ]
         }
