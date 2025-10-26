@@ -447,7 +447,7 @@ export const ordersConfig = {
     { key: 'total', label: 'Total', sortable: true, type: 'currency', priority: 1, width: 100 },
     { key: 'status', label: 'Estado', sortable: true, type: 'badge', priority: 1, width: 110 },
     { key: 'paymentStatus', label: 'Pago', sortable: true, type: 'badge', priority: 1, width: 100 },
-    { key: 'createdAt', label: 'Fecha', sortable: true, type: 'date', priority: 2, width: 120 },
+    { key: 'createdAt', label: 'Fecha', sortable: true, type: 'date', priority: 1, width: 120 },
     // Campos ocultos
     { key: 'receiver', label: 'Receptor', sortable: true, searchable: true, hidden: true },
     { key: 'timetable', label: 'Horario', sortable: true, searchable: true, hidden: true },
@@ -511,6 +511,7 @@ export const refundsConfig = {
     { key: 'amount', label: 'Monto', sortable: true, type: 'currency', priority: 1, width: 100 },
     { key: 'status', label: 'Estado', sortable: true, type: 'badge', priority: 1, width: 100 },
     { key: 'requestDate', label: 'F. Solicitud', sortable: true, type: 'date', priority: 2, width: 120 },
+    { key: 'createdAt', label: 'Creada En', sortable: true, type: 'date', priority: 2, width: 120 },
     // Campos ocultos
     { key: 'order', label: 'Pedido', sortable: true, searchable: true, hidden: true },
     { key: 'reason', label: 'Motivo', sortable: true, searchable: true, hidden: true },
