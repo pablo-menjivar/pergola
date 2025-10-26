@@ -17,14 +17,20 @@ const PasswordInput = ({ name, value, onChange, placeholder, disabled = false, r
           placeholder={placeholder} 
           disabled={disabled} 
           required={required} 
-          className={`w-full bg-[#E8E1D8] border border-[#A73249] rounded-md px-3 py-2 pr-10 outline-none text-[#3D1609] font-[Nunito] placeholder-[#39312f] transition focus:border-[#A73249] focus:ring-2 focus:ring-[#A73249]/20 [&::-webkit-credentials-auto-fill-button]:hidden [&::-webkit-password-auto-fill-button]:hidden ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:border-[#50352C]'}`}
+          className={`w-full px-3 py-2 pr-10 border rounded-lg font-[Quicksand] text-[#3D1609] placeholder-gray-500 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#A73249] [&::-webkit-credentials-auto-fill-button]:hidden [&::-webkit-password-auto-fill-button]:hidden ${
+            disabled
+              ? 'opacity-50 cursor-not-allowed border-gray-300 bg-gray-100'
+              : 'border-gray-300 bg-white hover:border-[#A73249]/60 focus:border-[#A73249]'
+          }`}
         />
         {/* Botón para mostrar/ocultar contraseña */}
         <button 
           type="button" 
           onClick={() => setShow(!show)} 
           disabled={disabled} 
-          className={` absolute right-3 top-1/2 -translate-y-[43%] flex items-center text-[18px] text-[#3D1609] ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:text-[#50352C] transition'}`}
+          className={`absolute right-3 top-1/2 -translate-y-[43%] flex items-center text-[18px] text-[#3D1609] ${
+            disabled ? 'opacity-50 cursor-not-allowed' : 'hover:text-[#A73249] transition'
+          }`}
         > 
           {show ? <i className="fi fi-sc-eye-crossed"></i> : <i className="fi fi-sc-eye"></i>}
         </button>
