@@ -195,7 +195,6 @@ const DetailModal = ({ isOpen, onClose, data, title = "Detalles", type = "generi
             { key: 'birthDate', label: 'Fecha de Nacimiento', type: 'date' },
             { key: 'DUI', label: 'DUI', type: 'text' },
             { key: 'hireDate', label: 'Fecha de Contratación', type: 'date' },
-            { key: 'isVerified', label: 'Verificado', type: 'badge' },
             { key: 'profilePic', label: 'Foto', type: 'image' },
             { key: 'createdAt', label: 'Fecha de Registro', type: 'date' }
           ]

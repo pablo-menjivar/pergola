@@ -66,7 +66,6 @@ export const employeesConfig = {
     { key: 'lastName', label: 'Apellido', sortable: true, searchable: true, priority: 1 },
     { key: 'email', label: 'Email', sortable: true, searchable: true, priority: 1 },
     { key: 'hireDate', label: 'F. Contrato', sortable: true, type: 'date', priority: 2 },
-    { key: 'isVerified', label: 'Verificado', sortable: true, type: 'boolean', priority: 2 },
     // Campos ocultos por defecto
     { key: 'username', label: 'Usuario', sortable: true, searchable: true, hidden: true },
     { key: 'phoneNumber', label: 'Teléfono', searchable: true, hidden: true },
@@ -94,8 +93,7 @@ export const employeesConfig = {
     { name: 'DUI', type: 'dui', label: 'DUI', required: true, placeholder: '12345678-9' },
     { name: 'password', type: 'password', label: 'Contraseña', required: true, placeholder: '********' },
     { name: 'hireDate', type: 'date', label: 'Fecha de Contratación', required: true },
-    { name: 'profilePic', type: 'image', label: 'Foto de Perfil', accept: 'image/*', placeholder: 'Seleccionar imagen' },
-    { name: 'isVerified', type: 'checkbox', label: 'Verificado' }
+    { name: 'profilePic', type: 'image', label: 'Foto de Perfil', accept: 'image/*', placeholder: 'Seleccionar imagen' }
   ]
 }
 
