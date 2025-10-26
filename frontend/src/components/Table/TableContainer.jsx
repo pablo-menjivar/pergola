@@ -61,20 +61,36 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onUpdate, o
 
   // ✅ COLUMNAS RESPONSIVAS AUTOMÁTICAS
   const responsiveColumns = useMemo(() => {
+    // Si estamos en desktop, mostrar todas las columnas visibles sin restricción
+    if (screenSize === 'desktop') {
+      return filteredColumns
+    }
+    
+    // Para mobile y tablet, aplicar filtros de prioridad
     const settings = {
       mobile: { maxColumns: 3, priorities: [1] },
-      tablet: { maxColumns: 5, priorities: [1, 2] },
-      desktop: { maxColumns: 8, priorities: [1, 2, 3] }
+      tablet: { maxColumns: 5, priorities: [1, 2] }
     }
     
     const currentSettings = settings[screenSize]
     
-    return filteredColumns.filter(col => {
-      // Siempre mostrar columnas sin prioridad definida
+    // Filtrar por prioridad PERO respetando el toggle del usuario
+    const priorityFiltered = filteredColumns.filter(col => {
+      // Si no tiene prioridad definida, incluirla
       if (!col.priority) return true
       // Filtrar por prioridad según el tamaño de pantalla
       return currentSettings.priorities.includes(col.priority)
-    }).slice(0, currentSettings.maxColumns)
+    })
+    
+    // Solo aplicar maxColumns si hay más columnas de las permitidas
+    if (priorityFiltered.length > currentSettings.maxColumns) {
+      // Priorizar columnas con priority menor (más importantes)
+      return priorityFiltered
+        .sort((a, b) => (a.priority || 999) - (b.priority || 999))
+        .slice(0, currentSettings.maxColumns)
+    }
+    
+    return priorityFiltered
   }, [filteredColumns, screenSize])
 
   // Procesa los campos del formulario con opciones dinámicas (categorías, proveedores, etc.)
