@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import TableHeader from './TableHeader'
 import DataTable from './DataTable'
 import FormModal from './Modals/FormModal'
@@ -24,15 +24,22 @@ const TableContainer = ({config, data = [], onAdd, onEdit, onDelete, onUpdate, o
   
   // ✅ NUEVOS ESTADOS PARA MANEJO DE COLUMNAS
   const [showColumnToggle, setShowColumnToggle] = useState(false)
-  const [visibleColumns, setVisibleColumns] = useState(() => {
-    // Inicializar columnas visibles basado en la configuración
+  const [visibleColumns, setVisibleColumns] = useState({})
+  // ✅ EFECTO PARA REINICIALIZAR COLUMNAS CUANDO CAMBIA LA CONFIGURACIÓN
+  useEffect(() => {
     const initialVisible = {}
     config.columns.forEach(col => {
-      // Por defecto, mostrar columnas que no estén marcadas como hidden
-      initialVisible[col.key] = !col.hidden
+      // PRIORIDAD 1: Siempre visible por defecto
+      // PRIORIDAD 2+: Solo visible si no está marcada como hidden
+      // SIN PRIORIDAD: Visible solo si no está hidden
+      if (col.priority === 1) {
+        initialVisible[col.key] = true
+      } else {
+        initialVisible[col.key] = !col.hidden
+      }
     })
-    return initialVisible
-  })
+    setVisibleColumns(initialVisible)
+  }, [config.columns])
 
   // ✅ FILTRAR COLUMNAS VISIBLES
   const filteredColumns = useMemo(() => {
