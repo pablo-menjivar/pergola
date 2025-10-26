@@ -91,7 +91,7 @@ export const employeesConfig = {
     { name: 'email', type: 'email', label: 'Correo Electrónico', required: true, placeholder: 'correo@ejemplo.com' },
     { name: 'phoneNumber', type: 'tel', label: 'Teléfono', required: true, placeholder: 'Ej: +503-7123-4567', helperText: 'Formato: +503 seguido de 8 dígitos (ej: +503-7123-4567)' },
     { name: 'birthDate', type: 'date', label: 'Fecha de Nacimiento', required: true },
-    { name: 'DUI', type: 'text', label: 'DUI', required: true, placeholder: '12345678-9' },
+    { name: 'DUI', type: 'dui', label: 'DUI', required: true, placeholder: '12345678-9' },
     { name: 'password', type: 'password', label: 'Contraseña', required: true, placeholder: '********' },
     { name: 'hireDate', type: 'date', label: 'Fecha de Contratación', required: true },
     { name: 'profilePic', type: 'image', label: 'Foto de Perfil', accept: 'image/*', placeholder: 'Seleccionar imagen' },

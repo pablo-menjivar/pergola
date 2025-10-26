@@ -1,9 +1,13 @@
 // Importa react-hook-form y componentes necesarios
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import BaseModal from './BaseModal'
 import { Save, X, Upload, Eye, EyeOff, Image, Trash2 } from 'lucide-react'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import OrderItemsField from '../../Fields/OrderItemsField'
+import PhoneInput from '../../Input/PhoneInput'
+import DUIInput from '../../Input/DUIInput';
+import DateInput from '../../Input/DateInput'; 
+import PasswordInput from '../../Input/PasswordInput';
 
 // Componente modal para formularios dinámicos
 const FormModal = ({isOpen, onClose, onSubmit, title, fields, initialData = {}, isLoading = false, submitButtonText = 'Guardar', productsData = {}}) => {
@@ -14,7 +18,7 @@ const FormModal = ({isOpen, onClose, onSubmit, title, fields, initialData = {}, 
   const [selectedFiles, setSelectedFiles] = useState({})
   const isInitialized = useRef(false)
   // Configura react-hook-form
-  const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm({
+  const { register, handleSubmit, formState: { errors }, reset, setValue, control } = useForm({
     mode: 'onChange', // Validar en tiempo real
     defaultValues: {}
   })
@@ -97,22 +101,35 @@ const FormModal = ({isOpen, onClose, onSubmit, title, fields, initialData = {}, 
     }
     if (field.type === 'tel') {
       rules.pattern = {
-        value: /^\+503[-\d]{8,12}$/,
-        message: 'Teléfono debe ser +503 seguido de 8 dígitos, puedes usar guiones (ej: +503-7123-4567)'
-      }
+        value: /^\+503-?\d{4}-?\d{4}$/,
+        message: 'Teléfono debe ser +503 seguido de 8 dígitos, con o sin guiones (ej: +503-7123-4567)',
+      };
       rules.setValueAs = (value) => {
-        // Permite solo números, + y guiones
-        let cleaned = value.replace(/[^\d+-]/g, '')
-        // Asegura que comience con +503
+        // Limpia espacios y asegura el formato +503-XXXX-XXXX
+        if (!value) return '';
+        let cleaned = value.replace(/[^\d+]/g, '');
         if (!cleaned.startsWith('+503')) {
-          cleaned = '+503' + cleaned.replace(/\D/g, '').slice(0, 8)
+          cleaned = '+503' + cleaned.replace(/[^\d]/g, '').slice(0, 8);
         }
-        // Formatea con guiones si tiene la longitud correcta
-        if (cleaned.length === 12) {
-          cleaned = cleaned.replace(/^(\+503)(\d{4})(\d{4})$/, '$1-$2-$3')
+        if (cleaned.length === 11) {
+          cleaned = cleaned.replace(/^(\+503)(\d{4})(\d{4})$/, '$1-$2-$3');
         }
-        return cleaned
-      }
+        return cleaned;
+      };
+    }
+    if (field.type === 'dui') {
+      rules.pattern = {
+        value: /^\d{8}-\d{1}$/,
+        message: 'DUI debe tener el formato 00000000-0',
+      };
+      rules.setValueAs = (value) => {
+        if (!value) return '';
+        const cleaned = value.replace(/\D/g, '').slice(0, 9);
+        if (cleaned.length === 9) {
+          return `${cleaned.slice(0, 8)}-${cleaned.slice(8)}`;
+        }
+        return cleaned;
+      };
     }
     if (field.type === 'number') {
       rules.min = {
@@ -132,6 +149,56 @@ const FormModal = ({isOpen, onClose, onSubmit, title, fields, initialData = {}, 
         if (!value) return '' // Maneja valores vacíos
         const date = new Date(value)
         return isNaN(date) ? '' : date.toISOString().split('T')[0] // Retorna YYYY-MM-DD
+      };
+      // Validación para fechas futuras y pasadas (para receiptDate, birthDate y hireDate)
+      if (field.name === 'receiptDate') {
+        rules.validate = {
+          isFuture: (value) => {
+            if (!value) return true; // Permite vacíos si no es requerido
+            const dateValue = new Date(value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            dateValue.setHours(0, 0, 0, 0);
+            return !isNaN(dateValue.getTime()) && dateValue > today
+              ? true
+              : 'La fecha de recepción debe ser futura';
+          },
+        };
+      }
+      if (field.name === 'birthDate') {
+        rules.validate = {
+          isPast: (value) => {
+            if (!value) return true;
+            const dateValue = new Date(value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            dateValue.setHours(0, 0, 0, 0);
+            const maxBirthDate = new Date(today.getFullYear() - 120, today.getMonth(), today.getDate());
+            return !isNaN(dateValue.getTime()) && dateValue <= today && dateValue >= maxBirthDate
+              ? true
+              : 'La fecha de nacimiento debe ser en el pasado y no anterior a 120 años';
+          },
+        };
+      }
+      if (field.name === 'hireDate') {
+        rules.validate = {
+          isValid: (value) => {
+            if (!value) return true;
+
+            const dateValue = new Date(value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            dateValue.setHours(0, 0, 0, 0);
+
+            const isFuture = dateValue > today;
+            const isInvalidDate = isNaN(dateValue.getTime());
+
+            if (isInvalidDate) return 'La fecha ingresada no es válida';
+            if (isFuture) return 'La fecha de contratación no puede ser futura';
+            // Si pasa ambas comprobaciones
+            return true;
+          },
+        };
       }
     }
     if (field.minLength) {
@@ -214,6 +281,42 @@ const FormModal = ({isOpen, onClose, onSubmit, title, fields, initialData = {}, 
         : 'border-gray-300 bg-white focus:border-[#A73249]'
     }`
     switch (field.type) {
+      case 'tel':
+        return (
+          <Controller
+            name={field.name}
+            control={control}
+            rules={validation}
+            render={({ field: { onChange, value, name } }) => (
+              <PhoneInput
+                text={field.label}
+                name={name}
+                value={value || ''} // Asegurar que siempre haya un valor (string vacío si undefined)
+                onChange={onChange}
+                required={field.required}
+                disabled={isLoading}
+              />
+            )}
+          />
+        )
+      case 'dui':
+        return (
+          <Controller
+            name={field.name}
+            control={control}
+            rules={validation}
+            render={({ field: { onChange, value, name } }) => (
+              <DUIInput
+                text={field.label}
+                name={name}
+                value={value || ''}
+                onChange={onChange}
+                required={field.required}
+                disabled={isLoading}
+              />
+            )}
+          />
+        )
       case 'textarea':
         return (
           <textarea {...register(field.name, validation)} placeholder={field.placeholder} rows={field.rows || 3} className={`${baseInputClasses} resize-none`} disabled={isLoading}/>
@@ -332,16 +435,23 @@ const FormModal = ({isOpen, onClose, onSubmit, title, fields, initialData = {}, 
         )
       case 'password':
         return (
-          <div className="relative">
-            <input {...register(field.name, validation)} type={showPasswords[field.name] ? 'text' : 'password'} placeholder={field.placeholder} className={`${baseInputClasses} pr-10`} disabled={isLoading}/>
-            <button type="button" onClick={() => setShowPasswords(prev => ({...prev, [field.name]: !prev[field.name] }))} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
-              {showPasswords[field.name] ? 
-                <EyeOff className="w-4 h-4" /> : 
-                <Eye className="w-4 h-4" />
-              }
-            </button>
-          </div>
-        )
+          <Controller
+            name={field.name}
+            control={control}
+            rules={validation}
+            render={({ field: { onChange, value, name } }) => (
+              <PasswordInput
+                text={field.label}
+                name={name}
+                value={value || ''}
+                onChange={onChange}
+                placeholder={field.placeholder}
+                required={field.required}
+                disabled={isLoading}
+              />
+            )}
+          />
+        );
       case 'checkbox':
         return (
           <div className="flex items-center space-x-2">
@@ -355,8 +465,24 @@ const FormModal = ({isOpen, onClose, onSubmit, title, fields, initialData = {}, 
         )
       case 'date':
         return (
-          <input {...register(field.name, validation)} type="date" className={baseInputClasses} disabled={isLoading} min={field.minDate} max={field.maxDate}/>
-        )
+          <Controller
+            name={field.name}
+            control={control}
+            rules={validation}
+            render={({ field: { onChange, value, name } }) => (
+              <DateInput
+                text={field.label}
+                name={name}
+                value={value || ''}
+                onChange={onChange}
+                required={field.required}
+                disabled={isLoading}
+                min={field.minDate}
+                max={field.maxDate}
+              />
+            )}
+          />
+        );
       default:
         return (
           <input {...register(field.name, validation)} type={field.type || 'text'} placeholder={field.placeholder} className={baseInputClasses} disabled={isLoading}/>

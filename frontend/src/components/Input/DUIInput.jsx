@@ -1,6 +1,5 @@
 import { useState } from 'react'
 
-// Componente de input para ingresar y formatear DUI (Documento Único de Identidad)
 const DUIInput = ({ text, name, value, onChange, disabled = false, required = false }) => {
   // Estado para almacenar el valor formateado
   const [formattedValue, setFormattedValue] = useState(value)
