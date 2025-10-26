@@ -289,7 +289,6 @@ const FormModal = ({isOpen, onClose, onSubmit, title, fields, initialData = {}, 
             rules={validation}
             render={({ field: { onChange, value, name } }) => (
               <PhoneInput
-                text={field.label}
                 name={name}
                 value={value || ''} // Asegurar que siempre haya un valor (string vacío si undefined)
                 onChange={onChange}

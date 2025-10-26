@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const DUIInput = ({ text, name, value, onChange, disabled = false, required = false }) => {
+const DUIInput = ({ name, value, onChange, disabled = false, required = false }) => {
   // Estado para almacenar el valor formateado
   const [formattedValue, setFormattedValue] = useState(value)
 
@@ -31,8 +31,6 @@ const DUIInput = ({ text, name, value, onChange, disabled = false, required = fa
 
   return (
     <div className="flex flex-col w-full">
-      {/* Etiqueta del input */}
-      <label className="mb-1 text-sm text-left text-[#3D1609] font-[Quicksand] font-semibold">{text}</label>
       {/* Input de texto para DUI */}
       <input 
         type="text" 

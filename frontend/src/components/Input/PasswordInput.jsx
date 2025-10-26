@@ -1,14 +1,12 @@
 import { useState } from 'react'
 
 // Componente de input para contraseñas con opción de mostrar/ocultar
-const PasswordInput = ({ name, text, value, onChange, placeholder, disabled = false, required = false }) => {
+const PasswordInput = ({ name, value, onChange, placeholder, disabled = false, required = false }) => {
   // Estado para mostrar u ocultar la contraseña
   const [show, setShow] = useState(false)
 
   return (
     <div className="flex flex-col w-full relative">
-      {/* Etiqueta del input */}
-      <label htmlFor={name} className="mb-1 text-sm text-left text-[#3D1609] font-[Quicksand] font-semibold">{text}</label>
       <div className="relative">
         {/* Input de contraseña */}
         <input 

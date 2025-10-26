@@ -1,9 +1,7 @@
 // Componente de input para seleccionar fechas
-const DateInput = ({ text, name, value, onChange, disabled = false, required = false, max = null, min = null }) => {
+const DateInput = ({ name, value, onChange, disabled = false, required = false, max = null, min = null }) => {
   return (
     <div className="flex flex-col w-full">
-      {/* Etiqueta del input */}
-      <label className="mb-1 text-sm text-left text-[#3D1609] font-[Quicksand] font-semibold">{text}</label>
       {/* Input tipo fecha */}
       <input 
         type="date" 
