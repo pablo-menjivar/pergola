@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'  
 import { useAuth } from '../../hooks/useAuth.js'
@@ -6,31 +6,152 @@ import menuItems from '../../data/MenuData.js'
 import BlackLogo from '../../assets/logoforsidebar.png' 
 import Monogram from '../../assets/logoforsidebar2.png'
 
-// Componente Sidebar para navegación lateral
-const Sidebar = ({ currentView, setCurrentView, onLogout }) => {
-  // Estado para colapsar/expandir el sidebar
-  const [isCollapsed, setIsCollapsed] = useState(false)
-  const navigate = useNavigate()
-  const { user } = useAuth() 
+// Constantes de configuración para colores del tema
+const COLORS = {
+  primary: '#3D1609',
+  background: '#E3C6B8',
+  header: '#E8E1D8',
+}
 
-  // Filtra los items del menú según el rol del usuario
-  const getFilteredMenuItems = () => {
-    if (!user?.userType) return [];
-    // Permisos por tipo de usuario
-    const permissions = {
-      'admin': [ 'dashboard', 'search', 'products', 'customdesigns', 'designelements', 'rawmaterials', 'employees', 'categories','subcategories', 'collections', 'customers', 'orders', 'reviews', 'refunds', 'suppliers', 'settings' ],
-      'employee': [ 'dashboard', 'search', 'products', 'customdesigns', 'designelements', 'rawmaterials', 'categories','subcategories', 'collections', 'reviews', 'suppliers', 'settings' ],
+// Constantes para tamaños del sidebar
+const SIZES = {
+  expanded: 'w-80',
+  collapsed: 'w-20',
+  iconCollapsed: 24,
+  iconExpanded: 20,
+}
+
+// Componente para manejar logos con fallback automático
+const Logo = ({ src, alt, className, fallback }) => {
+  const [error, setError] = useState(false)
+  
+  // Si hubo error al cargar, mostrar fallback
+  if (error) return fallback
+  
+  return (
+    <img 
+      src={src} 
+      alt={alt} 
+      className={className}
+      onError={() => setError(true)}
+    />
+  )
+}
+
+// Componente reutilizable para cada item del menú
+const MenuItem = ({ item, isActive, isCollapsed, onClick, onHover }) => {
+  const IconComponent = item.icon
+  
+  return (
+    <div 
+      role="button"
+      tabIndex={0}
+      onClick={() => onClick(item.id)}
+      // Soporte de navegación por teclado
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onClick(item.id)
+        }
+      }}
+      // Mostrar tooltip solo cuando está colapsado
+      onMouseEnter={() => isCollapsed && onHover?.(item.label)}
+      onMouseLeave={() => isCollapsed && onHover?.(null)}
+      aria-current={isActive ? 'page' : undefined}
+      className={`
+        w-full cursor-pointer transition-all duration-200 group relative
+        ${isCollapsed ? 'px-4 py-4' : 'px-6 py-4'}
+        ${isActive ? 'bg-[#E3C6B8]' : 'hover:bg-[#E3C6B8]/50'}
+      `}
+    >
+      {/* Indicador visual de item activo (barra lateral izquierda) */}
+      <div className={`
+        absolute left-0 top-0 w-1 h-full bg-[#3D1609] 
+        transition-opacity duration-200
+        ${isActive ? 'opacity-100' : 'opacity-0'}
+      `} />
+      
+      <div className="flex items-center">
+        {/* Icono del item */}
+        <div className={`
+          transition-colors duration-200 
+          ${isActive ? 'text-[#3D1609]' : 'text-[#3D1609]/80 group-hover:text-[#3D1609]'}
+        `}>
+          <IconComponent 
+            size={isCollapsed ? SIZES.iconCollapsed : SIZES.iconExpanded} 
+            className="flex-shrink-0"
+            aria-hidden="true"
+          />
+        </div>
+        
+        {/* Label del item (solo visible cuando no está colapsado) */}
+        {!isCollapsed && (
+          <span className={`
+            ml-4 text-[15px] transition-all duration-200 font-[Quicksand]
+            ${isActive ? 'text-[#3D1609] font-bold' : 'text-[#3D1609]/90 font-medium group-hover:text-[#3D1609]'}
+          `}>
+            {item.label}
+          </span>
+        )}
+      </div>
+      
+      {/* Línea divisoria sutil entre items (no se muestra en item activo) */}
+      {!isActive && (
+        <div className="absolute bottom-0 left-6 right-6 h-px bg-[#3D1609]/10" />
+      )}
+    </div>
+  )
+}
+
+// Componente principal del Sidebar
+const Sidebar = ({ currentView, setCurrentView, onLogout }) => {
+  // Estado para controlar si el sidebar está colapsado
+  const [isCollapsed, setIsCollapsed] = useState(false)
+  // Estado para manejar el tooltip en modo colapsado
+  const [hoveredItem, setHoveredItem] = useState(null)
+  const navigate = useNavigate()
+  const { user } = useAuth()
+
+  // Recuperar estado guardado del sidebar al montar el componente
+  useEffect(() => {
+    const savedState = localStorage.getItem('sidebarCollapsed')
+    if (savedState !== null) {
+      setIsCollapsed(JSON.parse(savedState))
     }
+  }, [])
+
+  // Persistir estado del sidebar cuando cambie
+  useEffect(() => {
+    localStorage.setItem('sidebarCollapsed', JSON.stringify(isCollapsed))
+  }, [isCollapsed])
+
+  // Memoizar items filtrados según permisos del usuario
+  const filteredMenuItems = useMemo(() => {
+    if (!user?.userType) return []
+    
+    // Definir permisos por tipo de usuario
+    const permissions = {
+      'admin': ['dashboard', 'search', 'products', 'customdesigns', 'designelements', 'rawmaterials', 'employees', 'categories', 'subcategories', 'collections', 'customers', 'orders', 'reviews', 'refunds', 'suppliers', 'settings'],
+      'employee': ['dashboard', 'search', 'products', 'customdesigns', 'designelements', 'rawmaterials', 'categories', 'subcategories', 'collections', 'reviews', 'suppliers', 'settings'],
+    }
+    
     const allowedViews = permissions[user.userType] || []
     return menuItems.filter(item => allowedViews.includes(item.id))
-  }
+  }, [user?.userType])
 
-  // Alterna el estado colapsado del sidebar
+  // Separar items en categorías para mejor organización del render
+  const { mainItems, settingsItem, powerItem } = useMemo(() => ({
+    mainItems: filteredMenuItems.filter(item => item.id !== 'settings' && item.id !== 'power'),
+    settingsItem: filteredMenuItems.find(item => item.id === 'settings'),
+    powerItem: menuItems.find(item => item.id === 'power')
+  }), [filteredMenuItems])
+
+  // Alternar estado colapsado/expandido del sidebar
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed)
   }
 
-  // Maneja el click en los items del menú
+  // Manejar clicks en items del menú
   const handleMenuClick = (itemId) => {
     if (itemId === 'power') {
       handleLogout()
@@ -50,113 +171,145 @@ const Sidebar = ({ currentView, setCurrentView, onLogout }) => {
     }
   }
 
-  // Render del sidebar
   return (
-    <div className={`bg-[#E3C6B8] h-screen transition-all duration-300 ease-in-out ${isCollapsed ? 'w-20' : 'w-80'} flex flex-col relative`}>
-      
-      {/* Header con logo - Estilo minimalista */}
-      <div className="bg-[#E8E1D8] h-24 flex items-center justify-center px-6 relative">
-        {!isCollapsed ? (
-          <div className="flex items-center justify-center w-full">
-            {/* Logo principal */}
-            <img src={BlackLogo} alt="Pérgola Logo" className="h-16 w-auto object-contain" onError={(e) => {e.target.style.display = 'none'
-                e.target.nextSibling.style.display = 'flex'
-              }}
+    <div 
+      role="navigation"
+      aria-label="Menú principal"
+      className={`
+        bg-[${COLORS.background}] h-screen transition-all duration-300 ease-in-out 
+        ${isCollapsed ? SIZES.collapsed : SIZES.expanded} 
+        flex flex-col relative
+      `}
+    >
+      {/* Header del sidebar con logo */}
+      <div className={`bg-[${COLORS.header}] h-24 flex items-center justify-center px-6 relative`}>
+        <div className={`
+          transition-all duration-300 ease-in-out
+          ${isCollapsed ? 'scale-100' : 'scale-100'}
+        `}>
+          {!isCollapsed ? (
+            // Logo completo cuando está expandido
+            <Logo 
+              src={BlackLogo}
+              alt="Pérgola Logo"
+              className="h-16 w-auto object-contain"
+              fallback={
+                <div className="flex items-center justify-center">
+                  <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold text-xl">P</span>
+                  </div>
+                </div>
+              }
             />
-            {/* Logo alternativo si falla la imagen */}
-            <div className="flex items-center justify-center" style={{display: 'none'}}>
-              <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-xl">P</span>
-              </div>
-            </div>
-          </div>
-        ) : (
-          // Monograma para sidebar colapsado
-          <img src={Monogram} alt="Pérgola Monogram" className="w-12 h-12 object-contain" onError={(e) => { 
-              e.target.style.display = 'none'
-              e.target.nextSibling.style.display = 'flex'}}/>
-        )}
-        {/* Botón para colapsar/expandir */}
-        <button onClick={toggleSidebar} className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#3D1609] hover:text-[#271610] transition-colors duration-200 p-1">
+          ) : (
+            // Monograma cuando está colapsado
+            <Logo 
+              src={Monogram}
+              alt="Pérgola Monogram"
+              className="w-12 h-12 object-contain"
+              fallback={
+                <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">P</span>
+                </div>
+              }
+            />
+          )}
+        </div>
+        
+        {/* Botón para colapsar/expandir sidebar */}
+        <button 
+          onClick={toggleSidebar}
+          aria-label={isCollapsed ? "Expandir menú" : "Contraer menú"}
+          aria-expanded={!isCollapsed}
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#3D1609] hover:text-[#271610] transition-colors duration-200 p-1"
+        >
           {isCollapsed ? <Menu size={18} /> : <X size={18} />}
         </button>
       </div>
-      {/* Menu Items */}
+
+      {/* Tooltip flotante para items cuando el sidebar está colapsado */}
+      {isCollapsed && hoveredItem && (
+        <div 
+          className="fixed left-20 bg-[#3D1609] text-white px-3 py-2 rounded-md text-sm shadow-lg z-50 whitespace-nowrap pointer-events-none"
+          style={{ top: 'var(--mouse-y, 50%)' }}
+        >
+          {hoveredItem}
+        </div>
+      )}
+
+      {/* Sección principal de items del menú */}
       <div className="flex-1 py-6 overflow-y-auto">
-        {getFilteredMenuItems().filter(item => item.id !== 'settings' && item.id !== 'power').map((item) => { 
-          const IconComponent = item.icon;
-          const isActive = currentView === item.id;       
-          
-          return (
-            <div key={item.id} onClick={() => handleMenuClick(item.id)} className={`w-full cursor-pointer transition-all duration-200 group relative ${isCollapsed ? 'px-4 py-4' : 'px-6 py-4'} ${isActive ? 'bg-[#E3C6B8]' : 'hover:bg-[#E3C6B8]/50'}`}>
-              <div className="flex items-center">
-                {/* Icono del menú */}
-                <div className={`transition-colors duration-200 ${isActive ? 'text-[#3D1609]' : 'text-[#3D1609]/80'}`}>
-                  <IconComponent size={isCollapsed ? 24 : 20} className="flex-shrink-0"/>
-                </div>
-                {/* Etiqueta del menú */}
-                {!isCollapsed && (
-                  <span className={`ml-4 text-[15px] transition-all duration-200 font-[Quicksand] ${isActive ? 'text-[#3D1609] font-bold' : 'text-[#3D1609]/90 font-medium'}`}>
-                    {item.label}
-                  </span>
-                )}
+        {mainItems.map((item) => (
+          <MenuItem
+            key={item.id}
+            item={item}
+            isActive={currentView === item.id}
+            isCollapsed={isCollapsed}
+            onClick={handleMenuClick}
+            onHover={setHoveredItem}
+          />
+        ))}
+      </div>
+
+      {/* Línea divisoria antes de la sección de configuración */}
+      <div className="mx-6 h-px bg-[#3D1609]/20" />
+
+      {/* Sección de configuración */}
+      {settingsItem && (
+        <div className="py-2">
+          <MenuItem
+            item={settingsItem}
+            isActive={currentView === settingsItem.id}
+            isCollapsed={isCollapsed}
+            onClick={handleMenuClick}
+            onHover={setHoveredItem}
+          />
+        </div>
+      )}
+
+      {/* Sección de cerrar sesión */}
+      {powerItem && (
+        <div className="pb-4">
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={handleLogout}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                handleLogout()
+              }
+            }}
+            onMouseEnter={() => isCollapsed && setHoveredItem(powerItem.label)}
+            onMouseLeave={() => isCollapsed && setHoveredItem(null)}
+            className={`
+              w-full cursor-pointer transition-all duration-200 group
+              ${isCollapsed ? 'px-4 py-4' : 'px-6 py-4'}
+              hover:bg-[#E3C6B8]/50
+            `}
+          >
+            <div className="flex items-center">
+              {/* Icono de cerrar sesión */}
+              <div className="text-[#3D1609]/80 group-hover:text-[#3D1609] transition-colors duration-200">
+                <powerItem.icon 
+                  size={isCollapsed ? SIZES.iconCollapsed : SIZES.iconExpanded} 
+                  className="flex-shrink-0"
+                  aria-hidden="true"
+                />
               </div>
-              {/* Línea divisoria sutil */}
-              {!isActive && (
-                <div className="absolute bottom-0 left-6 right-6 h-px bg-[#3D1609]/10"></div>
+              
+              {/* Label de cerrar sesión */}
+              {!isCollapsed && (
+                <span className="ml-4 text-[#3D1609]/90 text-[15px] font-[Quicksand] font-medium group-hover:text-[#3D1609] transition-colors duration-200">
+                  {powerItem.label}
+                </span>
               )}
             </div>
-          )
-        })}
-      </div>
-      {/* Línea divisoria antes del footer */}
-      <div className="mx-6 h-px bg-[#3D1609]/20"></div>
-      {/* Footer Section - Configuración */}
-      <div className="py-2">
-        {menuItems.filter(item => item.id === 'settings').map((item) => {
-          const IconComponent = item.icon;
-          const isActive = currentView === item.id;
-          return (
-            <div key={item.id} className={`w-full cursor-pointer transition-all duration-200 group ${isCollapsed ? 'px-4 py-4' : 'px-6 py-4'} ${isActive ? 'bg-[#E3C6B8]' : 'hover:bg-[#E3C6B8]/50'}`} onClick={() => handleMenuClick(item.id)}>
-              <div className="flex items-center">
-                {/* Icono de configuración */}
-                <div className={`transition-colors duration-200 ${isActive ? 'text-[#3D1609]' : 'text-[#3D1609]/80'}`}>
-                  <IconComponent size={isCollapsed ? 24 : 20} className="flex-shrink-0" />
-                </div>
-                {/* Etiqueta de configuración */}
-                {!isCollapsed && (
-                  <span className={`ml-4 text-[15px] transition-all duration-200 font-[Quicksand] ${isActive ? 'text-[#3D1609] font-bold' : 'text-[#3D1609]/90 font-medium'}`}>
-                    {item.label}
-                  </span>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-      {/* Footer Section - Cerrar sesión */}
-      <div className="pb-4">
-        {menuItems.filter(item => item.id === 'power').map((item) => {
-          const IconComponent = item.icon;
-          return (
-            <div key={item.id} onClick={handleLogout} className={`w-full cursor-pointer transition-all duration-200 group ${isCollapsed ? 'px-4 py-4' : 'px-6 py-4'} hover:bg-[#E3C6B8]/50`} >
-              <div className="flex items-center">
-                {/* Icono de cerrar sesión */}
-                <div className="text-[#3D1609]/80 group-hover:text-[#3D1609] transition-colors duration-200">
-                  <IconComponent size={isCollapsed ? 24 : 20} className="flex-shrink-0"/>
-                </div>
-                {/* Etiqueta de cerrar sesión */}
-                {!isCollapsed && (
-                  <span className="ml-4 text-[#3D1609]/90 text-[15px] font-[Quicksand] font-medium group-hover:text-[#3D1609] transition-colors duration-200">
-                    {item.label}
-                  </span>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
+
 export default Sidebar
