@@ -92,18 +92,27 @@ export const AuthProvider = ({ children }) => {
     }
   }
   // Función para cerrar sesión
-  const logout = async () => {
+    const logout = async () => {
     try {
-      // Llama al endpoint de logout para limpiar la cookie
-      await fetch(`${API}/logout`, {
+      const response = await fetch(`${API}/logout`, {
         method: "POST",
-        credentials: "include", // Para incluir cookies en la petición
+        credentials: "include",
       })
-      console.log("Llamado a logout")
+      
+      if (!response.ok) {
+        throw new Error('Logout failed on server')
+      }
+      
+      console.log("✅ Logout exitoso en servidor")
     } catch (error) {
+      console.error("❌ Error en logout:", error)
+      // Forzar limpieza incluso si falla el servidor
     } finally {
-      // Limpiar estado y cookie
+      // LIMPIAR COMPLETAMENTE
       setUser(null)
+      // Limpiar cualquier almacenamiento local si existe
+      localStorage.removeItem('auth_redirect')
+      sessionStorage.removeItem('auth_state')
     }
   }
 

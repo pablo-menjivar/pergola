@@ -14,12 +14,23 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const [rememberMe, setRememberMe] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [blockedInfo, setBlockedInfo] = useState(null) // ⬅️ FALTABA ESTO
+  
   const navigate = useNavigate()
   const location = useLocation()
   // Obtiene funciones y estados del contexto de autenticación
   const { Login: authLogin, user, isLoading: authLoading } = useAuth()
   // Referencia para manejar el timeout de redirección
   const redirectTimeoutRef = useRef(null)
+
+  // Limpiar timeout al desmontar componente
+  useEffect(() => {
+    return () => {
+      if (redirectTimeoutRef.current) {
+        clearTimeout(redirectTimeoutRef.current)
+      }
+    }
+  }, [])
 
   // Redirigir si ya está autenticado
   useEffect(() => {
@@ -33,6 +44,7 @@ const Login = () => {
   // Maneja el login al enviar el formulario
   const handleLogin = async (e) => {
     e.preventDefault()
+    
     // Validaciones
     if (!email || !password) {
       toast.error('Por favor completa todos los campos')
@@ -42,7 +54,10 @@ const Login = () => {
       toast.error('Por favor ingresa un email válido')
       return
     }
+    
     setIsLoading(true)
+    setBlockedInfo(null) // Limpiar mensajes anteriores
+    
     try {
       console.log("🔄 Iniciando proceso de login desde componente...")
       const result = await authLogin(email, password, rememberMe, "web")
@@ -53,12 +68,14 @@ const Login = () => {
         // Redirigir a la página que intentaba acceder o al main
         const from = location.state?.from?.pathname || '/main'
         console.log("🔄 Redirigiendo a:", from)
+        
         // Pequeño delay para que se vea el toast y se actualice el estado
-        setTimeout(() => {
+        redirectTimeoutRef.current = setTimeout(() => {
           navigate(from, { replace: true })
         }, 1500)
       } else {
         console.log("❌ Login falló:", result.message)
+        
         // Manejo específico para usuarios bloqueados
         if (result.remainingMinutes !== undefined) {
           if (result.remainingMinutes === 0) {
@@ -88,35 +105,6 @@ const Login = () => {
         } else {
           toast.error(result.message || 'Error al iniciar sesión')
         }
-        {blockedInfo && (
-          <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-red-800">
-                  {blockedInfo.message}
-                </h3>
-                <p className="text-sm text-red-700 mt-1">
-                  {blockedInfo.subtitle}
-                </p>
-              </div>
-              <div className="ml-auto pl-3">
-                <button
-                  onClick={() => setBlockedInfo(null)}
-                  className="text-red-400 hover:text-red-600"
-                >
-                  <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       }
     } catch (error) {
       console.error('❌ Login error:', error)
@@ -125,6 +113,7 @@ const Login = () => {
       setIsLoading(false)
     }
   }
+
   // Navega a la página de recuperación de contraseña
   const handleForgotPassword = () => {
     // Limpiar timeout antes de navegar
@@ -170,6 +159,7 @@ const Login = () => {
           </div>
         </div>
       </div>
+
       {/* Sección Derecha - Login Content */}
       <div className="w-full lg:w-3/5 flex justify-center items-center px-6 sm:px-10 lg:px-16 py-6" style={{ backgroundColor: '#E3C6B8' }}>
         <div className="w-full max-w-lg flex flex-col justify-between h-full">
@@ -192,10 +182,44 @@ const Login = () => {
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-[Quicksand] font-bold mb-3 text-center" style={{ color: '#3D1609' }}>
               Iniciar sesión
             </h2>
+            
             {/* Subtitle */}
             <h3 className="text-lg sm:text-xl lg:text-2xl font-[Quicksand] font-medium mb-6 text-center" style={{ color: '#A73249' }}>
               Únete a nuestro equipo
             </h3>
+
+            {/* Alerta de usuario bloqueado */}
+            {blockedInfo && (
+              <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0">
+                    <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div className="ml-3 flex-1">
+                    <h3 className="text-sm font-[Quicksand] font-semibold text-red-800">
+                      {blockedInfo.message}
+                    </h3>
+                    <p className="text-sm font-[Quicksand] font-medium text-red-700 mt-1">
+                      {blockedInfo.subtitle}
+                    </p>
+                  </div>
+                  <div className="ml-3">
+                    <button
+                      type="button"
+                      onClick={() => setBlockedInfo(null)}
+                      className="text-red-400 hover:text-red-600 transition-colors"
+                    >
+                      <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Login Form */}
             <form onSubmit={handleLogin} className="space-y-6">
               <TextInput
