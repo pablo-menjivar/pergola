@@ -237,8 +237,17 @@ const Sidebar = ({ currentView, setCurrentView, onLogout }) => {
         </div>
       )}
 
-      {/* Sección principal de items del menú */}
-      <div className="flex-1 py-6 overflow-y-auto">
+      {/* Sección principal de items del menú - scrollbar oculta */}
+      <div className="flex-1 py-6 overflow-y-auto scrollbar-hide">
+        <style jsx>{`
+          .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+          }
+          .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+        `}</style>
         {mainItems.map((item) => (
           <MenuItem
             key={item.id}
