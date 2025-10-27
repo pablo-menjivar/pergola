@@ -125,12 +125,6 @@ const Login = () => {
       setIsLoading(false)
     }
   }
-
-  // Navega a la página de registro
-  const handleGoToRegister = () => {
-    navigate('/register')
-  }
-
   // Navega a la página de recuperación de contraseña
   const handleForgotPassword = () => {
     // Limpiar timeout antes de navegar
@@ -254,17 +248,6 @@ const Login = () => {
               </button>
             </form>
           </div>
-          {/* Register Link */}
-          <p className="text-center mt-6 mb-3 font-[Quicksand] font-medium text-sm" style={{ color: '#3D1609' }}>
-            ¿No tienes una cuenta?{' '}
-            <button 
-              onClick={handleGoToRegister}
-              className="underline font-semibold hover:opacity-80" 
-              style={{ color: '#A73249' }}
-            >
-              Regístrate
-            </button>
-          </p>
         </div>
       </div>
     </div>
