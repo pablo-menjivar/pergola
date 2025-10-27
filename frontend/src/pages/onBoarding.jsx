@@ -1,4 +1,3 @@
-import React from 'react';
 import { Crown } from 'lucide-react';
 import Logo from '../assets/logo.png';
 import Pergola from '../assets/pergola.png';
@@ -8,9 +7,9 @@ import { useNavigate } from 'react-router-dom';
 const PergolaOnboarding = () => {
   const navigate = useNavigate();
 
-  // Finaliza el onboarding y navega al registro
+  // Finaliza el onboarding y navega al inicio de sesión
   const finishOnboarding = () => {
-    navigate('/register');
+    navigate('/login');
   };
 
   // Render principal
