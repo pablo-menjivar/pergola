@@ -181,49 +181,70 @@ const Sidebar = ({ currentView, setCurrentView, onLogout }) => {
         flex flex-col relative
       `}
     >
-      {/* Header del sidebar con logo */}
-      <div className={`bg-[${COLORS.header}] h-24 flex items-center justify-center px-6 relative`}>
-        <div className={`
-          transition-all duration-300 ease-in-out
-          ${isCollapsed ? 'scale-100' : 'scale-100'}
-        `}>
-          {!isCollapsed ? (
-            // Logo completo cuando está expandido
-            <Logo 
-              src={BlackLogo}
-              alt="Pérgola Logo"
-              className="h-16 w-auto object-contain"
-              fallback={
-                <div className="flex items-center justify-center">
-                  <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold text-xl">P</span>
+      {/* Estilos globales para scrollbar personalizada muy delgada */}
+      <style jsx global>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(61, 22, 9, 0.15);
+          border-radius: 2px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(61, 22, 9, 0.25);
+        }
+        .custom-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(61, 22, 9, 0.15) transparent;
+        }
+      `}</style>
+
+      {/* Header del sidebar con logo - Layout reorganizado */}
+      <div className={`bg-[${COLORS.header}] h-24 flex items-center justify-between px-4 relative shrink-0`}>
+        {/* Logo centrado con espacio reservado para el botón */}
+        <div className="flex-1 flex items-center justify-center">
+          <div className="transition-all duration-300 ease-in-out">
+            {!isCollapsed ? (
+              // Logo completo cuando está expandido
+              <Logo 
+                src={BlackLogo}
+                alt="Pérgola Logo"
+                className="h-14 w-auto object-contain max-w-[200px]"
+                fallback={
+                  <div className="flex items-center justify-center">
+                    <div className="w-14 h-14 bg-black rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold text-lg">P</span>
+                    </div>
                   </div>
-                </div>
-              }
-            />
-          ) : (
-            // Monograma cuando está colapsado
-            <Logo 
-              src={Monogram}
-              alt="Pérgola Monogram"
-              className="w-12 h-12 object-contain"
-              fallback={
-                <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">P</span>
-                </div>
-              }
-            />
-          )}
+                }
+              />
+            ) : (
+              // Monograma cuando está colapsado
+              <Logo 
+                src={Monogram}
+                alt="Pérgola Monogram"
+                className="w-10 h-10 object-contain"
+                fallback={
+                  <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold text-sm">P</span>
+                  </div>
+                }
+              />
+            )}
+          </div>
         </div>
         
-        {/* Botón para colapsar/expandir sidebar */}
+        {/* Botón para colapsar/expandir - Posición fija a la derecha */}
         <button 
           onClick={toggleSidebar}
           aria-label={isCollapsed ? "Expandir menú" : "Contraer menú"}
           aria-expanded={!isCollapsed}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#3D1609] hover:text-[#271610] transition-colors duration-200 p-1"
+          className="flex-shrink-0 text-[#3D1609] hover:text-[#271610] transition-colors duration-200 p-2 rounded-md hover:bg-[#3D1609]/5"
         >
-          {isCollapsed ? <Menu size={18} /> : <X size={18} />}
+          {isCollapsed ? <Menu size={20} /> : <X size={20} />}
         </button>
       </div>
 
@@ -237,17 +258,8 @@ const Sidebar = ({ currentView, setCurrentView, onLogout }) => {
         </div>
       )}
 
-      {/* Sección principal de items del menú - scrollbar oculta */}
-      <div className="flex-1 py-6 overflow-y-auto scrollbar-hide">
-        <style jsx>{`
-          .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-          }
-          .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-          }
-        `}</style>
+      {/* Sección principal de items del menú - Scrollbar delgada personalizada */}
+      <div className="flex-1 py-6 overflow-y-auto custom-scrollbar">
         {mainItems.map((item) => (
           <MenuItem
             key={item.id}
@@ -261,11 +273,11 @@ const Sidebar = ({ currentView, setCurrentView, onLogout }) => {
       </div>
 
       {/* Línea divisoria antes de la sección de configuración */}
-      <div className="mx-6 h-px bg-[#3D1609]/20" />
+      <div className="mx-6 h-px bg-[#3D1609]/20 shrink-0" />
 
       {/* Sección de configuración */}
       {settingsItem && (
-        <div className="py-2">
+        <div className="py-2 shrink-0">
           <MenuItem
             item={settingsItem}
             isActive={currentView === settingsItem.id}
@@ -278,7 +290,7 @@ const Sidebar = ({ currentView, setCurrentView, onLogout }) => {
 
       {/* Sección de cerrar sesión */}
       {powerItem && (
-        <div className="pb-4">
+        <div className="pb-4 shrink-0">
           <div
             role="button"
             tabIndex={0}
